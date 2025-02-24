@@ -1,0 +1,262 @@
+import EditMentor from 'src/components/EditMentor';
+import { Box, Container, } from '@radix-ui/themes';
+import React, { useEffect, useState } from "react";
+// import "./mentors.scss";
+import '../../src/components/mentors.scss';
+// import { data } from "./data";
+// import { DataType } from "./data";
+// import Pagination from "./Pagination";
+import { AlertDialog } from "radix-ui";
+import { useQuery, keepPreviousData, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteMentor, getMentor, updateMentor } from "src/services/api/actionMentor";
+// import GlobalFetching from "../components/utilities/Globalfetching";
+import axios from "axios";
+import clsx from "clsx";
+import { Link } from "@remix-run/react";
+// import EditRoute from "~/routes/mentors.edit";
+// import DeleteMentor from "./DeleteMentor";
+import DeleteMentor from 'src/components/DeleteMentor';
+
+interface EditMentorProps {
+  name: string;
+  data: any;
+  edit: boolean;
+  currentPage: number;
+  openCreate: boolean;
+}
+
+const loader = async ({ request, params }) => {
+
+
+};
+
+
+function EditRoute({ openCreate = false, name, data = {}, edit = false, currentPage }: EditMentorProps) {
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState();
+  const [validated, setValidated] = useState(false);
+  const res = {
+    id: data?.id || "",
+    firstName: data?.firstName || "",
+    lastName: data?.lastName || "",
+    address: {
+      city: data?.address?.city || "",
+      country: data?.address?.country || "",
+    },
+    company: {
+      department: data?.company?.department || "",
+    },
+    role: data?.role || "",
+    phone: data?.phone || "",
+    ...data
+  }
+  const [formData, setFormData] = useState(res);
+
+  const { mutate, isPending, isSuccess, isError, variables, isIdle, status, reset } = useMutation({
+    mutationKey: ["updateMentor"],
+    mutationFn: ({ id, formData }) => updateMentor({ id, formData }),
+    onMutate: async (updatedData) => {
+      console.log({ updatedData });
+      console.log(variables)
+      // Cancel current queries for the todos list
+      await queryClient.cancelQueries({ queryKey: ['mentors'] });
+      // Add optimistic todo to todos list
+      const prevousMentors = queryClient.getQueryData(['mentors']);
+      console.log({ prevousMentors })
+      queryClient.setQueryData(['mentors'], (old) => ({
+        ...old,
+        pages: old?.pages?.map((page) => ({
+          ...page,
+          data: {
+            ...page.data,
+            users: page.data.users.map((mentor) =>
+              mentor.id === updatedData.id ? { ...mentor, ...updatedData.formData } : mentor
+            ),
+          },
+        })),
+      }));
+
+      // Return context with the optimistic todo
+      return prevousMentors;
+    },
+    // If the mutation fails,
+    // use the context returned from onMutate to roll back
+    onError: (err, variables, context) => {
+      console.log({ err });
+      console.log(context);
+      // if (context?.prevousMentors) {
+      queryClient.setQueryData(['mentors'], context?.prevousMentors)
+      // }
+    },
+    onSuccess: (result, variables, context) => {
+      // Boom baby!
+      console.log({ result });
+      console.log({ variables });
+      console.log({ context })
+      queryClient.setQueryData(['mentors'], (old) => ({
+        ...old,
+        pages: old?.pages?.map((page) => ({
+          ...page,
+          data: {
+            ...page.data,
+            users: page.data.users.map((mentor) =>
+              mentor.id === variables.id ? { ...mentor, ...variables.formData } : mentor
+            ),
+          },
+        })),
+      }));
+    },
+    retry: 3,
+    // onSettled: () => queryClient.invalidateQueries({ queryKey: ["mentors", currentPage] }),
+  });
+  // useEffect(() => {
+  //   if (open) {
+  //     queryClient.invalidateQueries({ queryKey: ["mentors"] });
+  //   }
+  // }, [open]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(produce((draft) => {
+      const keys = name.split('.');
+      if (keys.length > 1) {
+        draft[keys[0]] = {
+          ...draft[keys[0]], // Preserve existing properties
+          [keys[1]]: value,  // Update only the specified key
+        };
+      } else {
+        draft[name] = value;
+      }
+    }));
+
+  };
+  // useEffect(() => {
+  //   setFormData(res);
+
+  // }, [data]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (event.currentTarget.checkValidity() === false) {
+      event.stopPropagation();
+    } else {
+      mutate({ id: formData.id, formData: formData });
+    }
+    setValidated(true);
+  };
+  console.log(formData)
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        reset(); setFormData(res); setOpen(false);
+      }, 6000);
+    }
+  }, [isSuccess])
+
+  return (
+    <div>
+      <div className="edit-content py-2 mx-auto mb-2 bg-white rounded shadow">
+        <div className="edit-title">Edit profile</div>
+        <div className="edit-description">
+          Make changes to your profile here. Click save when you're done.
+        </div>
+
+        <form className={`row g-3 needs-validation ${validated ? "was-validated" : ""}`} noValidate onSubmit={handleSubmit}>
+          <div className="col-md-4">
+            <label htmlFor="firstName" className="form-label">First name</label>
+            <input type="text" className="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
+            <div className="invalid-feedback">Please enter a first name.</div>
+          </div>
+
+          <div className="col-md-4">
+            <label htmlFor="lastName" className="form-label">Last name</label>
+            <input type="text" className="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
+            <div className="invalid-feedback">Please enter a last name.</div>
+          </div>
+
+          <div className="col-md-4">
+            <label htmlFor="city" className="form-label">City</label>
+            <input type="text" className="form-control" id="city" name="address.city" value={formData.address.city} onChange={handleChange} required />
+            <div className="invalid-feedback">Please provide a valid city.</div>
+          </div>
+
+          <div className="col-md-4">
+            <label htmlFor="country" className="form-label">Country</label>
+            <input type="text" className="form-control" id="country" name="address.country" value={formData.address.country} onChange={handleChange} required />
+            <div className="invalid-feedback">Please provide a valid country.</div>
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="department" className="form-label">Department</label>
+            <select
+              id="department"
+              name="company.department"
+              className="form-select"
+              value={formData.company.department}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Choose...</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Support">Support</option>
+              <option value="Research and Development">Research and Development</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Product Management">Product Management</option>
+              <option value="Human Resources">Human Resources</option>
+              <option value="Accounting">Accounting</option>
+              <option value="Legal">Legal</option>
+              <option value="Services">Services</option>
+            </select>
+            <div className="invalid-feedback">Please select a valid department.</div>
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="role" className="form-label">Role</label>
+            <input
+              type="text"
+              className="form-control"
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            />
+            <div className="invalid-feedback">Please enter a role.</div>
+          </div>
+
+          <div className="col-md-4">
+            <label htmlFor="phone" className="form-label">Phone</label>
+            <input
+              type="tel"
+              className="form-control"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              pattern="[\d+\-\ ]{10,}"
+              required
+            />
+            <div className="invalid-feedback">Phone number must be 10 digits.</div>
+          </div>
+
+          <div className="col-12">
+            {isPending ? (
+              <button className="btn btn-primary" type="button" disabled>Loading...</button>
+            ) :
+              // <button className="btn btn-primary" type="submit">Submit</button>
+              isSuccess ? (
+                <span className="btn btn-success justify-content-center">Updated</span>
+              ) : (
+                <button className="btn btn-primary text-center" type="submit">Submit</button>
+              )
+            }
+          </div>
+        </form>
+
+        {/* <Dialog.Close asChild>
+                    <button className="edit-iconButton text-center" aria-label="Close"><Cross2Icon /></button>
+            </Dialog.Close> */
+        }
+      </div>
+    </div>
+  )
+}
+
+export default EditRoute

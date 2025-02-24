@@ -4,7 +4,7 @@ import Main from '../../src/pages/Main';
 function Index() {
   return (
     <div>
-      <Main/>
+      {/* <Main/> */}
         home index
     </div>
   )

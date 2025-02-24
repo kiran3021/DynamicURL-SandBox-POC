@@ -1,0 +1,42 @@
+ul {
+    margin-bottom: 0;
+    list-style-type: none;
+
+    li {
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+}
+
+a {
+    padding: 7px;
+    border-radius: 5px;
+
+
+    &:focus-visible {
+        background-color: rgba(0, 95, 115,1);
+        border-radius: 5px soli#333;
+    }
+
+    &:focus {
+        outline: 3px solid #fff;
+        // outline-offset: -4px;
+        background-color: rgba(0, 95, 115,0.8);
+        border-radius: 5px solid #333;
+    }
+
+    &:hover {
+        // background-color: grey;
+        // border-radius: 5px soli#333;
+        background-color: rgba(0, 95, 115,0.7);
+        border-radius: 5px solid #333;
+
+    }
+
+    &:active {
+        background-color: rgba(0, 95, 115,1);
+        border-radius: 5px solid #333;
+    }
+}

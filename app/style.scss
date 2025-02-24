@@ -1,0 +1,146 @@
+// @use '../src/Styles/extends';
+// @import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/functions";
+
+$table-hover-color: #615a5a;
+$table-hover-bg-factor: .075;
+$table-hover-bg: #dd1616;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+
+$utilities: map-merge($utilities,
+    ("color": map-merge(map-get($utilities, "color"),
+        (values: map-merge(map-get(map-get($utilities, "color"), "values"),
+            ($all-colors ),
+          ),
+        ),
+      ),
+    ));
+
+$body-bg: #cccccc;
+$body-color: #999999;
+// $font-family-sans-serif: "Poppins";
+
+
+
+@import "bootstrap/scss/utilities/api";
+@import "bootstrap/scss/bootstrap";
+
+// @import "../node_modules/bootstrap/scss/bootstrap";
+
+
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+// .wrapper{
+//   display: flex ;
+//   position: relative;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   main{
+//     position: absolute;
+//     min-height: 80vh;
+//     /* flex: 1 !important; */
+//     padding: 20px;
+//   }
+//   .mainfooter {
+//     /* background: #333; */
+//     color: white;
+//     text-align: center;
+//     padding: 10px;
+//     margin-top: auto;
+//   }
+// }
+
+// Layout Styles
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.wrapper {
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Ensure the entire wrapper is at least full viewport height
+
+  .navbar-main {
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    color: #fff;
+    background-color: #001219;
+    margin: 0;
+    height: 74px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-around;
+
+    ul {
+      margin-bottom: 0;
+      list-style-type: none;
+
+      li {
+        text-decoration: none;
+
+        a {
+          text-decoration: none;
+          color: white;
+        }
+      }
+    }
+  }
+
+  main {
+    margin-top: 4rem;
+    flex-grow: 1;
+    min-height: 100vh; // Ensures at least full viewport height
+    // padding: 3rem; // Extra top padding to prevent content from being hidden behind the fixed navbar
+  }
+
+  .mainfooter {
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    background-color: #001219;
+    height: 20vh;
+  }
+}
