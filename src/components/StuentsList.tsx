@@ -20,7 +20,7 @@ const loader = () => {
 interface MentorTyeps {
   id: number;
 }
-function Mentors({ id }: MentorTyeps) {
+function StudentList({ id }: MentorTyeps) {
   const rowsPerPage = 10;
   const [currentPage, setCurrentPage] = useState<number>(id ? parseInt(id) : 1);
   const queryClient = useQueryClient();
@@ -192,88 +192,7 @@ function Mentors({ id }: MentorTyeps) {
                       <span>Add Mentor</span>
                     </Link>
                   </div>
-                  <table className="table table-fixed table-hover caption-top align-middle">
-                    <caption>List of Mentors</caption>
-                    <thead className="table-head">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col" className="col-md-2">Name</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Department</th>
-                        <th scope="col">Role</th>
-                        {/* <th scope="col"className="col-md-6 col-lg-2 col-sm-4 col">Phone</th> */}
-                        <th scope="col">Phone</th>
-                        {/* <th></th>
-                        <th></th> */}
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="table-group-divider">
-                      {paginationData.map((ele: DataType, index: number) => (
-                        <tr key={ele.id}>
-                          <th scope="row">{ele.id}</th>
-                          <td>
-                            <Link to={`/mentors/${ele.id}/details`}>
-                              <span className="link-details"> {ele.firstName} {ele.lastName}</span>
-
-                            </Link>
-
-                          </td>
-                          <td> {ele.address.city}</td>
-                          <td> {ele.address.country}</td>
-                          <td>{ele.company.department}</td>
-                          <td>{ele.role}</td>
-                          {/* <td className="col-md-3 phone-column" colspan={"5"} style={{ "width": "20%" }}>{ele.phone}</td> */}
-                          <td>{ele.phone}</td>
-                          {/* <td></td>
-                           <td></td> */}
-                          <td>
-                            <EditMentor name={"Edit"} data={ele} edit={true} currentPage={currentPage} />
-                          </td>
-                          <td>
-                            {/* <AlertDialog.Root open={alertOpen} onOpenChange={setAlertOpen}>
-                              <AlertDialog.Trigger asChild>
-                                <button type="button" className={`Button red`}>
-                                  Delete
-                                </button>
-                              </AlertDialog.Trigger>
-                              <AlertDialog.Portal>
-                                <AlertDialog.Overlay className={"Overlay"} />
-                                <AlertDialog.Content className={"Content"}>
-                                  <AlertDialog.Title className={"Title"}>Are you absolutely sure?</AlertDialog.Title>
-                                  <AlertDialog.Description className={"Description"}>
-                                    This action cannot be undone. This will permanently delete your account and remove your data from our servers.
-                                  </AlertDialog.Description>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      gap: 25,
-                                      justifyContent: "flex-end",
-                                    }}>
-                                    <AlertDialog.Cancel asChild>
-                                      <button type="button" className={"Button mauve"}>
-                                        Cancel
-                                      </button>
-                                    </AlertDialog.Cancel>
-                                    <AlertDialog.Action asChild>
-                                      <button type="button" className={`Button red`} onClick={() => { handleDelete(ele.id ) }}>
-                                        {deleteError && "Error In Deleteing"}
-                                        {deletePending ? "Deleting....." : (deleteSuccess ? "Deleted" : "Submit")}
-                                      </button>
-                                    </AlertDialog.Action>
-                                  </div>
-                                </AlertDialog.Content>
-                              </AlertDialog.Portal>
-                            </AlertDialog.Root> */}
-                            <DeleteMentor id={ele.id} del={true} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                
                 </div>
               </div>
             </div>

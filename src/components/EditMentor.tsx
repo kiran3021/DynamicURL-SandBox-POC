@@ -68,9 +68,12 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
     onError: (err, variables, context) => {
       console.log({ err });
       console.log(context);
-      // if (context?.prevousMentors) {
+      if (context?.prevousMentors) {
       queryClient.setQueryData(['mentors'], context?.prevousMentors)
-      // }
+      }else {
+        console.log(err);
+      }
+
     },
     onSuccess: (result, variables, context) => {
       // Boom baby!
@@ -134,9 +137,9 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
   console.log(formData)
   useEffect(() => {
     if (isSuccess) {
-      setTimeout(() => {
-        reset(); setFormData(res); setOpen(false);
-      }, 6000);
+      // setTimeout(() => {
+      // }, 6000);
+      reset(); setFormData(res); setOpen(false);
     }
   }, [isSuccess])
 
@@ -149,7 +152,7 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
       <Dialog.Portal>
         <Dialog.Overlay className="edit-overlay" />
         <Dialog.Content className="edit-content">
-          {
+          {/* {
             edit &&
             <div className="container text-center position-sticky top">
               <div className="row py-2 mx-auto mb-2 bg-white rounded shadow">
@@ -174,46 +177,48 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 <span className="col-2 bg-primary text-white border rounded-2">{isError ? "Yes" : "No Error"}</span>
               </div>
             </div>
-          }
+          } */}
           <Dialog.Title className="edit-title">Edit profile</Dialog.Title>
           <Dialog.Description className="edit-description">
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
 
-          <form className={`row g-3 needs-validation ${validated ? "was-validated" : ""}`} noValidate onSubmit={handleSubmit}>
-            <div className="col-md-4">
+          <form className={`row g-3 justify-content-center-sm needs-validation ${validated ? "was-validated" : ""}`} noValidate onSubmit={handleSubmit}>
+            <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="firstName" className="form-label">First name</label>
               <input type="text" className="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
               <div className="invalid-feedback">Please enter a first name.</div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-lg-4 col-md-6 mx-md-auto col-sm-8">
               <label htmlFor="lastName" className="form-label">Last name</label>
               <input type="text" className="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
               <div className="invalid-feedback">Please enter a last name.</div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="city" className="form-label">City</label>
               <input type="text" className="form-control" id="city" name="address.city" value={formData.address.city} onChange={handleChange} required />
               <div className="invalid-feedback">Please provide a valid city.</div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="country" className="form-label">Country</label>
               <input type="text" className="form-control" id="country" name="address.country" value={formData.address.country} onChange={handleChange} required />
               <div className="invalid-feedback">Please provide a valid country.</div>
             </div>
-            <div className="col-md-4">
+            <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="department" className="form-label">Department</label>
               <select
                 id="department"
                 name="company.department"
-                className="form-select"
+                className="form-select col-md-4 "
                 value={formData.company.department}
                 onChange={handleChange}
                 required
               >
+                {/* <div className="w-50"> */}
+
                 <option value="">Choose...</option>
                 <option value="Engineering">Engineering</option>
                 <option value="Support">Support</option>
@@ -224,10 +229,12 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 <option value="Accounting">Accounting</option>
                 <option value="Legal">Legal</option>
                 <option value="Services">Services</option>
+                {/* </div> */}
+
               </select>
               <div className="invalid-feedback">Please select a valid department.</div>
             </div>
-            <div className="col-md-4">
+            <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="role" className="form-label">Role</label>
               <input
                 type="text"
@@ -241,7 +248,7 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
               <div className="invalid-feedback">Please enter a role.</div>
             </div>
 
-            <div className="col-md-4">
+            <div className="mx-lg-auto col-lg-4 col-md-6 col-sm-8 justify-content-center">
               <label htmlFor="phone" className="form-label">Phone</label>
               <input
                 type="tel"
@@ -255,18 +262,22 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
               />
               <div className="invalid-feedback">Phone number must be 10 digits.</div>
             </div>
+            <div className="row gy-1">
+              <div className="col-4"></div>
+              <div className="col-4 text-center">
+                {isPending ? (
+                  <button className="btn btn-primary" type="button" disabled>Loading...</button>
+                ) :
+                  // <button className="btn btn-primary" type="submit">Submit</button>
+                  isSuccess ? (
+                    <span className="btn btn-success justify-content-center">Updated</span>
+                  ) : (
+                    <button className="btn btn-primary text-center" type="submit">Submit</button>
+                  )
+                }
+              </div>
+              <div className="col-4"></div>
 
-            <div className="col-12">
-              {isPending ? (
-                <button className="btn btn-primary" type="button" disabled>Loading...</button>
-              ) :
-                // <button className="btn btn-primary" type="submit">Submit</button>
-                isSuccess ? (
-                  <span className="btn btn-success justify-content-center">Updated</span>
-                ) : (
-                  <button className="btn btn-primary text-center" type="submit">Submit</button>
-                )
-              }
             </div>
           </form>
 

@@ -8,9 +8,10 @@ import {
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+// import { Theme } from "@radix-ui/themes";
 import "./style.scss";
-import '../src/pages/_Main.scss'
+import '../src/pages/_Main.scss';
+import '../src/Styles/_Common.scss';
 
 import {
   Form,
@@ -33,6 +34,13 @@ import appStylesHref from "./app.css?url";
 import Navbar from "src/pages/Navbar";
 import Footer from "src/pages/Footer";
 
+
+// import styles from "~/styles/sales.css?url";
+// import styles from '~'
+
+// export const links: LinksFunction = () => [
+//   { rel: "stylesheet", href: styles },
+// ];
 // export const links: LinksFunction = () => [
 //   { rel: "stylesheet", href: appStylesHref },
 // ];
@@ -55,6 +63,7 @@ export default function App() {
   const submit = useSubmit();
   const navigation = useNavigation();
   const {id} = useLoaderData();
+  const [isMobile, setIsMobile] = useState("");
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -64,6 +73,18 @@ export default function App() {
       },
     }
   });
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    } else { }
+
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -75,34 +96,23 @@ export default function App() {
           <Links />
         </head>
         <body >
-          <div className="wrapper">
-            <Theme>
-              {/* <Navbar />
-              <main >
-                <div className="main-content">
-
-                <Outlet />
-                </div>
-              </main>
-              <div className="mainfooter">
-                <Footer />
-              </div> */}
-
-              <div className="wrapper">
+        {/* <Theme> */}
              <nav className="navbar-main">
-              <Navbar id={id}/>
+              <Navbar id={id} isMobile={isMobile}/>
           </nav>
-            <main>
+          <div className="wrapper">
+            <main  className={
+             navigation.state === "loading" ? "loading" : ""
+          }>
               <Outlet /> 
             </main>
             <footer className="mainfooter">
               <Footer />
              </footer>
-           </div>
-            </Theme>
           </div>
           <ScrollRestoration />
           <Scripts />
+            {/* </Theme> */}
         </body>
       </html>
     </QueryClientProvider>

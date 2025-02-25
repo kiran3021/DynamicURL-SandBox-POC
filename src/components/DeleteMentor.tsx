@@ -195,14 +195,17 @@ const DeleteMentor = ({ id, del = false }: DelteMentorTyeps) => {
         // setAlertOpen(true);
     };
     useEffect(() => {
-        let timer;
-        if (deleteSuccess) {
-          timer =  setTimeout(() => {
-                deleteReset();
-                setAlertOpen(false);
-            }, 8000)
+        // let timer;
+        // if (deleteSuccess) {
+        //   timer =  setTimeout(() => {
+        // }, 8000)
+        if(deleteSuccess){
+
+            deleteReset();
+            setAlertOpen(false);
         }
-        return () => clearTimeout(timer)
+        // }
+        // return () => clearTimeout(timer)
 
     }, [deleteSuccess]);
     return (
@@ -212,8 +215,8 @@ const DeleteMentor = ({ id, del = false }: DelteMentorTyeps) => {
                  </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className='Overlay' />
-                <Dialog.Content className='Content'>
-                    {del &&
+                <Dialog.Content className='Content-delete'>
+                    {/* {del &&
                         <div className="container text-center position-sticky top">
                             <div className="row py-1 mx-auto mb-2 bg-white rounded shadow w-100">
                                 <span className="col-2">isIdle : </span>{" "}
@@ -228,10 +231,10 @@ const DeleteMentor = ({ id, del = false }: DelteMentorTyeps) => {
                                 <span className="col-2 bg-primary text-white border rounded-2">{deleteError ? "Yes" : "No Error"}</span>
                             </div>
                         </div>
-                    }
-                    <Dialog.Title className="Title">Edit profile</Dialog.Title>
+                    } */}
+                    <Dialog.Title className="Title">Delteting..</Dialog.Title>
                     <Dialog.Description className="Description">
-                        Make changes to your profile here. Deletet
+                        Are you sure to delete ,it can't be reversed.
                     </Dialog.Description>
                     <form
                         onSubmit={(event) => {
@@ -240,12 +243,7 @@ const DeleteMentor = ({ id, del = false }: DelteMentorTyeps) => {
                         }}
                     >
                         {/** some inputs */}
-                        <div
-                            style={{
-                                display: "flex",
-                                gap: 25,
-                                justifyContent: "flex-end",
-                            }}>
+                        <div className='d-flex justify-content-around gap-10 align-items-center'>
                             <Dialog.Close asChild>
                                 <button type="button" className="Button mauve" aria-label="Close">Close</button>
                             </Dialog.Close>

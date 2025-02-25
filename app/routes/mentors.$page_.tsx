@@ -9,7 +9,7 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
     // invariant(params.contactId, "Missing contactId param");
     console.log({ params })
-    const id =parseInt(params.page);
+    const id = parseInt(params.page);
     // const res = await getMentorDetails({ id });
     // console.log(res)
     // if (!res) {
@@ -19,13 +19,13 @@ export const loader = async ({
 };
 
 function MentorsPageList() {
-    const {id} = useLoaderData(); 
-      
-  return (
-    <div>
-     <Mentors  id={id}/>
-    </div>
-  )
+    const { id } = useLoaderData();
+
+    return (
+        <div>
+            <Mentors key={id}   id={id} />
+        </div>
+    )
 }
 
 export default MentorsPageList;
