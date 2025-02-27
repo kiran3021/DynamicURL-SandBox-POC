@@ -103,7 +103,7 @@ function Navbar({ id, isMobile }) {
           <nav>
             <ul className="d-flex flex-direction-row gap-4 mx-2">
               <li>
-                <NavLink to="/" className={({ isActive, isPending }) =>
+                <NavLink to="/home" className={({ isActive, isPending }) =>
                   isActive
                     ? "active-head"
                     : isPending
