@@ -1,0 +1,36 @@
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-input-box{
+    margin: 10px;
+    border: 3px solid black;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.textbox-container{
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.container-url{
+    background-color: lightblue;
+    padding: 20px;
+    text-align: center;
+}
+
+.external-input-box{
+    padding-top: 10px;
+}
+
+.newUrl-final{
+    padding-top: 3px;
+    background-color: rgba(49, 88, 37, 0.5);
+    
+}
