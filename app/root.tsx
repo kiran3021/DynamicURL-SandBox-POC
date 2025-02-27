@@ -17,7 +17,7 @@ import type { LinksFunction } from "@remix-run/node";
 import appStylesHref from "./app.css?url";
 import Navbar from "src/pages/Navbar";
 import Footer from "src/pages/Footer";
-
+import { Theme } from "@radix-ui/themes";
 // import styles from "~/styles/sales.css?url";
 // import styles from '~'
 
@@ -80,7 +80,7 @@ export default function App() {
           <Links />
         </head>
         <body>
-          {/* <Theme> */}
+          <Theme>
           <header aria-label="header" className="navbar-main">
             <a className="visually-hidden-focusable" href="#content">
               Skip to main content
@@ -97,7 +97,7 @@ export default function App() {
           </div>
           <ScrollRestoration />
           <Scripts />
-          {/* </Theme> */}
+          </Theme>
         </body>
       </html>
     </QueryClientProvider>
