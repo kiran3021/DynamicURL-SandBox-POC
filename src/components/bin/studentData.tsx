@@ -1,4 +1,4 @@
-const studentsData =[
+export const studentsData =[
     {
       "id": 1,
       "firstName": "Emily",
@@ -7,7 +7,8 @@ const studentsData =[
       "gender": "female",
       "email": "emily.johnson@example.com",
       "phone": "+81 965-431-3024",
-      "role": "mentor"
+      "mentorIdN": "student",
+      "mentorId": 1,
     },
     {
       "id": 2,
@@ -18,7 +19,7 @@ const studentsData =[
       "gender": "male",
       "email": "daniel.smith@example.com",
       "phone": "+1 202-555-0123",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 3,
@@ -29,7 +30,7 @@ const studentsData =[
       "gender": "female",
       "email": "sophia.miller@example.com",
       "phone": "+44 7720-123456",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 4,
@@ -40,7 +41,7 @@ const studentsData =[
       "gender": "male",
       "email": "james.anderson@example.com",
       "phone": "+49 152-4321-6789",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 5,
@@ -51,7 +52,7 @@ const studentsData =[
       "gender": "female",
       "email": "olivia.brown@example.com",
       "phone": "+91 98765-43210",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 6,
@@ -62,7 +63,7 @@ const studentsData =[
       "gender": "male",
       "email": "ethan.williams@example.com",
       "phone": "+33 6 12 34 56 78",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 7,
@@ -72,7 +73,7 @@ const studentsData =[
       "gender": "male",
       "email": "william.taylor@example.com",
       "phone": "+33 6 12 34 56 78",
-      "role": "mentor"
+      "mentorIdN": "student"
     },
     {
       "id": 8,
@@ -83,7 +84,7 @@ const studentsData =[
       "gender": "female",
       "email": "mia.davis@example.com",
       "phone": "+81 90-1234-5678",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 9,
@@ -94,7 +95,7 @@ const studentsData =[
       "gender": "male",
       "email": "noah.martinez@example.com",
       "phone": "+34 678 901 234",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 10,
@@ -105,7 +106,7 @@ const studentsData =[
       "gender": "female",
       "email": "ava.rodriguez@example.com",
       "phone": "+1 312-555-9876",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 11,
@@ -116,7 +117,7 @@ const studentsData =[
       "gender": "male",
       "email": "liam.garcia@example.com",
       "phone": "+55 11 99999-8888",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 12,
@@ -127,7 +128,7 @@ const studentsData =[
       "gender": "female",
       "email": "isabella.clark@example.com",
       "phone": "+7 921 123-45-67",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 13,
@@ -137,7 +138,7 @@ const studentsData =[
       "gender": "male",
       "email": "benjamin.harris@example.com",
       "phone": "+82 10-9876-5432",
-      "role": "mentor"
+      "mentorIdN": "student"
     },
     {
       "id": 14,
@@ -148,7 +149,7 @@ const studentsData =[
       "gender": "female",
       "email": "ella.thompson@example.com",
       "phone": "+39 320 654 7890",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 15,
@@ -159,7 +160,7 @@ const studentsData =[
       "gender": "male",
       "email": "jacob.king@example.com",
       "phone": "+1 917-555-3456",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 16,
@@ -170,7 +171,7 @@ const studentsData =[
       "gender": "female",
       "email": "amelia.scott@example.com",
       "phone": "+61 2 1234 5678",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 17,
@@ -181,7 +182,7 @@ const studentsData =[
       "gender": "male",
       "email": "michael.green@example.com",
       "phone": "+27 82 123 4567",
-      "role": "student"
+      "mentorIdN": "student"
     },
     {
       "id": 18,
@@ -191,5 +192,5 @@ const studentsData =[
       "age": 21,
       "gender": "female",
       "email": "charlotte.adams@example.com",
-      "phone": "+65   
+      "phone": "+65 "
     }]

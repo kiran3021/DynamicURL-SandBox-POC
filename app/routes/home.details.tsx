@@ -18,12 +18,22 @@ import { getMentorDetails, getStudentlist } from 'src/services/api/actionMentor'
 //     return { res, data };
 // };
 function Details() {
-    // const {res,data} = useLoaderData();
+  // const {res,data} = useLoaderData();
   return (
     <div>
-        Details
-        jjjjjjjjjjjjj
-        {/* {res.name} */}
+      <h1>i frame</h1>
+      <table>
+        <th>
+          <tr colspan="2">vieod1</tr>
+          <tr>vieod2</tr>
+          <tr>vieod3</tr>
+        </th>
+        <tbody>
+          <tr><iframe width="560" height="315" src="https://www.youtube.com/embed/I7LrS1z_WNA?si=CETYbEQCHdtCpvK5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></tr>
+          <tr></tr>
+          <tr></tr>
+        </tbody>
+      </table>
     </div>
   )
 }

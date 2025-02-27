@@ -14,6 +14,7 @@ import { Link, useNavigate } from "@remix-run/react";
 import EditRoute from "~/routes/mentors.edit";
 import DeleteMentor from "./DeleteMentor";
 import { useFetcher } from "@remix-run/react";
+import { studentsData } from "./bin/studentData";
 const loader = () => {
 
 }
@@ -39,117 +40,63 @@ function StudentList({ id }: MentorTyeps) {
   //   });
   //   return res;
   // }
-
-  const { status, isSuccess, data, error, isError, fetchStatus, isPending, isFetching, isFetchingNextPage, isFetchingPreviousPage, fetchNextPage, fetchPreviousPage, hasNextPage, hasPreviousPage } =
-    useInfiniteQuery({
-      queryKey: ["mentors"],
-      queryFn: async ({ pageParam }) => getMentor({ pageParam }),
-      initialPageParam: currentPage,
-      getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
-        if (firstPageParam <= 1) {
-          return undefined;
-        }
-        return firstPageParam - 1;
-      },
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
-        console.log({ lastPage });
-        console.log({ allPages });
-        console.log({ lastPageParam });
-        if (lastPage.nextId > lastPage.data.total) {
-          return undefined;
-        }
-        return lastPageParam + 1;
-      },
-      maxPages: 1,
-    });
-
-  // const { fetchStatus, status, isPending, isError, isSuccess, data, error,isFetching,isPlaceholderData  } = useMentors( 10,currentPage-1 *10,);
+  const isPending = false;
+  // const { status, isSuccess, data, error, isError, fetchStatus, isPending, isFetching, isFetchingNextPage, isFetchingPreviousPage, fetchNextPage, fetchPreviousPage, hasNextPage, hasPreviousPage } =
+  //   useInfiniteQuery({
+  //     queryKey: ["students"],
+  //     queryFn: async ({ pageParam }) => getMentor({ pageParam }),
+  //     initialPageParam: currentPage,
+  //     getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
+  //       if (firstPageParam <= 1) {
+  //         return undefined;
+  //       }
+  //       return firstPageParam - 1;
+  //     },
+  //     getNextPageParam: (lastPage, allPages, lastPageParam) => {
+  //       console.log({ lastPage });
+  //       console.log({ allPages });
+  //       console.log({ lastPageParam });
+  //       if (lastPage.nextId > lastPage.data.total) {
+  //         return undefined;
+  //       }
+  //       return lastPageParam + 1;
+  //     },
+  //     maxPages: 1,
+  //   });
   const [paginationData, setPaginationData] = useState<DataType[]>([]);
-  console.log(data);
-  //  console.log({currentPage})
-  useEffect(() => {
-    if (isPending) {
-      return;
-    }
-    // const res = data?.pages[0].data?.users.slice(
-    //   (currentPage - 1) * rowsPerPage,
-    //   currentPage * rowsPerPage
-    // );
-
-    setPaginationData(data?.pages[0].data?.users);
-    setCurrentPage(data?.pageParams);
-
-    // setPaginationData(res);
-  }, [currentPage, data, isSuccess]); // Correct dependency
-  console.log(data)
-  if (isError) {
-    return <span>Erro {error.message}</span>;
-  }
-
-  // const handleDelete = (id) => {
-
-  //   setSelectedMentorId(id);
-  //   setAlertOpen(true);
-  //   deleteMutate({ id })
-  // };
+  // console.log(data);
   // useEffect(() => {
-
-  //   if (deleteSuccess) {
-  //     setTimeout(() => {
-  //       deleteReset();
-  //       setAlertOpen(false);
-  //     }, 5000)
+  //   if (isPending) {
+  //     return;
   //   }
+  //   setPaginationData(data?.pages[0].data?.users);
+  //   setCurrentPage(data?.pageParams);
 
-  // }, [deleteSuccess]);
-  // const handlePageClick =(e) =>{
-  //   setCurrentPage(e.target.value);
-  //   navigate(`mentors/${e.target.value}`);
-
+  // }, [currentPage, data, isSuccess]); // Correct dependency
+  // console.log(data)
+  // if (isError) {
+  //   return <span>Erro {error.message}</span>;
   // }
 
-  // const { data, error, isLoading } = useQuery(
-  //   ['mentors', currentPage],
-  //   () => getMentor({ page: currentPage }),
-  //   {
-  //     keepPreviousData: true,
+  // const handleInputChange = (e) => {
+  //   setInputPage(e.target.value);
+  // };
+
+  // const handleGoToPage = async () => {
+  //   const pageNumber = parseInt(inputPage, 10);
+  //   const res = await getMentor({ pageParam: pageNumber });
+
+  //   if (!isNaN(pageNumber) && pageNumber > 0) {
+  //     navigate(`/mentors/${pageNumber}`);
+  //     setCurrentPage(pageNumber);
+  //   } else {
+  //     alert("Please enter a valid page number.");
   //   }
-  // )
-  const handleInputChange = (e) => {
-    setInputPage(e.target.value);
-  };
-
-  const handleGoToPage = async () => {
-    const pageNumber = parseInt(inputPage, 10);
-    const res = await getMentor({ pageParam: pageNumber });
-
-    if (!isNaN(pageNumber) && pageNumber > 0) {
-      navigate(`/mentors/${pageNumber}`);
-      setCurrentPage(pageNumber);
-      // queryClient.setQueryData(['mentors'], (old) => ({
-      //   ...old,
-      //   pages: old?.pages?.map((page) => ({
-      //     ...page,
-      //     data: {
-      //       ...page.data,
-      //       users: res,
-      //     },
-      //   })),
-      // }));
-      // Fetch data for the specified page here
-    } else {
-      alert("Please enter a valid page number.");
-    }
-  };
-  // useEffect(() =>{
-  //   console.log("refreshed id")
-
-  // },[id])
+  // };
 
   return (
     <div className="mentors">
-      {/*
-      <a className="visually-hidden-focusable" href="#content">
+      {/* <a className="visually-hidden-focusable" href="#content">
         Skip to main content
       </a> */}
       {/* <div className="container text-center position-sticky top">
@@ -166,40 +113,61 @@ function StudentList({ id }: MentorTyeps) {
       {isPending ? (
         <div className="text-center">
           <div className="d-flex g-5 mt-5 mx-auto p-2 align-content-center justify-content-center">
-
-            {/* <div className="spinner-border" style={{ "width": "2rem", "height": "2rem" }} role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div> */}
             <strong role="status" className="">Loading...</strong>
-            {/* 
-              <div className="spinner-border" style={{ "width": "2rem", "height": "2rem" }} role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div> */}
           </div>
         </div>
       ) : (
         <>
           <div className="container py-5">
-
             <div className="row">
               <div className="col-lg-10 col-md-12 mx-auto bg-white rounded shadow">
                 {/* <div className="table-responsive-sm table-responsive-md table-responsive-lg table-responsive"> */}
                 <div className="table-responsive table-responsive-lg table-responsive-md table-responsive-sm">
-                  <div className="add-button">
-
+                  {/* <div className="add-button">
                     <Link to={'/mentors/create'} className="Button violet caption-top">
-                      {/* Add Mentor */}
-                      <span>Add Mentor</span>
+                      <span>Student List..</span>
                     </Link>
-                  </div>
-                
+                  </div> */}
+                  <table className="table table-fixed table-hover caption-top align-middle">
+                    <caption>List of Students</caption>
+                    <thead className="table-head">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" className="col-md-2">Name</th>
+                        <th scope="col">Projects</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Attendence(%)</th>
+                        <th scope="col">MentorId</th>
+                      </tr>
+                    </thead>
+                    <tbody className="table-group-divider">
+                      {studentsData.map((ele, index: number) => (
+                        <tr key={ele.id}>
+                          <th scope="row">{ele.id}</th>
+                          <td className="col-3 col-md-2">
+                            <span className=""> {ele.firstName} {ele.lastName} Name</span>
+                          </td>
+                          <td> {ele.age}</td>
+                          <td> {ele.email}</td>
+                          <td> {ele.phone}</td>
+                          <td>{ele.gender}</td>
+                          <td>
+                            <Link to={`/mentors/${ele.mentorId}/details`} className="link-details">
+                              {ele.mentorId}
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
           <div className="page container d-flex flex-lg-row flex-md-column flex-sm-column gap-md-2 gap-sm-2 justify-content-center align-items-center mb-2">
 
-            <div className="page-wrap row d-flex justify-content-center align-items-center">
+            {/* <div className="page-wrap row d-flex justify-content-center align-items-center">
               <div className="col-auto">
                 <nav className="page" aria-label="page-navigation">
                   <ul className="pagination justify-content-center">
@@ -219,13 +187,6 @@ function StudentList({ id }: MentorTyeps) {
                             : "Nothing more to load"}
                       </button>
                     </li>
-                    {/* {hasPreviousPage && (
-                      <li className="page-item">
-                        <button type="button" className="page-link">
-                          {data.pageParams - 1}
-                        </button>
-                      </li>
-                    )} */}
                     <li className="page-item">
                       <button
                         type="button"
@@ -235,13 +196,6 @@ function StudentList({ id }: MentorTyeps) {
                         {data.pageParams}
                       </button>
                     </li>
-                    {/* {hasNextPage && (
-                      <li className="page-item">
-                        <button type="button" className="page-link">
-                          {parseInt(data.pageParams) + 1}
-                        </button>
-                      </li>
-                    )} */}
                     <li className="page-item">
                       <button
                         type="button"
@@ -260,9 +214,8 @@ function StudentList({ id }: MentorTyeps) {
                   </ul>
                 </nav>
               </div>
-            </div>
-            <div className="page-wrap row d-flex justify-content-center align-items-center">
-              {/* <div className=""> */}
+            </div> */}
+            {/* <div className="page-wrap row d-flex justify-content-center align-items-center">
               <div className="col-4">
                 <input
                   id="search-page"
@@ -276,7 +229,6 @@ function StudentList({ id }: MentorTyeps) {
                 />
               </div>
               <div className="col-5">
-
                 <button
                   type="submit"
                   className="Button mauve px-2"
@@ -285,30 +237,15 @@ function StudentList({ id }: MentorTyeps) {
                   Go To Page
                 </button>
               </div>
-              {/* </div> */}
-            </div>
-            {/* </div> */}
-            {/* </div> */}
+            </div> */}
           </div>
-          {/* <fetcher.Form action={`/mentors/${inputPage}`}> */}
-          {/* </fetcher.Form> */}
-          {/* </div> */}
-          <div className="justify-content-center">
+          {/* <div className="justify-content-center">
             <span>{isFetching && !isFetchingNextPage ? "Background Updating..." : null}</span>
-          </div>
-          {/* {data && (
-            <Pagination
-              // dataLength={data?.total}
-              rowsPerPage={rowsPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              alwaysShown={false}
-            />
-          )} */}
+          </div> */}
         </>
       )}
     </div>
   );
 }
 
-export default Mentors
+export default StudentList;

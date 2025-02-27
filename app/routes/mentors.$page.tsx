@@ -23,7 +23,7 @@ function MentorsPageList() {
 
     return (
         <div>
-            <Mentors key={id}   id={id} />
+            <Mentors key={id} id={id} />
         </div>
     )
 }

@@ -10,21 +10,20 @@ function Navbar({ id, isMobile }) {
       {isMobile ? (
         <>
           <div className="d-flex align-items-center g-2">
-            <header tabIndex={0}>Academy</header>
-
+            <h2 > Academy </h2>
           </div>
-          <NavLink to="/">
-            {/* <Avatar
+          {/* <NavLink to="/">
+              <Avatar
               size="4"
               src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
               fallback="A"
               radius="full"
               alt="profile image of user"
               aria-label="image"
-            /> */}
-          </NavLink>
-          <div className="d-flex justify-content-center align-items-center">
-            {/* <DropdownMenu.Root>
+            />
+            </NavLink> */}
+          {/* <div className="d-flex justify-content-center align-items-center"> */}
+          {/* <DropdownMenu.Root>
               <DropdownMenu.Trigger>
                 <Button variant="solid" color="indigo">
                   <span>Menu</span>
@@ -56,86 +55,88 @@ function Navbar({ id, isMobile }) {
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root> */}
-          </div>
-          <ul className="d-flex flex-sm-row  flex-md-row gap-2 mx-1">
-            <li>
-              <NavLink to="/"  className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+          {/* </div> */}
+          <nav>
+            <ul className="d-flex flex-sm-row  flex-md-row gap-2 mx-1">
+              <li>
+                <NavLink to="/" className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/students"  className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+                }>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/students/1" className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Students
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={`/mentors/${id}`}  className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+                }>
+                  Students
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={`/mentors/${id}`} className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Mentors
-              </NavLink>
-            </li>
-          </ul>
+                }>
+                  Mentors
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
         </>
 
       ) : (
         <>
           <div className="d-flex align-items-center g-2">
-            <header tabIndex={0}>Academy</header>
-
+            <h1 tabIndex={0} aria-label="Academy instistute"> Academy</h1>
           </div>
-
-          <ul className="d-flex flex-direction-row gap-4 mx-2">
-            <li>
-              <NavLink to="/" className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+          <nav>
+            <ul className="d-flex flex-direction-row gap-4 mx-2">
+              <li>
+                <NavLink to="/" className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/students" className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+                }>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/students/1" className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Students
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={`/mentors/${id}`} className={({ isActive, isPending }) =>
-                    isActive
-                      ? "active-head"
-                      : isPending
+                }>
+                  Students
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={`/mentors/${id}`} className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active-head"
+                    : isPending
                       ? "pending"
                       : ""
-                  }>
-                Mentors
-              </NavLink>
-            </li>
-          </ul>
+                }>
+                  Mentors
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
           {/* <NavLink to="/">
             <Avatar
               size="4"

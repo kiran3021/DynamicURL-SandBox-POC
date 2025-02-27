@@ -27,14 +27,14 @@ export const getStudentlist = async ({ id }) => {
   console.log({ id });
   try {
 
-    const {data} = await axios.get(
+    const { data } = await axios.get(
       `https://dummyjson.com/users/${id}/carts`
       // `https://dummyjson.com/users?limit=0`
     );
     // const nextId = data ? data?.users[data?.users.length - 1].id + 1 : null;
     // const previousId = data ? data?.users[0].id - 1 : null;
     console.log(data)
-    const result = data? data?.carts?.[0]?.products  : []
+    const result = data ? data?.carts?.[0]?.products : []
 
     return result;
   } catch (error) {
@@ -42,6 +42,27 @@ export const getStudentlist = async ({ id }) => {
 
   }
 
+
+}
+
+export const getAllStudents = async ({ pageParam }) => {
+  console.log({ id });
+  try {
+
+    const { data } = await axios.get(
+      `https://dummyjson.com/users/${id}/carts`
+      // `https://dummyjson.com/users?limit=0`
+    );
+    // const nextId = data ? data?.users[data?.users.length - 1].id + 1 : null;
+    // const previousId = data ? data?.users[0].id - 1 : null;
+    console.log(data)
+    const result = data ? data?.carts?.[0]?.products : []
+
+    return result;
+  } catch (error) {
+    console.log(error);
+
+  }
 
 }
 export const getMentorDetails = async ({ id }) => {

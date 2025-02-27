@@ -118,11 +118,11 @@ function Mentors({ id }: MentorTyeps) {
   const handleInputChange = (e) => {
     setInputPage(e.target.value);
   };
-
+  console.log({ inputPage })
   const handleGoToPage = async () => {
     const pageNumber = parseInt(inputPage, 10);
     const res = await getMentor({ pageParam: pageNumber });
-
+    console.log(pageNumber)
     if (!isNaN(pageNumber) && pageNumber > 0) {
       navigate(`/mentors/${pageNumber}`);
       setCurrentPage(pageNumber);
@@ -147,7 +147,7 @@ function Mentors({ id }: MentorTyeps) {
   // },[id])
 
   return (
-    <div className="mentors">
+    <div className="mentors" id="content">
       {/*
       <a className="visually-hidden-focusable" href="#content">
         Skip to main content
@@ -166,15 +166,7 @@ function Mentors({ id }: MentorTyeps) {
       {isPending ? (
         <div className="text-center">
           <div className="d-flex g-5 mt-5 mx-auto p-2 align-content-center justify-content-center">
-
-            {/* <div className="spinner-border" style={{ "width": "2rem", "height": "2rem" }} role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div> */}
-            <strong role="status" className="">Loading...</strong>
-            {/* 
-              <div className="spinner-border" style={{ "width": "2rem", "height": "2rem" }} role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div> */}
+            <strong role="status" aria-live="polite" className="">Loading...</strong>
           </div>
         </div>
       ) : (
@@ -186,13 +178,12 @@ function Mentors({ id }: MentorTyeps) {
                 {/* <div className="table-responsive-sm table-responsive-md table-responsive-lg table-responsive"> */}
                 <div className="table-responsive table-responsive-lg table-responsive-md table-responsive-sm">
                   <div className="add-button">
-
-                    <Link to={'/mentors/create'} className="Button violet caption-top">
+                    <Link to={'/mentors/create'} className="Button gray caption-top" aria-label="create mentor">
                       {/* Add Mentor */}
                       <span>Add Mentor</span>
                     </Link>
                   </div>
-                  <table className="table table-fixed table-hover caption-top align-middle">
+                  <table className="table table-fixed table-hover caption-top align-middle" aria-live="assertive">
                     <caption>List of Mentors</caption>
                     <thead className="table-head">
                       <tr>
@@ -210,17 +201,14 @@ function Mentors({ id }: MentorTyeps) {
                         <th scope="col">Delete</th>
                       </tr>
                     </thead>
-
                     <tbody className="table-group-divider">
                       {paginationData.map((ele: DataType, index: number) => (
                         <tr key={ele.id}>
                           <th scope="row">{ele.id}</th>
                           <td>
                             <Link to={`/mentors/${ele.id}/details`}>
-                              <span className="link-details"> {ele.firstName} {ele.lastName}</span>
-
+                              <span className="link-details" aria-label="see the profile section"> {ele.firstName} {ele.lastName}</span>
                             </Link>
-
                           </td>
                           <td> {ele.address.city}</td>
                           <td> {ele.address.country}</td>
@@ -342,32 +330,36 @@ function Mentors({ id }: MentorTyeps) {
                 </nav>
               </div>
             </div>
-            <div className="page-wrap row d-flex justify-content-center align-items-center">
-              {/* <div className=""> */}
-              <div className="col-4">
-                <input
-                  id="search-page"
-                  type="text"
-                  value={inputPage}
-                  onChange={handleInputChange}
-                  onBlur={handleGoToPage}
-                  className="form-control me-2 p-1"
-                  placeholder="Page #"
-                  aria-label="Page number"
-                />
-              </div>
-              <div className="col-5">
+            <form role="search"  >
+              <div className="page-wrap row d-flex justify-content-center align-items-center">
+                {/* <div className=""> */}
+                {/* <form  role="search" aria-label="search by page"> */}
+                <div className="col-4">
+                  <label htmlFor="search-page" aria-label="search" hidden></label>
+                  <input
+                    id="search-page"
+                    aria-label="Search Page Number"
+                    type="search"
+                    value={inputPage}
+                    onChange={handleInputChange}
+                    onBlur={handleGoToPage}
+                    className="form-control me-2 p-1"
+                    placeholder="Page #"
+                  />
+                </div>
+                <div className="col-5">
 
-                <button
-                  type="submit"
-                  className="Button mauve px-2"
-                  onClick={handleGoToPage}
-                >
-                  Go To Page
-                </button>
+                  <button
+                    type="button"
+                    className="Button gray px-2"
+                    onClick={handleGoToPage}
+                  >
+                    Go To Page
+                  </button>
+                </div>
+                {/* </div> */}
               </div>
-              {/* </div> */}
-            </div>
+            </form>
             {/* </div> */}
             {/* </div> */}
           </div>

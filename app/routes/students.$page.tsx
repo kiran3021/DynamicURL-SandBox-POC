@@ -2,7 +2,7 @@ import React from 'react'
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import Mentors from 'src/components/Mentors';
+import StudentList from 'src/components/StuentsList';
 
 export const loader = async ({
     params,
@@ -18,14 +18,14 @@ export const loader = async ({
     return json({ id });
 };
 
-function MentorsPageList() {
+function StudentListRoute() {
     const { id } = useLoaderData();
+    // const  id  = 4;
 
     return (
         <div>
-            <Mentors key={id}   id={id} />
+            <StudentList id={id} />
         </div>
     )
 }
-
-export default MentorsPageList;
+export default StudentListRoute;

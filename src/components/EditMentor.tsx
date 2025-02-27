@@ -69,8 +69,8 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
       console.log({ err });
       console.log(context);
       if (context?.prevousMentors) {
-      queryClient.setQueryData(['mentors'], context?.prevousMentors)
-      }else {
+        queryClient.setQueryData(['mentors'], context?.prevousMentors)
+      } else {
         console.log(err);
       }
 
@@ -137,21 +137,52 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
   console.log(formData)
   useEffect(() => {
     if (isSuccess) {
-      // setTimeout(() => {
-      // }, 6000);
-      reset(); setFormData(res); setOpen(false);
+      setTimeout(() => {
+        reset(); setFormData(res); setOpen(false);
+      }, 5000);
     }
   }, [isSuccess])
 
 
   return (
     <Dialog.Root open={open} onOpenChange={(state) => setOpen(state)}>
+      {/* <div
+        aria-live="assertive"
+        className="visually-hidden"
+      >
+        {open ? 'Edit dialog Opened' : 'Edit dialog Closed'}
+      </div> */}
       <Dialog.Trigger asChild>
-        <button type="button" className="Button violet">{name}</button>
+        {/* <div className="visually-hidden-focusable" aria-label="assertive">
+          {open ? <span> dailogue opened</span> : <span> dailogue closed</span>}
+         </div> */}
+        <button type="button" className="Button gray"
+          aria-expanded={open}
+          aria-controls="edit-content"
+        // aria-label={`${open ? 'Opened' : 'Closed'} "popup-`} 
+        >{name}
+        </button>
+
       </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="edit-overlay" />
-        <Dialog.Content className="edit-content">
+
+      <Dialog.Portal >
+        <Dialog.Overlay className="edit-overlay" id="edit-content" />
+        <Dialog.Content className="edit-content"
+        // aria-labelledby="dialog-title"
+        // aria-describedby="dialog-description"
+        >
+          <div
+            aria-live="assertive"
+            className="visually-hidden"
+          >
+            {/* {open ? 'Edit dialog Opened' : 'Edit dialog Closed'} */}
+            {isSuccess ? "Updated Success" : ""}
+          </div>
+          {/* <div className="coantainer visually-hidden-focusable" aria-label="status"  aria-live="assertive" aria-atomic="true" >
+            {isSuccess && <span> profile data updated </span>}
+            {isPending && <span> profile data Pending</span>}
+            {isError && <span>error in updating </span>}
+          </div> */}
           {/* {
             edit &&
             <div className="container text-center position-sticky top">
@@ -178,8 +209,8 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
               </div>
             </div>
           } */}
-          <Dialog.Title className="edit-title">Edit profile</Dialog.Title>
-          <Dialog.Description className="edit-description">
+          <Dialog.Title className="edit-title" id="dialog-title">Edit profile</Dialog.Title>
+          <Dialog.Description className="edit-description" id="dialog-description">
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
 
@@ -199,13 +230,13 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
             <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="city" className="form-label">City</label>
               <input type="text" className="form-control" id="city" name="address.city" value={formData.address.city} onChange={handleChange} required />
-              <div className="invalid-feedback">Please provide a valid city.</div>
+              <div className="invalid-feedback" aria-live="assertive">Please provide a valid city.</div>
             </div>
 
             <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="country" className="form-label">Country</label>
               <input type="text" className="form-control" id="country" name="address.country" value={formData.address.country} onChange={handleChange} required />
-              <div className="invalid-feedback">Please provide a valid country.</div>
+              <div className="invalid-feedback" aria-live="assertive">Please provide a valid country.</div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="department" className="form-label">Department</label>
@@ -215,6 +246,7 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 className="form-select col-md-4 "
                 value={formData.company.department}
                 onChange={handleChange}
+
                 required
               >
                 {/* <div className="w-50"> */}
@@ -232,7 +264,7 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 {/* </div> */}
 
               </select>
-              <div className="invalid-feedback">Please select a valid department.</div>
+              <div className="invalid-feedback" aria-live="assertive">Please select a valid department.</div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-8">
               <label htmlFor="role" className="form-label">Role</label>
@@ -245,7 +277,7 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 onChange={handleChange}
                 required
               />
-              <div className="invalid-feedback">Please enter a role.</div>
+              <div className="invalid-feedback" aria-live="assertive">Please enter a role.</div>
             </div>
 
             <div className="mx-lg-auto col-lg-4 col-md-6 col-sm-8 justify-content-center">
@@ -260,19 +292,21 @@ const EditMentor = ({ name, data = {}, edit = false, currentPage }: EditMentorPr
                 pattern="[\d+\-\ ]{10,}"
                 required
               />
-              <div className="invalid-feedback">Phone number must be 10 digits.</div>
+              <div className="invalid-feedback" aria-live="assertive">Phone number must be 10 digits.</div>
             </div>
             <div className="row gy-1">
               <div className="col-4"></div>
               <div className="col-4 text-center">
                 {isPending ? (
-                  <button className="btn btn-primary" type="button" disabled>Loading...</button>
+                  <button className="Button gray" type="button" disabled>Loading...</button>
                 ) :
                   // <button className="btn btn-primary" type="submit">Submit</button>
                   isSuccess ? (
-                    <span className="btn btn-success justify-content-center">Updated</span>
+                    <span className="Button green justify-content-center" aria-live="assertive"
+                    //  aria-live="assertive"
+                    > Updated</span>
                   ) : (
-                    <button className="btn btn-primary text-center" type="submit">Submit</button>
+                    <button className="Button green text-center" type="submit">Submit</button>
                   )
                 }
               </div>

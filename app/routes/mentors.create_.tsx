@@ -168,39 +168,48 @@ function CreateMentor({ openCreate = false, name, data = {}, edit = false, curre
     <div>
       {/* <Link to={''}><span className=''>Back</span></Link> */}
 
-      <div className="edit-content-create py-1 mx-lg-auto mb-2 bg-gray rounded shadow mt-xs-10">
+      <div className="edit-content-create py-2 mx-lg-auto mb-2 bg-gray rounded shadow mt-xs-10" id='content'>
         <div className="d-flex justify-content-between align-items-center py-2">
 
-          <div className="edit-title">Create Profile</div>
-          <button className='Button violet' onClick={() => navigate(-1)}>Go Back</button>
+          <h2 className="edit-title">Create Profile</h2>
+          <button type='button' role='link' aria-label='Going to previous tab' className='back Button gray' onClick={() => navigate(-1)}>Go Back</button>
         </div>
+        <div
+          aria-live="assertive"
+          className="visually-hidden"
+        >
+          {!isSuccess && <div className="invalid-feedback" aria-live="assertive">Please enter a first name.</div>
+          }
 
-        <div className="edit-description">
-          Make changes to your profile here. Click save when you're done.
+          {/* {open ? 'Edit dialog Opened' : 'Edit dialog Closed'} */}
+          {/* {isSuccess ? "Updated Success" : ""} */}
+        </div>
+        <div className="edit-description" aria-label='description'>
+          <p>Make changes to your profile here. Click save when you're done.</p>
         </div>
         <form className={`row g-3  needs-validation ${validated ? "was-validated" : ""}`} noValidate onSubmit={handleSubmit}>
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="firstName" className="form-label">First name</label>
             <input type="text" className="form-control" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
-            <div className="invalid-feedback">Please enter a first name.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please enter a first name.</div>
           </div>
 
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="lastName" className="form-label">Last name</label>
             <input type="text" className="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
-            <div className="invalid-feedback">Please enter a last name.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please enter a last name.</div>
           </div>
 
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="city" className="form-label">City</label>
             <input type="text" className="form-control" id="city" name="address.city" value={formData.address.city} onChange={handleChange} required />
-            <div className="invalid-feedback">Please provide a valid city.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please provide a valid city.</div>
           </div>
 
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="country" className="form-label">Country</label>
             <input type="text" className="form-control" id="country" name="address.country" value={formData.address.country} onChange={handleChange} required />
-            <div className="invalid-feedback">Please provide a valid country.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please provide a valid country.</div>
           </div>
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="department" className="form-label">Department</label>
@@ -227,7 +236,7 @@ function CreateMentor({ openCreate = false, name, data = {}, edit = false, curre
               {/* </div> */}
 
             </select>
-            <div className="invalid-feedback">Please select a valid department.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please select a valid department.</div>
           </div>
           <div className="col-lg-4 col-md-6 col-sm-8">
             <label htmlFor="role" className="form-label">Role</label>
@@ -240,7 +249,7 @@ function CreateMentor({ openCreate = false, name, data = {}, edit = false, curre
               onChange={handleChange}
               required
             />
-            <div className="invalid-feedback">Please enter a role.</div>
+            <div className="invalid-feedback" aria-live="assertive">Please enter a role.</div>
           </div>
 
           <div className="mx-lg-auto col-lg-4 col-md-6 col-sm-8 justify-content-center">
@@ -255,19 +264,19 @@ function CreateMentor({ openCreate = false, name, data = {}, edit = false, curre
               pattern="[\d+\-\ ]{10,}"
               required
             />
-            <div className="invalid-feedback">Phone number must be 10 digits.</div>
+            <div className="invalid-feedback" aria-live="assertive">Phone number must be 10 digits.</div>
           </div>
-          <div className="row gy-1">
+          <div className="row gy-2">
             <div className="col-4"></div>
             <div className="col-4 text-center">
               {isPending ? (
-                <button className="btn btn-primary" type="button" disabled>Loading...</button>
+                <span aria-label='status' role='status' className="btn btn-primary" >Loading...</span>
               ) :
                 // <button className="btn btn-primary" type="submit">Submit</button>
                 isSuccess ? (
-                  <span className="btn btn-success justify-content-center">Created</span>
+                  <span aria-live='assertive' role='status' className="btn btn-success justify-content-center">Created</span>
                 ) : (
-                  <button className="Button violet text-center" type="submit">Submit</button>
+                  <button className="Button green text-center" type="submit">Submit</button>
                 )
               }
             </div>
