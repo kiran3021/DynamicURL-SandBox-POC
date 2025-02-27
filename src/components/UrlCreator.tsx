@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import "./UrlCreator.scss";
 import { Flex, TextField, Text } from '@radix-ui/themes';
+import SelectDemo from './SelectDemo';
 
 function UrlCreator({ onUrlChangeHandler }) {
 
   const [textBoxes, setTextBoxes] = useState([""]);
   const [renderPage, setRenderPage] = useState(false)
   const [reset, setReset] = useState("")
-  const [reqType,setReqType] = useState("GET");
-  const [env,setEnv] = useState("DEV");
+  const [reqType, setReqType] = useState(" ");
+  const [env, setEnv] = useState("");
   const [newUrl, setNewUrl] = useState("http://sampleurl/sampleparam1/sampleparam2");
   const [show, setShow] = useState(false)
   const addTextBox = () => {
@@ -21,6 +22,11 @@ function UrlCreator({ onUrlChangeHandler }) {
     setNewUrl(updatedTextBoxes.join("/"));
   };
 
+  // useEffect(()=>{
+  //   if(newUrl == ""){
+  //     setRenderPage
+  //   }
+  // })
   const handleChange = (index, value: String) => {
     const updatedTextBoxes = [...textBoxes];
     updatedTextBoxes[index] = value;
@@ -30,9 +36,15 @@ function UrlCreator({ onUrlChangeHandler }) {
   };
   const onSubmitUrl = () => {
     console.log(newUrl);
-    setNewUrl(newUrl);
+    const updatedTextBoxes = textBoxes;
+    if (env !== "") {
+      updatedTextBoxes[0] = `${textBoxes[0]}/${env}`
+    }
+    setNewUrl(updatedTextBoxes.join("/"));
     onUrlChangeHandler(newUrl);
+    setRenderPage(true);
   }
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setShow(false);
@@ -48,7 +60,7 @@ function UrlCreator({ onUrlChangeHandler }) {
               type="text"
               value={text}
               onChange={(e) => handleChange(index, e.target.value)}
-              className="form-control"
+              className="form-control col-6"
               placeholder={index === 0 ? "Base Url" : `Text Box ${index}`}
             />
             <button
@@ -62,10 +74,15 @@ function UrlCreator({ onUrlChangeHandler }) {
           </div>
         ))}
       </div>
-      <SelectDemo  handleChangeForSelectDemo = {(e)=>{setReqType(e)}} selectLabel={"Request Type"} selectItemList={["POST","GET","PUT","DELETE","UPDATE"]}/>
-      <SelectDemo handleChangeForSelectDemo = {setEnv} selectLabel={"Environment"} selectItemList={["DEV","QA","UAT","PROD"]}/>
-      <span className='box p-2 bg-grey text-center mb-2'>Or</span>
-      <Flex direction="column" gap="3" maxWidth="20rem" justify="center">
+      <div className="d-flex gap-5 justify-content-center align-items-center">
+        <span>Operation :</span>
+        <SelectDemo handleChangeForSelectDemo={(e) => { setReqType(e); }} selectLabel={"Request Type"} selectItemList={["POST", "GET", "PUT", "DELETE", "UPDATE"]} />
+        <span>Environment</span>
+        <SelectDemo handleChangeForSelectDemo={(e) => setEnv(e)} selectLabel={"Environment"} selectItemList={["DEV", "QA", "UAT", "PROD"]} />
+      </div>
+
+      <span className='container text-center my-2'>Or</span>
+      {/* <Flex direction="column" className="text-center"  gap="3" maxWidth="20rem" justify="center" align="center">
         <TextField.Root
           color="indigo"
           variant="surface"
@@ -73,7 +90,18 @@ function UrlCreator({ onUrlChangeHandler }) {
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
         />
-      </Flex>
+      </Flex> */}
+      <div className="d-flex my-1 w-50 justify-content-center align-items-center mx-auto">
+        <label htmlFor="paste" ><span >Paste URL:</span> </label>
+        <input
+          id='paste'
+          type="text"
+          value={newUrl}
+          onChange={(e) => setNewUrl(e.target.value)}
+          className="form-control"
+          placeholder="Paste the URL"
+        />
+      </div>
       <div className="d-flex justify-content-center gap-3 align-items-center my-2">
         <button
           onClick={addTextBox}
@@ -98,15 +126,18 @@ function UrlCreator({ onUrlChangeHandler }) {
           Url : {newUrl}  </div>
       </div>
       <div className="wrapper-iframe d-flex flex-column justify-content-center my-4">
-        <iframe
-          className='container mx-0 iframe bg-gray shadow my-3'
-          src={newUrl}
-          title="iframe Example"
-          allow='geolocation'
-          allowFullScreen
-          loading='lazy'
-        >
-        </iframe>
+        {
+          renderPage &&
+          <iframe
+            className='container mx-0 iframe bg-gray shadow my-3 border border-black'
+            src={newUrl}
+            title="iframe Example"
+            allow='geolocation'
+            allowFullScreen
+            loading='lazy'
+          >
+          </iframe>
+        }
       </div>
     </div>
   );
