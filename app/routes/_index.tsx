@@ -13,7 +13,7 @@ function HomeIndex() {
   return (
     <div>
       <UrlCreator onUrlChangeHandler={onUrlChangeHandler} />
-      <span>URL: {url}</span>
+      {/* <span>URL: {url}</span> */}
       {/* <Iframe url={url}/> */}
 
     </div>

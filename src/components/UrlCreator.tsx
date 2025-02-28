@@ -69,14 +69,16 @@ function UrlCreator({ onUrlChangeHandler }) {
   }
 
   return (
-    <div className="container">
-      <Button variant="primary" onClick={handleShow}>
-        Open Offcanvas
-      </Button>
+    <div className="container-fluid">
+
+    
 
       <Offcanvas show={showoff} onHide={handleClose} placement="top">
         <Offcanvas.Body>
-          <h1>URL : {newUrl}</h1>
+
+          <div className="container-fluid border-black text-wrap text-truncate">
+            <h3>URL: {newUrl}</h3>
+          </div>
           <div className="d-flex justify-content-start gap-3 align-items-center my-2 ">
             <div className="col-7">
               <div className="input-group">
@@ -90,7 +92,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   className="form-control"
                   id="URL"
                   placeholder="Paste Your URL"
-                  onChange={(e) => { setNewUrl(e.target.value)}
+                  onChange={(e) => { setNewUrl(e.target.value) }
                   }
                 />
               </div>
@@ -106,7 +108,7 @@ function UrlCreator({ onUrlChangeHandler }) {
               Reset
             </button>
           </div>
-          <span style={{paddingLeft:"30%",fontWeight:"bold"}}>OR</span>
+          <span style={{ paddingLeft: "30%", fontWeight: "bold" }}>OR</span>
           <form className="row justify-content-start row-cols-6 g-2 align-items-center">
             <div className="col-3">
               <div className="input-group">
@@ -286,14 +288,18 @@ function UrlCreator({ onUrlChangeHandler }) {
 
         </Offcanvas.Body>
       </Offcanvas>
-
-      <div className="card p-0 my-1">
+      <div className="d-flex gap-3 justify-content-center align-items-center">
+      <button className="Button gray text-center" onClick={handleShow}>
+        Open URL
+      </button>
+      <div className="card p-0 my-1 justify-content-center">
         <div className="card-body">Generated URL: {newUrl}</div>
       </div>
-
+     
+      </div>
       <div className="wrapper-iframe d-flex flex-column justify-content-center my-4">
         <iframe
-          className="container mx-0 iframe bg-gray shadow my-3 border border-black"
+          className="container-fluid mx-0 iframe bg-gray shadow my-1 border border-black"
           src={newUrl}
           title="iframe Example"
           allow="geolocation"
