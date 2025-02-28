@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./UrlCreator.scss";
-import { Offcanvas, Button } from "react-bootstrap";
+import { Offcanvas, Button, Accordion } from "react-bootstrap";
 
 const optionsData = {
   baseurl: "",
@@ -56,6 +56,8 @@ function UrlCreator({ onUrlChangeHandler }) {
 
     setNewUrl(url);
     onUrlChangeHandler(url);
+    // setTimeout(()) 
+    handleClose();
   };
 
   const removeQueryParam = (index) => {
@@ -73,10 +75,38 @@ function UrlCreator({ onUrlChangeHandler }) {
       </Button>
 
       <Offcanvas show={showoff} onHide={handleClose} placement="top">
-        <Offcanvas.Header closeButton>
-          {/* <Offcanvas.Title>Select Route</Offcanvas.Title> */}
-        </Offcanvas.Header>
         <Offcanvas.Body>
+          <h1>URL : {newUrl}</h1>
+          <div className="d-flex justify-content-start gap-3 align-items-center my-2 ">
+            <div className="col-7">
+              <div className="input-group">
+                <label className="input-group-text" htmlFor="UriInput">
+                  Paste url
+                </label>
+                <input
+                  value={newUrl}
+                  name="Uri"
+                  type="text"
+                  className="form-control"
+                  id="URL"
+                  placeholder="Paste Your URL"
+                  onChange={(e) => { setNewUrl(e.target.value)}
+                  }
+                />
+              </div>
+            </div>
+            <button type="button" className="Button green" onClick={constructUrl}>
+              Submit
+            </button>
+            <button
+              type="button"
+              className="Button red"
+              onClick={() => { setNewUrl(""); setTextBoxes(optionsData) }}
+            >
+              Reset
+            </button>
+          </div>
+          <span style={{paddingLeft:"30%",fontWeight:"bold"}}>OR</span>
           <form className="row justify-content-start row-cols-6 g-2 align-items-center">
             <div className="col-3">
               <div className="input-group">
@@ -106,6 +136,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   className="form-select"
                   id="envSelect"
                   onChange={handleChange}
+                  defaultValue={""}
                 >
                   <option value="">Choose...</option>
                   <option value="DEV">DEV</option>
@@ -130,57 +161,114 @@ function UrlCreator({ onUrlChangeHandler }) {
                 />
               </div>
             </div>
+            {/* <div className="col-6 mt-2">
+            <Accordion defaultActiveKey="0" style={{"height" : "15rem"}}>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Accordion Item #1</Accordion.Header>
+                <Accordion.Body>
+                    <h6>Query Parameters:</h6>
+                    {textBoxes.queryparam.map((param, index) => (
+                      <div key={index} className="d-flex gap-2 mb-2">
+                        <div className="col-auto">
+                          <div className="input-group">
+                            <label className="input-group-text" htmlFor="UriInput">
+                              QP{index + 1}
+                            </label>
 
-            <div className="col-auto mt-3">
+                            <input
+                              type="text"
+                              placeholder="Key"
+                              value={param.key}
+                              onChange={(e) =>
+                                handleQueryParamChange(index, "key", e.target.value)
+                              }
+                              className="form-control "
+                            />
+                            <input
+                              type="text"
+                              placeholder="Value"
+                              value={param.value}
+                              onChange={(e) =>
+                                handleQueryParamChange(index, "value", e.target.value)
+                              }
+                              className="form-control"
+                            />
+                            <button
+                              onClick={() => removeQueryParam(index)}
+                              className="Button gray py-1.5"
+                              aria-label="Close"
+                            >
+                              
+                              <span className='btn-close'></span>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="Button gray"
+                      onClick={addQueryParam}
+                    >
+                      + Add Param
+                    </button>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+                  </div> */}
+
+
+            <div className="col-6 mt-2">
               <h6>Query Parameters:</h6>
               {textBoxes.queryparam.map((param, index) => (
                 <div key={index} className="d-flex gap-2 mb-2">
                   <div className="col-auto">
-                  <div className="input-group">
-                <label className="input-group-text" htmlFor="UriInput">
-                  QP{index+1}
-                </label>
+                    <div className="input-group">
+                      <label className="input-group-text" htmlFor="UriInput">
+                        QP{index + 1}
+                      </label>
 
-                  <input
-                    type="text"
-                    placeholder="Key"
-                    value={param.key}
-                    onChange={(e) =>
-                      handleQueryParamChange(index, "key", e.target.value)
-                    }
-                    className="form-control"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Value"
-                    value={param.value}
-                    onChange={(e) =>
-                      handleQueryParamChange(index, "value", e.target.value)
-                    }
-                    className="form-control"
-                  />
+                      <input
+                        type="text"
+                        placeholder="Key"
+                        value={param.key}
+                        onChange={(e) =>
+                          handleQueryParamChange(index, "key", e.target.value)
+                        }
+                        className="form-control "
+                      />
+                      <input
+                        type="text"
+                        placeholder="Value"
+                        value={param.value}
+                        onChange={(e) =>
+                          handleQueryParamChange(index, "value", e.target.value)
+                        }
+                        className="form-control"
+                      />
+
+                    </div>
+                  </div>
                   <button
                     onClick={() => removeQueryParam(index)}
-                    className="Button gray py-1.5"
+                    className="Button gray px-1 py-1.3"
                     aria-label="Close"
                   >
-                    {/* <CLose></CLose> */}
-                    {/* close */}
                     <span className='btn-close'></span>
                   </button>
-                  </div>
-                  </div>
 
                 </div>
               ))}
-               <button
-              type="button"
-              className="Button gray"
-              onClick={addQueryParam}
-            >
-              + Add Param
-            </button>
+              <button
+                type="button"
+                className="Button gray"
+                onClick={addQueryParam}
+              >
+                + Add Param
+              </button>
             </div>
+
 
             {/* <div className="d-flex justify-content-center gap-3 align-items-center my-2">
               <button type="button" className="btn btn-success" onClick={constructUrl}>
@@ -195,34 +283,7 @@ function UrlCreator({ onUrlChangeHandler }) {
               </button>
             </div> */}
           </form>
-          <div className="d-flex justify-content-center gap-3 align-items-center my-2">
-            <div className="col-7">
-            <div className="input-group">
-              <label className="input-group-text" htmlFor="UriInput">
-                Paste url
-              </label>
-              <input
-                name="Uri"
-                type="text"
-                className="form-control"
-                id="URL"
-                placeholder="Paste Your URL"
-                onChange={handleChange}
-              />
-            </div>
-            </div>
-           
-            <button type="button" className="Button green" onClick={constructUrl}>
-              Submit
-            </button>
-            <button
-              type="button"
-              className="Button red"
-              onClick={() => setNewUrl("")}
-            >
-              Reset
-            </button>
-          </div>
+
         </Offcanvas.Body>
       </Offcanvas>
 
