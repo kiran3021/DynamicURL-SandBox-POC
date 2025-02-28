@@ -4,12 +4,11 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "@radix-ui/themes/styles.css";
-// import { Theme } from "@radix-ui/themes";
 import "./style.scss";
 import "../src/pages/_Main.scss";
 import "../src/Styles/_Common.scss";
-
 import { Form, Link, Links, NavLink, Meta, Scripts, Outlet, useLoaderData, ScrollRestoration, useNavigation, ClientLoaderFunctionArgs, useSubmit } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 // existing imports
@@ -47,6 +46,10 @@ export default function App() {
   const navigation = useNavigation();
   const { id  } = useLoaderData();
   const [isMobile, setIsMobile] = useState("");
+  // useEffect(() => {
+  //   // Dynamically import Bootstrap's JavaScript on the client side
+  //   import("bootstrap/dist/js/bootstrap.bundle.min.js");
+  // }, []);
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -81,19 +84,19 @@ export default function App() {
         </head>
         <body>
           <Theme>
-          <header aria-label="header" className="navbar-main">
+          {/* <header aria-label="header" className="navbar-main">
             <a className="visually-hidden-focusable" href="#content">
               Skip to main content
             </a>
             <Navbar id={id} isMobile={isMobile} />
-          </header>
+          </header> */}
           <div className="wrapper" aria-label="body">
             <main className={navigation.state === "loading" ? "loading" : ""}>
               <Outlet />
             </main>
-            <footer className="mainfooter" role="contentinfo">
+            {/* <footer className="mainfooter" role="contentinfo">
               <Footer />
-            </footer>
+            </footer> */}
           </div>
           <ScrollRestoration />
           <Scripts />

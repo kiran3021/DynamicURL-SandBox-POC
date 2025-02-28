@@ -8,6 +8,7 @@ button {
 }
 
 .SelectTrigger {
+	width: 10rem;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -19,13 +20,14 @@ button {
 	gap: 5px;
 	background-color: white;
 	color: var(--violet-11);
-	box-shadow: 0 2px 10px var(--black-a7);
+	border:0.2rem solid rgb(136, 131, 131);
+	// box-shadow: 0 2px 10px var(--black-a7);
 }
 .SelectTrigger:hover {
 	background-color: var(--mauve-3);
 }
 .SelectTrigger:focus {
-	box-shadow: 0 0 0 2px black;
+	// box-shadow: 0 0 0 2px black;
 }
 .SelectTrigger[data-placeholder] {
 	color: var(--violet-9);
@@ -36,12 +38,17 @@ button {
 }
 
 .SelectContent {
-	overflow: hidden;
+	padding: 0 15px;
+
+	width: 10rem;
+	z-index: 1200;
+	overflow: auto;
 	background-color: white;
 	border-radius: 6px;
-	box-shadow:
-		0px 10px 38px -10px rgba(22, 23, 24, 0.35),
-		0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+	border:0.2rem solid black;
+	// box-shadow:
+	// 	0px 10px 38px -10px rgba(22, 23, 24, 0.35),
+	// 	0px 10px 20px -15px rgba(22, 23, 24, 0.2);
 }
 
 .SelectViewport {
