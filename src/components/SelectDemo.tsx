@@ -24,7 +24,7 @@ const SelectDemo = ({ handleChangeForSelectDemo, selectLabel, selectItemList }) 
 	}
 
 	return (
-		<Select.Root  onValueChange={e => handleValueChange(e)}>
+		<Select.Root onValueChange={e => handleValueChange(e)}>
 			<Select.Trigger className="SelectTrigger" aria-label="Food">
 				<Select.Value placeholder={selectLabel} />
 				<Select.Icon className="SelectIcon">

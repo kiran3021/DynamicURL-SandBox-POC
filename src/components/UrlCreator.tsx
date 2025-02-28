@@ -1,165 +1,244 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import "./UrlCreator.scss";
-import { Flex, TextField, Text } from '@radix-ui/themes';
-import SelectDemo from './SelectDemo';
-// import { Button, } from '@radix-ui/themes';
-import { Offcanvas, Button } from 'react-bootstrap'
-import {DropdownMenu} from '@radix-ui/themes'
+import { Offcanvas, Button } from "react-bootstrap";
+
+const optionsData = {
+  baseurl: "",
+  environment: "",
+  Uri: "",
+  queryparam: [{ key: "", value: "" }]
+};
+
 function UrlCreator({ onUrlChangeHandler }) {
-
-  const [textBoxes, setTextBoxes] = useState([""]);
-  const [renderPage, setRenderPage] = useState(false)
-  const [reset, setReset] = useState("")
-  const [reqType, setReqType] = useState(" ");
-  const [env, setEnv] = useState("");
-  const [newUrl, setNewUrl] = useState("http://sampleurl/sampleparam1/sampleparam2");
-  const [show, setShow] = useState(false)
-
+  const [textBoxes, setTextBoxes] = useState(optionsData);
+  const [newUrl, setNewUrl] = useState("");
   const [showoff, setShowoff] = useState(false);
 
   const handleClose = () => setShowoff(false);
   const handleShow = () => setShowoff(true);
-  const addTextBox = () => {
-    setTextBoxes([...textBoxes, ""]);
-  };
-  const removeTextBox = (index) => {
-    if (index == 0) return;
-    const updatedTextBoxes = textBoxes.filter((_, i) => i !== index);
-    setTextBoxes(updatedTextBoxes);
-    setNewUrl(updatedTextBoxes.join("/"));
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTextBoxes((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  // useEffect(()=>{
-  //   if(newUrl == ""){
-  //     setRenderPage
-  //   }
-  // })
-  const handleChange = (index, value: String) => {
-    const updatedTextBoxes = [...textBoxes];
-    updatedTextBoxes[index] = value;
-    setTextBoxes(updatedTextBoxes);
-    setNewUrl(updatedTextBoxes.join("/"));
-    // console.log(newUrl);
+  const handleQueryParamChange = (index, field, value) => {
+    setTextBoxes((prev) => {
+      const updatedParams = [...prev.queryparam];
+      updatedParams[index][field] = value;
+      return { ...prev, queryparam: updatedParams };
+    });
   };
-  const onSubmitUrl = () => {
-    console.log(newUrl);
-    const updatedTextBoxes = textBoxes;
-    if (env !== "") {
-      updatedTextBoxes[0] = `${textBoxes[0]}/${env}`
+
+  const addQueryParam = () => {
+    setTextBoxes((prev) => ({
+      ...prev,
+      queryparam: [...prev.queryparam, { key: "", value: "" }]
+    }));
+  };
+
+  // Function to construct URL dynamically
+  const constructUrl = () => {
+    const { baseurl, environment, Uri, queryparam } = textBoxes;
+    let url = `${baseurl}/${environment}/${Uri}`;
+
+    const queryString = queryparam
+      .filter((param) => param.key && param.value)
+      .map((param) => `${param.key}=${param.value}`)
+      .join("&");
+
+    if (queryString) {
+      url += `?${queryString}`;
     }
-    setNewUrl(updatedTextBoxes.join("/"));
-    onUrlChangeHandler(newUrl);
-    // setRenderPage(true);
+
+    setNewUrl(url);
+    onUrlChangeHandler(url);
+  };
+
+  const removeQueryParam = (index) => {
+    setTextBoxes((prev) => ({
+      ...prev,
+      queryparam: prev.queryparam.filter((_, ind) => ind !== index)
+    }))
+
   }
-  console.log({newUrl})
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setShow(false);
-    }
-  }, []);
 
   return (
-    <div className='container'>
-
+    <div className="container">
       <Button variant="primary" onClick={handleShow}>
         Open Offcanvas
       </Button>
-      {/* <div className="offcanvas off-canvas">  */}
 
-        <Offcanvas   backdropClassName='offcanvas'  show={showoff} onHide={handleClose} placement='top' name='top'  scroll={false} aria-labelledby="off canvas ">
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title className='justifu-content-center'>Select Route</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body >
+      <Offcanvas show={showoff} onHide={handleClose} placement="top">
+        <Offcanvas.Header closeButton>
+          {/* <Offcanvas.Title>Select Route</Offcanvas.Title> */}
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <form className="row justify-content-start row-cols-6 g-2 align-items-center">
+            <div className="col-3">
+              <div className="input-group">
+                <label className="input-group-text" htmlFor="baseUrlSelect">
+                  Domain
+                </label>
+                <select
+                  name="baseurl"
+                  className="form-select"
+                  id="baseUrlSelect"
+                  onChange={handleChange}
+                >
+                  <option value="">Select Domain</option>
+                  <option value="http://www.ix.com">http://www.ix.com</option>
+                  <option value="https://example.com">https://example.com</option>
+                </select>
+              </div>
+            </div>
 
-            <div className="container justify-content-center container-input-box bg-grey shadow p-4">
-              {textBoxes.map((text, index) => (
-                <div key={index} className="d-flex gap-2 justify-content-center align-items-center">
+            <div className="col-2">
+              <div className="input-group">
+                <label className="input-group-text" htmlFor="envSelect">
+                  Env
+                </label>
+                <select
+                  name="environment"
+                  className="form-select"
+                  id="envSelect"
+                  onChange={handleChange}
+                >
+                  <option value="">Choose...</option>
+                  <option value="DEV">DEV</option>
+                  <option value="PROD">PROD</option>
+                  <option value="QA">QA</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="col-3">
+              <div className="input-group">
+                <label className="input-group-text" htmlFor="UriInput">
+                  URI
+                </label>
+                <input
+                  name="Uri"
+                  type="text"
+                  className="form-control"
+                  id="UriInput"
+                  placeholder="URI Parameters"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="col-auto mt-3">
+              <h6>Query Parameters:</h6>
+              {textBoxes.queryparam.map((param, index) => (
+                <div key={index} className="d-flex gap-2 mb-2">
+                  <div className="col-auto">
+                  <div className="input-group">
+                <label className="input-group-text" htmlFor="UriInput">
+                  QP{index+1}
+                </label>
+
                   <input
                     type="text"
-                    value={text}
-                    onChange={(e) => handleChange(index, e.target.value)}
+                    placeholder="Key"
+                    value={param.key}
+                    onChange={(e) =>
+                      handleQueryParamChange(index, "key", e.target.value)
+                    }
                     className="form-control"
-                    placeholder={index === 0 ? "Base Url" : `Text Box ${index}`}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Value"
+                    value={param.value}
+                    onChange={(e) =>
+                      handleQueryParamChange(index, "value", e.target.value)
+                    }
+                    className="form-control"
                   />
                   <button
-                    onClick={() => removeTextBox(index)}
-                    className="Button gray px-1"
+                    onClick={() => removeQueryParam(index)}
+                    className="Button gray py-1.5"
                     aria-label="Close"
                   >
+                    {/* <CLose></CLose> */}
+                    {/* close */}
                     <span className='btn-close'></span>
                   </button>
+                  </div>
+                  </div>
+
                 </div>
               ))}
+               <button
+              type="button"
+              className="Button gray"
+              onClick={addQueryParam}
+            >
+              + Add Param
+            </button>
             </div>
 
-            <div className="d-flex gap-5 justify-content-center align-items-center">
-              <span>Operation :</span>
-              <SelectDemo handleChangeForSelectDemo={(e) => { setReqType(e); }} selectLabel={"Request Type"} selectItemList={["POST", "GET", "PUT", "DELETE", "UPDATE"]} />
-              <span>Environment</span>
-              <SelectDemo handleChangeForSelectDemo={(e) => setEnv(e)} selectLabel={"Environment"} selectItemList={["DEV", "QA", "UAT", "PROD"]} />
-            </div>
-
-            <span className='container text-center my-2'>Or</span>
-            {/* <Flex direction="column" className="text-center"  gap="3" maxWidth="20rem" justify="center" align="center">
-        <TextField.Root
-          color="indigo"
-          variant="surface"
-          placeholder="Paste Url"
-          value={newUrl}
-          onChange={(e) => setNewUrl(e.target.value)}
-        />
-      </Flex> */}
-            <div className="d-flex my-1 w-50 justify-content-center align-items-center mx-auto">
-              <label htmlFor="paste" ><span >Paste URL:</span> </label>
-              <input
-                id='paste'
-                type="text"
-                value={newUrl}
-                onChange={(e) => setNewUrl(e.target.value)}
-                className="form-control"
-                placeholder="Paste the URL"
-              />
-            </div>
-            <div className="d-flex justify-content-center gap-3 align-items-center my-2">
-              <button
-                onClick={addTextBox}
-                className="Button gray"
-              >
-                Add Text Box
+            {/* <div className="d-flex justify-content-center gap-3 align-items-center my-2">
+              <button type="button" className="btn btn-success" onClick={constructUrl}>
+                Submit
               </button>
               <button
-                onClick={onSubmitUrl}
-                className='Button green'
+                type="button"
+                className="btn btn-danger"
+                onClick={() => setNewUrl("")}
               >
-                submit
-              </button>
-
-              <button type='button' className='Button gray' onClick={() => setNewUrl("")}>
                 Reset
               </button>
+            </div> */}
+          </form>
+          <div className="d-flex justify-content-center gap-3 align-items-center my-2">
+            <div className="col-7">
+            <div className="input-group">
+              <label className="input-group-text" htmlFor="UriInput">
+                Paste url
+              </label>
+              <input
+                name="Uri"
+                type="text"
+                className="form-control"
+                id="URL"
+                placeholder="Paste Your URL"
+                onChange={handleChange}
+              />
             </div>
-          </Offcanvas.Body>
-        </Offcanvas>
-      {/* </div> */}
-
+            </div>
+           
+            <button type="button" className="Button green" onClick={constructUrl}>
+              Submit
+            </button>
+            <button
+              type="button"
+              className="Button red"
+              onClick={() => setNewUrl("")}
+            >
+              Reset
+            </button>
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
 
       <div className="card p-0 my-1">
-        <div className="card-body">
-          Url : {newUrl}  </div>
+        <div className="card-body">Generated URL: {newUrl}</div>
       </div>
+
       <div className="wrapper-iframe d-flex flex-column justify-content-center my-4">
-      
-          <iframe
-            className='container mx-0 iframe bg-gray shadow my-3 border border-black'
-            src={newUrl}
-            title="iframe Example"
-            allow='geolocation'
-            allowFullScreen
-            loading='lazy'
-          >
-          </iframe>
-        
+        <iframe
+          className="container mx-0 iframe bg-gray shadow my-3 border border-black"
+          src={newUrl}
+          title="iframe Example"
+          allow="geolocation"
+          allowFullScreen
+          loading="lazy"
+        ></iframe>
       </div>
     </div>
   );
