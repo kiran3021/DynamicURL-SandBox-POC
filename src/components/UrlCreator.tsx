@@ -10,13 +10,19 @@ const optionsData = {
 };
 
 function UrlCreator({ onUrlChangeHandler }) {
-  const [textBoxes, setTextBoxes] = useState(optionsData);
+  const [textBoxes, setTextBoxes] = useState({
+    baseurl: "",
+    environment: "",
+    Uri: "",
+    queryparam: [{ key: "", value: "" }]
+  });
   const [newUrl, setNewUrl] = useState("");
   const [showoff, setShowoff] = useState(false);
 
   const handleClose = () => setShowoff(false);
   const handleShow = () => setShowoff(true);
 
+  //hello
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTextBoxes((prev) => ({
@@ -29,6 +35,19 @@ function UrlCreator({ onUrlChangeHandler }) {
     setTextBoxes((prev) => {
       const updatedParams = [...prev.queryparam];
       updatedParams[index][field] = value;
+
+      const { baseurl, environment, Uri, queryparam } = textBoxes;
+      let url = `${baseurl}/${environment}/${Uri}`;
+      const queryString = updatedParams
+        .filter((param) => param.key && param.value)
+        .map((param) => `${param.key}=${param.value}`)
+        .join("&");
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
+      setNewUrl(url);
+
       return { ...prev, queryparam: updatedParams };
     });
   };
@@ -68,10 +87,45 @@ function UrlCreator({ onUrlChangeHandler }) {
 
   }
 
+  const handleChangeDomain = (e) => {
+    let newVal = e.target.value;
+    let finalUrl = newVal + "/" + textBoxes.environment + "/" + textBoxes.Uri;
+    setTextBoxes(prevState => ({
+      ...prevState,
+      baseurl: newVal
+    }));
+    console.log(textBoxes);
+    setNewUrl(finalUrl);
+  }
+
+  const handleChangeEnv = (e) => {
+    let newVal = e.target.value;
+    let finalUrl = textBoxes.baseurl + "/" + newVal + "/" + textBoxes.Uri;
+    setTextBoxes(prevState => ({
+      ...prevState,
+      environment: newVal
+    }));
+    console.log(textBoxes);
+    setNewUrl(finalUrl);
+  }
+
+  const handleChangeUri = (e) => {
+    let newVal = e.target.value;
+    let finalUrl = textBoxes.baseurl + "/" + textBoxes.environment + "/" + newVal;
+    setTextBoxes(prevState => ({
+      ...prevState,
+      Uri: newVal
+    }));
+    console.log(textBoxes);
+    setNewUrl(finalUrl);
+  }
+
+
+
   return (
     <div className="container">
-      <Button variant="primary" onClick={handleShow}>
-        Open Offcanvas
+      <Button variant="primary" onMouseOver={handleShow}>
+        ⏬
       </Button>
 
       <Offcanvas show={showoff} onHide={handleClose} placement="top">
@@ -90,7 +144,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   className="form-control"
                   id="URL"
                   placeholder="Paste Your URL"
-                  onChange={(e) => { setNewUrl(e.target.value)}
+                  onChange={(e) => { setNewUrl(e.target.value) }
                   }
                 />
               </div>
@@ -106,7 +160,7 @@ function UrlCreator({ onUrlChangeHandler }) {
               Reset
             </button>
           </div>
-          <span style={{paddingLeft:"30%",fontWeight:"bold"}}>OR</span>
+          <span style={{ paddingLeft: "30%", fontWeight: "bold" }}>OR</span>
           <form className="row justify-content-start row-cols-6 g-2 align-items-center">
             <div className="col-3">
               <div className="input-group">
@@ -117,7 +171,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   name="baseurl"
                   className="form-select"
                   id="baseUrlSelect"
-                  onChange={handleChange}
+                  onChange={handleChangeDomain}
                 >
                   <option value="">Select Domain</option>
                   <option value="http://www.ix.com">http://www.ix.com</option>
@@ -135,7 +189,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   name="environment"
                   className="form-select"
                   id="envSelect"
-                  onChange={handleChange}
+                  onChange={handleChangeEnv}
                   defaultValue={""}
                 >
                   <option value="">Choose...</option>
@@ -157,7 +211,7 @@ function UrlCreator({ onUrlChangeHandler }) {
                   className="form-control"
                   id="UriInput"
                   placeholder="URI Parameters"
-                  onChange={handleChange}
+                  onChange={handleChangeUri}
                 />
               </div>
             </div>
