@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+
+import React, { useState, useMemo, useEffect } from "react";
 import "./UrlCreator.scss";
-import { Offcanvas, Button, Accordion } from "react-bootstrap";
+import { Offcanvas, Button } from "react-bootstrap";
 import { DataURI } from "./json";
 import { produce } from "immer";
 
@@ -8,83 +9,94 @@ const optionsData = {
   baseurl: "",
   environment: "",
   uri: "",
-  queryparam: [{ key: "", value: "" }]
+  queryparam: [{ key: "", value: "" }],
+  token: ""
 };
 
 function UrlCreator({ onUrlChangeHandler }) {
-  const [selectedURI, setSelectedURI] = useState([])
+  const [selectedURI, setSelectedURI] = useState(["", "", ""]);
   const [textBoxes, setTextBoxes] = useState({
     baseurl: "",
     environment: "",
     uri: "",
-    queryparam: [{ key: "", value: "" }]
+    queryparam: [{ key: "", value: "" }],
+    token: ""
   });
   const [newUrl, setNewUrl] = useState("");
+  const [pastedUrl, setPastedUrl] = useState("")
   const [showoff, setShowoff] = useState(false);
+  const [render, setRender] = useState(false);
+
 
   const handleClose = () => setShowoff(false);
   const handleShow = () => setShowoff(true);
 
-  //hello
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTextBoxes((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    updateURL(name, value, "", "addBaseEnv");
+    setTextBoxes(
+      produce((draft) => {
+        draft[name] = value;
+      })
+    );
   };
 
+  // const finalUrl = useMemo(()=>{
 
 
+  // },[])
+
+  // Handle changes in query parameters
   const handleQueryParamChange = (index, field, value) => {
-    setTextBoxes((prev) => {
-      const updatedParams = [...prev.queryparam];
-      updatedParams[index][field] = value;
-      const { baseurl, environment, uri, queryparam } = textBoxes;
-      let url = `${baseurl}/${environment}/${uri}`;
-      const queryString = updatedParams
-        .filter((param) => param.key && param.value)
-        .map((param) => `${param.key}=${param.value}`)
-        .join("&");
-      if (queryString) {
-        url += `?${queryString}`;
-      }
-      setNewUrl(url);
-      return { ...prev, queryparam: updatedParams };
-    });
+    setTextBoxes(
+      produce((draft) => {
+        draft.queryparam[index][field] = value;
+      })
+    );
+    updateURL(field, value, index, "addQuery");
   };
-  // const handleQueryParamChange = (index, field, value) => {
-  //   const updatedParams = [textBoxes.queryparam];
-  //   console.log({updatedParams})
-  //   updatedParams[index][field] = value;
-  //   // if (updatedParams.length == index + 1) addQueryParam();
-  //   console.log(updatedParams.length, " ", index);
-  //   const { baseurl, environment, uri, queryparam } = textBoxes;
-  //   let url = `${baseurl}/${environment}/${uri}`;
-  //   const queryString = updatedParams
-  //     .filter((param) => param.key && param.value)
-  //     .map((param) => `${param.key}=${param.value}`)
-  //     .join("&");
-  //   if (queryString) {
-  //     url += `?${queryString}`;
-  //   }
-  //   setNewUrl(url);
-  //   setTextBoxes((prev) => {
-  //     return { ...prev, queryparam: updatedParams };
-  //   });
 
-  // };
-
+  // add query parameter
   const addQueryParam = () => {
-    setTextBoxes((prev) => ({
-      ...prev,
-      queryparam: [...prev.queryparam, { key: "", value: "" }]
-    }));
+    setTextBoxes(
+      produce((draft) => {
+        draft.queryparam.push({ key: "", value: "" });
+      })
+    );
   };
 
-  // Function to construct URL dynamically
-  const constructUrl = () => {
-    const { baseurl, environment, uri, queryparam } = textBoxes;
+  // remove queryparam
+  const removeQueryParam = (e, index) => {
+    e.preventDefault();
+    setTextBoxes(
+      produce((draft) => {
+        draft.queryparam = draft.queryparam.filter((_, i) => i !== index);
+      })
+    );
+    updateURL("", "", index, "removeQuery");
+    // setShowoff(true);
+  };
+
+
+  const updateurlfun = produce((draft, name, value, index, action) => {
+
+    if (action == "addBaseEnv") {
+      draft[name] = value;
+    } else if (action == "addQuery") {
+      draft.queryparam[index][name] = value;
+    } else if (action == "removeQuery") {
+      draft.queryparam = draft.queryparam.filter((_, i) => i !== index);
+    }
+    setShowoff(true);
+
+  })
+  const updateURL = (name = "", value = "", index = "", action = "") => {
+    // const { baseurl, environment, uri, queryparam } = textBoxes;
+    // if(name !== "" && value !== ""){
+    // }
+    const { baseurl, environment, uri, queryparam } = updateurlfun(textBoxes, name, value, index, action)
+    console.log(updateurlfun(textBoxes, name, value, index, action));
     let url = `${baseurl}/${environment}/${uri}`;
 
     const queryString = queryparam
@@ -98,163 +110,114 @@ function UrlCreator({ onUrlChangeHandler }) {
 
     setNewUrl(url);
     onUrlChangeHandler(url);
-    // setTimeout(()) 
-    handleClose();
+
+  }
+
+  const handleSubmit = () => {
+    // updateURL()
+    setRender(true);
+    handleClose()
   };
+  useEffect(() => {
+    if (showoff) {
+      setRender(false)
+    }
+    if (!showoff) {
+      setRender(true)
+    }
 
-  const removeQueryParam = (index) => {
-    setTextBoxes((prev) => ({
-      ...prev,
-      queryparam: prev.queryparam.filter((_, ind) => ind !== index)
-    }))
+  }, [showoff])
 
-  }
+  // chnaging the params..
+  const handleChangeURIParams = (index, e) => {
+    const { value } = e.target;
 
-  const handleChangeDomain = (e) => {
-    let newVal = e.target.value;
-    let finalUrl = newVal + "/" + textBoxes.environment + "/" + textBoxes.uri;
-    setTextBoxes(prevState => ({
-      ...prevState,
-      baseurl: newVal
-    }));
-    console.log(textBoxes);
-    setNewUrl(finalUrl);
-  }
+    setSelectedURI(
+      produce((draft) => {
+        if (index >= draft.length) {
+          draft.push(...Array(index - draft.length + 1).fill(""));
+        }
+        draft[index] = value;
+      })
+    );
 
-  const handleChangeEnv = (e) => {
-    let newVal = e.target.value;
-    let finalUrl = textBoxes.baseurl + "/" + newVal + "/" + textBoxes.uri;
-    setTextBoxes(prevState => ({
-      ...prevState,
-      environment: newVal
-    }));
-    console.log(textBoxes);
-    setNewUrl(finalUrl);
-  }
-
-  const handleChangeUri = (e) => {
-    let newVal = e.target.value;
-
-    let finalUrl = textBoxes.baseurl + "/" + textBoxes.environment + "/" + newVal;
-    setTextBoxes(prevState => ({
-      ...prevState,
-      Uri: newVal
-    }));
-    console.log(textBoxes);
-    setNewUrl(finalUrl);
-  }
-
-  const URIOptions = useMemo(() => {
-    const s = Object.entries(DataURI).map(([key, value]) => {
-      return key;
-    })
-    return s
-
-  }, [DataURI]);
-
-  const handleChangeall = (index, e) => {
-    console.log({ index })
-
-    const { name, value } = e;
     const newURI = [...selectedURI];
     newURI[index] = value;
-    let finalUrl = textBoxes.baseurl + "/" + textBoxes.environment + "/" + newURI.join("/");
-    console.log(finalUrl)
-    setTextBoxes(produce((draft) => {
-      draft.uri = newURI.join('/');
+    const finalUrl = `${textBoxes.baseurl}/${textBoxes.environment}/${newURI.join("/")}`;
 
-    }))
+    setTextBoxes(
+      produce((draft) => {
+        draft.uri = newURI.join("/");
+      })
+    );
+
     setNewUrl(finalUrl);
-    setSelectedURI(produce((draft) => {
-      if (index >= draft.length) {
-        draft.push(...Array(index - draft.length + 1).fill(""))
-      }
-      draft[index] = value;
-    }))
-    console.log(finalUrl)
+  };
+
+
+  const handleReset = () => {
+    setNewUrl("");
+    setTextBoxes(optionsData);
+    setSelectedURI(["", "", ""]);
+    setPastedUrl("")
+
   }
-  // const handleChangeall = (index, e) => {
-  //   const { value } = e.target; // Extract value from the event
 
-  //   // Update selectedURI immutably
-  //   setSelectedURI((prevSelectedURI) =>
-  //     produce(prevSelectedURI, (draft) => {
-  //       // Ensure the array has enough length
-  //       if (index >= draft.length) {
-  //         // Add empty strings for missing indices
-  //         draft.push(...Array(index - draft.length + 1).fill(''));
-  //       }
-  //       draft[index] = value; // Update the specific index
-  //     })
-  //   );
+  // Generate URI options dynamically
+  const URIOptions = useMemo(() => {
+    return Object.keys(DataURI);
+  }, [DataURI]);
 
-  //   // Calculate the new URI string
-  //   const newURI = [...selectedURI]; // Create a copy of selectedURI
-  //   if (index >= newURI.length) {
-  //     // Add empty strings for missing indices
-  //     newURI.push(...Array(index - newURI.length + 1).fill(''));
-  //   }
-  //   newURI[index] = value; // Update the specific index
-  //   const finalUrl = `${textBoxes.baseurl}/${textBoxes.environment}/${newURI.join('/')}`;
-
-  //   // Update textBoxes state
-  //   setTextBoxes((prevTextBoxes) =>
-  //     produce(prevTextBoxes, (draft) => {
-  //       draft.uri = newURI.join('/'); // Update the uri field
-  //     })
-  //   );
-
-  //   // Update newUrl state
-  //   setNewUrl(finalUrl);
-  // };
-
-
-  console.log({ newUrl })
-  console.log({ textBoxes })
-  console.log({ selectedURI })
-
-
+  // Render the component
   return (
     <div className="container-fluid">
-
-
-      <Offcanvas show={showoff} onHide={handleClose} placement="top">
+      <Offcanvas show={showoff} onHide={handleClose} placement="top" bac>
         <Offcanvas.Body>
-
-          <div className="container-fluid border-black text-wrap text-truncate">
-            <h4>URL: {newUrl}</h4>
+          <div className="container-fluid p-1 mb-2 border border-black bg-body-tertiary text-wrap heading">
+            <h4 className="mb-0">URL: {newUrl}</h4>
           </div>
-          <div className="d-flex justify-content-start gap-3 align-items-center my-2 ">
+          <div className="d-flex justify-content-start gap-2 align-items-center my-1">
             <div className="col-7">
               <div className="input-group">
                 <label className="input-group-text" htmlFor="UriInput">
-                  Paste url
+                  Paste URL
                 </label>
                 <input
-                  value={newUrl}
-                  name="Uri"
+                  value={pastedUrl}
+                  name="pastedUrl"
                   type="text"
                   className="form-control"
                   id="URL"
                   placeholder="Paste Your URL"
-                  onChange={(e) => { setNewUrl(e.target.value) }
-                  }
+                  onChange={(e) => { setPastedUrl(e.target.value); setNewUrl(e.target.value) }}
                 />
               </div>
             </div>
-            <button type="button" className="Button green" onClick={constructUrl}>
-              Submit
+            <button type="button" className="Button green" onClick={handleSubmit}>
+              SUBMIT
             </button>
             <button
               type="button"
               className="Button red"
-              onClick={() => { setNewUrl(""); setTextBoxes(optionsData) }}
+              onClick={() => {
+                handleReset()
+              }}
             >
-              Reset
+              RESET
+            </button>
+            <button
+              type="button"
+              className="Button gray"
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              CLOSE
             </button>
           </div>
-          <span style={{ paddingLeft: "30%", fontWeight: "bold" }}>OR</span>
-          <form className="row justify-content-start row-cols-6 g-2 align-items-center">
+          <h6 className=" my-1 text-center mx-10"><strong>OR</strong></h6>
+          <form >
+            <div className="row justify-content-start row-cols-5 gx-2 align-items-center">
             <div className="col-3">
               <div className="input-group">
                 <label className="input-group-text" htmlFor="baseUrlSelect">
@@ -264,9 +227,10 @@ function UrlCreator({ onUrlChangeHandler }) {
                   name="baseurl"
                   className="form-select"
                   id="baseUrlSelect"
-                  onChange={handleChangeDomain}
+                  value={textBoxes.baseurl}
+                  onChange={handleChange}
                 >
-                  <option value="">Select Domain</option>
+                  <option value="">Select</option>
                   <option value="http://www.ix.com">http://www.ix.com</option>
                   <option value="https://example.com">https://example.com</option>
                 </select>
@@ -282,12 +246,10 @@ function UrlCreator({ onUrlChangeHandler }) {
                   name="environment"
                   className="form-select"
                   id="envSelect"
-                  onChange={handleChangeEnv}
-                  defaultValue={""}
+                  value={textBoxes.environment}
+                  onChange={handleChange}
                 >
-                  <option value="">Environment</option>
-
-                  <option value="">Choose...</option>
+                  <option value="">Select</option>
                   <option value="DEV">DEV</option>
                   <option value="PROD">PROD</option>
                   <option value="QA">QA</option>
@@ -295,242 +257,188 @@ function UrlCreator({ onUrlChangeHandler }) {
               </div>
             </div>
 
-            <div className="col-2">
+            <div className="col-3">
               <div className="input-group">
-                <label className="input-group-text" htmlFor="envSelect">
-                  URIOptions
+                <label className="input-group-text" htmlFor="uriSelect">
+                  URI Options
                 </label>
                 <select
-                  name="environment"
+                  name="uri"
                   className="form-select"
-                  id="envSelect"
-                  onChange={(e) => {
-                    handleChangeall(0, e);
-                  }}
-                  defaultValue={""}
+                  id="uriSelect"
+                  value={selectedURI?.[0] || ""}
+                  defaultValue={"URI Options"}
+                  onChange={(e) => handleChangeURIParams(0, e)}
                 >
-                  <option value="">URI options</option>
-                  {
-                    URIOptions.map((val, index) => (
-                      <option value={val}>{val}</option>
-                    ))
-                  }
+                  <option value="">Select</option>
+                  {URIOptions.map((val, index) => (
+                    <option key={index} value={val}>
+                      {val}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
             <div className="col-2">
               <div className="input-group">
-                <label className="input-group-text" htmlFor="envSelect">
+                <label className="input-group-text" htmlFor="param2Select">
                   Param2
                 </label>
                 <select
-                  name="environment"
+                  name="param2"
                   className="form-select"
-                  id="envSelect"
-                  onChange={(e) => {
-                    handleChangeall(1, e);
-                  }}
-                  defaultValue={""}
+                  id="param2Select"
+                  value={selectedURI?.[1] || ""}
+                  onChange={(e) => handleChangeURIParams(1, e)}
                 >
-                  <option value="">Param2</option>
-                  {
-                    selectedURI[0] &&
-                    Object.entries(DataURI?.[selectedURI?.[0]])?.map(([key, val], index) => (
-                      <option value={key}>{key}</option>
-                    ))
-                  }
-
+                  <option value="">Select</option>
+                  {selectedURI[0] &&
+                    Object.entries(DataURI?.[selectedURI[0]] || {}).map(([key, val], index) => (
+                      <option key={index} value={key}>
+                        {key}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
-
 
             <div className="col-2">
               <div className="input-group">
-                <label className="input-group-text" htmlFor="envSelect">
+                <label className="input-group-text" htmlFor="param3Select">
                   Param3
                 </label>
                 <select
-                  name="environment"
+                  name="param3"
                   className="form-select"
-                  id="envSelect"
-                  onChange={(e) => { handleChangeall(2, e) }}
-                  defaultValue={""}
+                  id="param3Select"
+                  value={selectedURI?.[2] || ""}
+                  onChange={(e) => handleChangeURIParams(2, e)}
                 >
-                  <option value="">Param 3</option>
-                  {
-                    selectedURI[0] && selectedURI[1] &&
-                    Object.entries(DataURI?.[selectedURI[0]]?.[selectedURI[1]])?.map(([key, val], index) => (
-                      <option value={val}>{val}</option>
-                    ))
-                  }
+                  <option value="">Select</option>
+                  {selectedURI[0] &&
+                    selectedURI[1] &&
+                    Object.entries(DataURI?.[selectedURI[0]]?.[selectedURI[1]] || {}).map(([key, val], index) => (
+                      <option key={index} value={val}>
+                        {val}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
-
-            {/* <div className="col-3">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="UriInput">
-                  URI
-                </label>
-                <input
-                  name="Uri"
-                  type="text"
-                  className="form-control"
-                  id="UriInput"
-                  placeholder="URI Parameters"
-                  onChange={handleChangeUri}
-                />
-              </div>
-            </div> */}
-            {/* <div className="col-6 mt-2">
-            <Accordion defaultActiveKey="0" style={{"height" : "15rem"}}>
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>Accordion Item #1</Accordion.Header>
-                <Accordion.Body>
-                    <h6>Query Parameters:</h6>
-                    {textBoxes.queryparam.map((param, index) => (
-                      <div key={index} className="d-flex gap-2 mb-2">
-                        <div className="col-auto">
-                          <div className="input-group">
-                            <label className="input-group-text" htmlFor="UriInput">
-                              QP{index + 1}
-                            </label>
-
-                            <input
-                              type="text"
-                              placeholder="Key"
-                              value={param.key}
-                              onChange={(e) =>
-                                handleQueryParamChange(index, "key", e.target.value)
-                              }
-                              className="form-control "
-                            />
-                            <input
-                              type="text"
-                              placeholder="Value"
-                              value={param.value}
-                              onChange={(e) =>
-                                handleQueryParamChange(index, "value", e.target.value)
-                              }
-                              className="form-control"
-                            />
-                            <button
-                              onClick={() => removeQueryParam(index)}
-                              className="Button gray py-1.5"
-                              aria-label="Close"
-                            >
-                              
-                              <span className='btn-close'></span>
-                            </button>
-                          </div>
-                        </div>
-
-                      </div>
-                    ))}
-                    <button
-                      type="button"
-                      className="Button gray"
-                      onClick={addQueryParam}
-                    >
-                      + Add Param
-                    </button>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-                  </div> */}
-
-
-            <div className="col-6 mt-2">
-              <h6>Query Parameters:</h6>
-              {textBoxes.queryparam.map((param, index) => (
-                <div key={index} className="d-flex gap-2 mb-2">
-                  <div className="col-auto">
-                    <div className="input-group">
-                      <label className="input-group-text" htmlFor="UriInput">
-                        QP{index + 1}
-                      </label>
-
-                      <input
-                        type="text"
-                        placeholder="Key"
-                        value={param.key}
-                        onChange={(e) => { handleQueryParamChange(index, "key", e.target.value) }
-
-                        }
-                        className="form-control "
-                      />
-                      <input
-                        type="text"
-                        placeholder="Value"
-                        value={param.value}
-                        onChange={(e) =>
-                          handleQueryParamChange(index, "value", e.target.value)
-                        }
-                        className="form-control"
-                      />
-
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => removeQueryParam(index)}
-                    className="Button gray px-1 py-1.3"
-                    aria-label="Close"
-                  >
-                    <span className='btn-close'></span>
-                  </button>
-
-                </div>
-              ))}
-              <button
-                type="button"
-                className="Button gray"
-                onClick={addQueryParam}
-              >
-                + Add Param
-              </button>
             </div>
+            <div className="d-flex justify-content-between gap-2 align-items-start">
+  <div className="col-6 my-2">
+    <div className="accordion" id="accordionPanelsStayOpenExample2">
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button className="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapsetwo" aria-expanded="true" aria-controls="panelsStayOpen-collapsetwo">
+            <h6 className="my-0">Query Parameters</h6>
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapsetwo" className="accordion-collapse collapse show">
+          <div className="accordion-body px-4 py-2">
+            {/* --body for the query parameters */}
+            {textBoxes?.queryparam?.map((param, index) => (
+              <div key={index} className="d-flex gap-2 my-1">
+                <div className="col-auto">
+                  <div className="input-group">
+                    <label className="input-group-text" htmlFor="UriInput">
+                      QP{index + 1}
+                    </label>
+                    <input
+                      type="text"
+                      name="key"
+                      placeholder="Key"
+                      value={param.key}
+                      onChange={(e) => handleQueryParamChange(index, "key", e.target.value)}
+                      className="form-control"
+                    />
+                    <input
+                      type="text"
+                      name="value"
+                      placeholder="Value"
+                      value={param.value}
+                      onChange={(e) => handleQueryParamChange(index, "value", e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => removeQueryParam(e, index)}
+                  className="Button gray px-1 py-1.3"
+                  aria-label="Close"
+                >
+                  <span className="btn-close"></span>
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="Button gray"
+              onClick={addQueryParam}
+            >
+              + Add Param
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div className="col-6 my-2">
+    <div className="accordion">
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button className="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <h6 className="my-0">Add Token</h6>
+          </button>
+        </h2>
+        <div id="collapseOne" className="accordion-collapse collapse">
+          <div className="accordion-body px-4 py-2">
+            {/* --body for the query parameters */}
+            <textarea name="token" id="token" className="col-12" value={textBoxes.token} onChange={(e) => handleChange(e)}>
+              {textBoxes.token}
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+            {/* <h6 className="my-1">Add token</h6> */}
 
 
-            {/* <div className="d-flex justify-content-center gap-3 align-items-center my-2">
-              <button type="button" className="btn btn-success" onClick={constructUrl}>
-                Submit
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={() => setNewUrl("")}
-              >
-                Reset
-              </button>
-            </div> */}
           </form>
-
         </Offcanvas.Body>
       </Offcanvas>
       <div className="d-flex gap-3 justify-content-center align-items-center">
-        <button className="Button gray text-center" onMouseOver={handleShow} onClick={handleShow}>
-          <span className="" style={{ width: "2rem", height: "1rem" }}> ⏬ </span>
+        <button
+          className="Button gray text-center"
+          onMouseOver={handleShow}
+          onClick={handleShow}
+        >
+          <span style={{ width: "2rem", height: "1rem" }}> ⏬ </span>
         </button>
         <div className="card p-0 my-1 justify-content-center">
-          <div className="card-body">Generated URL: {newUrl}</div>
+          <div className="card-body">Generated URL: {newUrl ? newUrl : "NO URL GENERATED"}</div>
         </div>
-
       </div>
       <div className="wrapper-iframe d-flex flex-column justify-content-center my-4">
-        <iframe
-          className="container-fluid mx-0 iframe bg-gray shadow my-1 border border-black"
-          src={newUrl}
-          title="iframe Example"
-          allow="geolocation"
-          allowFullScreen
-          loading="lazy"
-        ></iframe>
+        {render &&
+
+          <iframe
+            className="container-fluid mx-0 iframe bg-gray shadow my-1 border border-black"
+            src={newUrl}
+            title="iframe Example"
+            allow="geolocation"
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        }
       </div>
     </div>
   );
 }
 
-export default UrlCreator;
+export default UrlCreator

@@ -25,7 +25,7 @@ export const DataURI = {
 
             },
             "exams": {
-                "viewAll": "viewAll",
+                "viewAll": "viewAll",   
                 "create": "create",
                 "viewexamtemplates": "viewexamTemplates"
             }

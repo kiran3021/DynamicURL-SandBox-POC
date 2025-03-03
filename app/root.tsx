@@ -46,10 +46,10 @@ export default function App() {
   const navigation = useNavigation();
   const { id  } = useLoaderData();
   const [isMobile, setIsMobile] = useState("");
-  // useEffect(() => {
-  //   // Dynamically import Bootstrap's JavaScript on the client side
-  //   import("bootstrap/dist/js/bootstrap.bundle.min.js");
-  // }, []);
+  useEffect(() => {
+    // Dynamically import Bootstrap's JavaScript on the client side
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
 
   const queryClient = new QueryClient({
     defaultOptions: {
