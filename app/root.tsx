@@ -61,6 +61,7 @@ export default function App() {
   });
   useEffect(() => {
     if (typeof window !== "undefined") {
+      import("bootstrap/dist/js/bootstrap.bundle.min.js");
       const handleResize = () => {
         setIsMobile(window.innerWidth <= 768);
       };
@@ -79,6 +80,7 @@ export default function App() {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title aria-label="title Acadamy"> Acadamy</title>
+
           <Meta />
           <Links />
         </head>
