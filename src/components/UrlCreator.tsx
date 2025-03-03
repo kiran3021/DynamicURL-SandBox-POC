@@ -166,6 +166,7 @@ function UrlCreator({ onUrlChangeHandler }) {
   // Generate URI options dynamically
   const URIOptions = useMemo(() => {
     return Object.keys(DataURI);
+    
   }, [DataURI]);
 
   // Render the component
@@ -183,13 +184,13 @@ function UrlCreator({ onUrlChangeHandler }) {
                   Paste URL
                 </label>
                 <input
-                  value={pastedUrl}
+                  value={newUrl}
                   name="pastedUrl"
                   type="text"
                   className="form-control"
                   id="URL"
                   placeholder="Paste Your URL"
-                  onChange={(e) => { setPastedUrl(e.target.value); setNewUrl(e.target.value) }}
+                  onChange={(e) => { setNewUrl(e.target.value) }}
                 />
               </div>
             </div>
@@ -218,193 +219,200 @@ function UrlCreator({ onUrlChangeHandler }) {
           <h6 className=" my-1 text-center mx-10"><strong>OR</strong></h6>
           <form >
             <div className="row justify-content-start row-cols-5 gx-2 align-items-center">
-            <div className="col-3">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="baseUrlSelect">
-                  Domain
-                </label>
-                <select
-                  name="baseurl"
-                  className="form-select"
-                  id="baseUrlSelect"
-                  value={textBoxes.baseurl}
-                  onChange={handleChange}
-                >
-                  <option value="">Select</option>
-                  <option value="http://www.ix.com">http://www.ix.com</option>
-                  <option value="https://example.com">https://example.com</option>
-                </select>
+              <div className="col-3">
+                <div className="input-group">
+                  <label className="input-group-text" htmlFor="baseUrlSelect">
+                    Domain
+                  </label>
+                  <select
+                    name="baseurl"
+                    className="form-select"
+                    id="baseUrlSelect"
+                    value={textBoxes.baseurl}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="http://www.ix.com">http://www.ix.com</option>
+                    <option value="https://example.com">https://example.com</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div className="col-2">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="envSelect">
-                  Env
-                </label>
-                <select
-                  name="environment"
-                  className="form-select"
-                  id="envSelect"
-                  value={textBoxes.environment}
-                  onChange={handleChange}
-                >
-                  <option value="">Select</option>
-                  <option value="DEV">DEV</option>
-                  <option value="PROD">PROD</option>
-                  <option value="QA">QA</option>
-                </select>
+              <div className="col-2">
+                <div className="input-group">
+                  <label className="input-group-text" htmlFor="envSelect">
+                    Env
+                  </label>
+                  <select
+                    name="environment"
+                    className="form-select"
+                    id="envSelect"
+                    value={textBoxes.environment}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select</option>
+                    <option value="DEV">DEV</option>
+                    <option value="PROD">PROD</option>
+                    <option value="QA">QA</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div className="col-3">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="uriSelect">
-                  URI Options
-                </label>
-                <select
-                  name="uri"
-                  className="form-select"
-                  id="uriSelect"
-                  value={selectedURI?.[0] || ""}
-                  defaultValue={"URI Options"}
-                  onChange={(e) => handleChangeURIParams(0, e)}
-                >
-                  <option value="">Select</option>
-                  {URIOptions.map((val, index) => (
-                    <option key={index} value={val}>
-                      {val}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="col-2">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="param2Select">
-                  Param2
-                </label>
-                <select
-                  name="param2"
-                  className="form-select"
-                  id="param2Select"
-                  value={selectedURI?.[1] || ""}
-                  onChange={(e) => handleChangeURIParams(1, e)}
-                >
-                  <option value="">Select</option>
-                  {selectedURI[0] &&
-                    Object.entries(DataURI?.[selectedURI[0]] || {}).map(([key, val], index) => (
-                      <option key={index} value={key}>
-                        {key}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="col-2">
-              <div className="input-group">
-                <label className="input-group-text" htmlFor="param3Select">
-                  Param3
-                </label>
-                <select
-                  name="param3"
-                  className="form-select"
-                  id="param3Select"
-                  value={selectedURI?.[2] || ""}
-                  onChange={(e) => handleChangeURIParams(2, e)}
-                >
-                  <option value="">Select</option>
-                  {selectedURI[0] &&
-                    selectedURI[1] &&
-                    Object.entries(DataURI?.[selectedURI[0]]?.[selectedURI[1]] || {}).map(([key, val], index) => (
+              <div className="col-3">
+                <div className="input-group">
+                  <label className="input-group-text" htmlFor="uriSelect">
+                    URI Options
+                  </label>
+                  <select
+                    name="uri"
+                    className="form-select"
+                    id="uriSelect"
+                    value={selectedURI?.[0] || ""}
+                    defaultValue={"URI Options"}
+                    onChange={(e) => handleChangeURIParams(0, e)}
+                  >
+                    <option value="">Select</option>
+                    {URIOptions.map((val, index) => (
                       <option key={index} value={val}>
                         {val}
                       </option>
                     ))}
-                </select>
+                  </select>
+                </div>
               </div>
-            </div>
+
+              <div className="col-2">
+                <div className="input-group">
+                  <label className="input-group-text" htmlFor="param2Select">
+                    Param2
+                  </label>
+                  <select
+                    name="param2"
+                    className="form-select"
+                    id="param2Select"
+                    value={selectedURI?.[1] || ""}
+                    onChange={(e) => handleChangeURIParams(1, e)}
+                  >
+                    <option value="">Select</option>
+                    {selectedURI[0] &&
+                      Object.entries(DataURI?.[selectedURI[0]] || {}).map(([key, val], index) => (
+                        <option key={index} value={key}>
+                          {key}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-2">
+                <div className="input-group">
+                  <label className="input-group-text" htmlFor="param3Select">
+                    Param3
+                  </label>
+                  <select
+                    name="param3"
+                    className="form-select"
+                    id="param3Select"
+                    value={selectedURI?.[2] || ""}
+                    onChange={(e) => handleChangeURIParams(2, e)}
+                  >
+                    <option value="">Select</option>
+                    {selectedURI[0] &&
+                      selectedURI[1] &&
+                      Object.entries(DataURI?.[selectedURI[0]]?.[selectedURI[1]] || {}).map(([key, val], index) => (
+                        <option key={index} value={val}>
+                          {val}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
             </div>
             <div className="d-flex justify-content-between gap-2 align-items-start">
-  <div className="col-6 my-2">
-    <div className="accordion" id="accordionPanelsStayOpenExample2">
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button className="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapsetwo" aria-expanded="true" aria-controls="panelsStayOpen-collapsetwo">
-            <h6 className="my-0">Query Parameters</h6>
-          </button>
-        </h2>
-        <div id="panelsStayOpen-collapsetwo" className="accordion-collapse collapse show">
-          <div className="accordion-body px-4 py-2">
-            {/* --body for the query parameters */}
-            {textBoxes?.queryparam?.map((param, index) => (
-              <div key={index} className="d-flex gap-2 my-1">
-                <div className="col-auto">
-                  <div className="input-group">
-                    <label className="input-group-text" htmlFor="UriInput">
-                      QP{index + 1}
-                    </label>
-                    <input
-                      type="text"
-                      name="key"
-                      placeholder="Key"
-                      value={param.key}
-                      onChange={(e) => handleQueryParamChange(index, "key", e.target.value)}
-                      className="form-control"
-                    />
-                    <input
-                      type="text"
-                      name="value"
-                      placeholder="Value"
-                      value={param.value}
-                      onChange={(e) => handleQueryParamChange(index, "value", e.target.value)}
-                      className="form-control"
-                    />
+              <div className="col-6 my-2">
+                <div className="accordion" id="accordionPanelsStayOpenExample2">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header">
+                      <button className="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapsetwo" aria-expanded="true" aria-controls="panelsStayOpen-collapsetwo">
+                        <h6 className="my-0">Query Parameters</h6>
+                      </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapsetwo" className="accordion-collapse collapse show">
+                      <div className="accordion-body px-4 py-2">
+                        {/* --body for the query parameters */}
+                        {textBoxes?.queryparam?.map((param, index) => (
+                          <div key={index} className="d-flex gap-2 my-1">
+                            <div className="col-auto">
+                              <div className="input-group">
+                                <label className="input-group-text" htmlFor="UriInput">
+                                  QP{index + 1}
+                                </label>
+                                <input
+                                  type="text"
+                                  name="key"
+                                  placeholder="Key"
+                                  value={param.key}
+                                  onChange={(e) => handleQueryParamChange(index, "key", e.target.value)}
+                                  className="form-control"
+                                />
+                                <input
+                                  type="text"
+                                  name="value"
+                                  placeholder="Value"
+                                  value={param.value}
+                                  onChange={(e) => handleQueryParamChange(index, "value", e.target.value)}
+                                  className="form-control"
+                                />
+                              </div>
+                            </div>
+                            <button
+                              onClick={(e) => removeQueryParam(e, index)}
+                              className="Button gray px-1 py-1.3"
+                              aria-label="Close"
+                            >
+                              <span className="btn-close"></span>
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          className="Button gray"
+                          onClick={addQueryParam}
+                        >
+                          + Add Param
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <button
-                  onClick={(e) => removeQueryParam(e, index)}
-                  className="Button gray px-1 py-1.3"
-                  aria-label="Close"
-                >
-                  <span className="btn-close"></span>
-                </button>
               </div>
-            ))}
-            <button
-              type="button"
-              className="Button gray"
-              onClick={addQueryParam}
-            >
-              + Add Param
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div className="col-6 my-2">
-    <div className="accordion">
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button className="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            <h6 className="my-0">Add Token</h6>
-          </button>
-        </h2>
-        <div id="collapseOne" className="accordion-collapse collapse">
-          <div className="accordion-body px-4 py-2">
-            {/* --body for the query parameters */}
-            <textarea name="token" id="token" className="col-12" value={textBoxes.token} onChange={(e) => handleChange(e)}>
-              {textBoxes.token}
-            </textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+              <div className="col-6 my-2">
+                <div className="accordion">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header">
+                      <button className="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <h6 className="my-0">Add Token</h6>
+                      </button>
+                    </h2>
+                    <div id="collapseOne" className="accordion-collapse collapse">
+                      <div className="accordion-body px-4 py-2">
+                        {/* --body for the query parameters */}
+                        <div className="input-group mb-3">
+                          <span className="input-group-text" id="basic-addon1">Key
+
+                          </span>
+                          <input type="text" className="form-control" placeholder="Key" aria-label="Username" aria-describedby="basic-addon1" />
+                        </div>
+                        <div className="input-group">
+                          <span className="input-group-text">Value</span>
+                          <textarea className="form-control" aria-label="With textarea" placeholder="value"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* <h6 className="my-1">Add token</h6> */}
 
@@ -415,7 +423,7 @@ function UrlCreator({ onUrlChangeHandler }) {
       <div className="d-flex gap-3 justify-content-center align-items-center">
         <button
           className="Button gray text-center"
-          onMouseOver={handleShow}
+          // onMouseOver={handleShow}
           onClick={handleShow}
         >
           <span style={{ width: "2rem", height: "1rem" }}> ⏬ </span>
@@ -441,4 +449,4 @@ function UrlCreator({ onUrlChangeHandler }) {
   );
 }
 
-export default UrlCreator
+export default UrlCreator 

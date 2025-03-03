@@ -4,12 +4,13 @@ export const DataURI = {
         "users": {
             "students": {
                 "viewAll": "viewAll",
-                "create": "create",
+                "create": "create",                        
                 "import": "import",
                 "archive": "archive",
 
             },
             "instructors": {
+
                 "viewAll": "viewAll",
                 "create": "create",
                 "import": "import"
