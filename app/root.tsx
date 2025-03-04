@@ -45,29 +45,21 @@ export default function App() {
   // the query now needs to be kept in state
   const submit = useSubmit();
   const navigation = useNavigation();
-  const { id  } = useLoaderData();
+  const { id } = useLoaderData();
   const [isMobile, setIsMobile] = useState("");
 
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        staleTime: 1000 * 60 * 5,
+        retry: 3,
         refetchOnWindowFocus: false,
-        // retry: 3
+        refetchOnReconnect: true,
+        // cacheTime: 2000,
       },
     },
   });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
-      };
 
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    } else {
-      return '';
-    }
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -103,6 +95,11 @@ export default function App() {
     </QueryClientProvider>
   );
 }
+
+
+
+
+
 // import { json } from "@remix-run/node";
 // import type { LoaderFunctionArgs } from "@remix-run/node";
 // import { Theme } from "@radix-ui/themes";
