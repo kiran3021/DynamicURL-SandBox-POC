@@ -1,9 +1,6 @@
-
-
-
-
-
 .container-fluid {
+    scrollbar-width: thin;
+
     margin-inline: 0rem;
     display: flex;
     flex-direction: column;
@@ -12,25 +9,46 @@
         overflow-y: scroll;
     }
 
-    .card {
-        max-width: 60rem;
-        padding-inline: 0;
-        padding-block: 0;
-        justify-content: center;
-        height: 3rem;
+    .header-wrap {
+        .Button {
+            padding: 0.3rem 1rem;
+        }
 
+        .spanimage {
+            width: 1.5rem;
+            height: 1.5rem;
+
+
+        }
+
+        .card {
+            max-width: 60rem;
+            padding-inline: 0;
+            padding-block: 0;
+            justify-content: center;
+            // height: 3rem;
+            height: auto;
+
+            .card-body {
+                padding-inline: 0.5rem;
+                padding-block: 0.2rem;
+            }
+
+        }
     }
 
     .wrapper-iframe {
 
-        .container-fluid {
-            margin-inline: 0;
-            height: 100vh;
-        }
-
         .iframe {
+            scrollbar-width: thin;
+            height: 99vh;
+
+            // scrollbar-width: thin;
+            // height: 100vh;
+            // margin-inline: 0;
             // position: sticky;
             // top: 5rem;
+
         }
     }
 }
@@ -59,18 +77,28 @@
     }
 
     .offcanvas-header {
-        h4 {
-            margin-left: 30%;
-        }
-
-        .btn-close {
-            margin-left: 35%;
-        }
-
         align-items: center;
-        justify-content:space-evenly;
+        justify-content: space-evenly;
     }
 
+    .accordion-header{
+        position: relative;
+        .add-param-button{
+            position: absolute;
+            right: 7.5vw;
+            z-index: 1200;
+            border :0.1rem solid rgba(207, 226, 255,1);
+            border-radius: 0.2rem;
+            background-color: rgba(207, 226, 255,0.5);
+            &:hover{
+                border :0.1rem solid black;
+
+                background-color: rgba(207, 226, 255,1);
+
+            }
+        }
+
+    }
     .query-wrapper {
         height: 12rem;
         overflow-y: scroll;

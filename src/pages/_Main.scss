@@ -8,10 +8,7 @@
 @import "bootstrap/scss/utilities";
 
 
-$table-hover-color: #000;
-$table-hover-bg-factor: .075;
-$table-hover-bg: rgba(229, 229, 229, 0.4);
-$offcanvas-vertical-height:80%;
+$offcanvas-vertical-height: 30rem;
 $input-focus-width :1rem;
 $input-focus-box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
 $accordion-button-focus-box-shadow: none;
@@ -35,7 +32,3 @@ $utilities: map-merge($utilities,
 
 @import "bootstrap/scss/utilities/api";
 @import "bootstrap/scss/bootstrap";
-
-
-
-

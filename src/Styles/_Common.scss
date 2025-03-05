@@ -34,20 +34,19 @@
 }
 
 .violet {
-	background-color: rgba(20, 33, 61, 0.8) !important;
+	background-color: rgba(0, 134, 240, 0.7) !important;
 	color: whitesmoke !important;
-	outline-color: rgb(20, 33, 61) !important;
+	outline-color: #0086F0FA !important;
 
-	&:focus-visible,
-	:focus {
+	// &:focus-visible,
+	// :focus {
 
-		border: 2px solid #2c1ef3;
-	}
+	// 	border: 2px solid #2c1ef3;
+	// }
 
 	&:hover {
 		color: whitesmoke !important;
-
-		background-color: rgba(20, 33, 61, 1) !important;
+		background-color: rgba(0, 134, 240, 0.98) !important;
 	}
 }
 

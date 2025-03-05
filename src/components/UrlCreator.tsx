@@ -1,42 +1,65 @@
 
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import "./_UrlCreator.scss";
 import { DataURI, } from "./json";
 import { produce } from "immer";
 import { Offcanvas } from "react-bootstrap";
-
 import { clsx } from 'clsx';
+import { useNavigate } from "@remix-run/react";
+import { c } from "node_modules/vite/dist/node/types.d-aGj9QkWt";
+// chnaging the params..
+interface QueryParam {
+  key: string;
+  value: string;
+}
 
-const optionsData = {
+interface TextBoxes {
+  baseurl: string;
+  environment: string;
+  uri: string;
+  queryparam: QueryParam[];
+  token: string;
+}
+
+interface HandleChangeURIParamsEvent {
+  target: {
+    value: string;
+  };
+  preventDefault: () => void;
+}
+const optionsData: TextBoxes = {
   baseurl: "",
   environment: "",
   uri: "",
   queryparam: [{ key: "", value: "" }],
   token: ""
 };
-const resuriData = {
-  "users": ["instructors", "students"],
-  "students": ["group1", "group2"],
-  "group1": ["viewall", "dele", "put"],
-  "group2": ["one group2", "two group2"],
-  "instructors": ["viewall", "dele", "put"]
-}
-
+// const resuriData = {
+//   "users": ["instructors", "students"],
+//   "students": ["group1", "group2"],
+//   "group1": ["viewall", "dele", "put"],
+//   "group2": ["one group2", "two group2"],
+//   "instructors": ["viewall", "dele", "put"]
+// }
 
 const domains = [
   "https://simnetonline.com",
   "https://instuctor.simnetonline.com",
   'https://learner.simnetonline.com'
 ]
-const env = [
-  'staging.',
-  "dev.",
-  "qa.",
-  "prod."
-]
+const env = {
+  'staging': "Staging",
+  "dev": "Dev",
+  "qa": "Qa",
+  "prod": "Prod",
+}
 
-function UrlCreator() {
-  const [selectedURI, setSelectedURI] = useState([]);
+interface UrlCreatorProps {
+  query: string;
+}
+
+function UrlCreator({ query }: UrlCreatorProps) {
+  const [selectedURI, setSelectedURI] = useState([""]);
   const [currentOptions, setCurrentOptions] = useState([])
   const [arr, setArr] = useState([])
   const [textBoxes, setTextBoxes] = useState({
@@ -46,15 +69,17 @@ function UrlCreator() {
     queryparam: [{ key: "", value: "" }],
     token: ""
   });
-  const [newUrl, setNewUrl] = useState("");
+  const [newUrl, setNewUrl] = useState(query);
   const [pastedUrl, setPastedUrl] = useState("")
   const [showoff, setShowoff] = useState(true);
   const [render, setRender] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
+  const containerRef = useRef(null);
 
   const handleClose = () => setShowoff(false);
   const handleShow = () => setShowoff(true);
-
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,16 +91,16 @@ function UrlCreator() {
     );
   };
 
-  // const finalUrl = useMemo(()=>{
 
-
-  // },[])
-
+  useEffect(() => {
+    setNewUrl(query)
+  }, [query])
+  console.log({ query }, { newUrl })
   // Handle changes in query parameters
-  const handleQueryParamChange = (index, field, value) => {
+  const handleQueryParamChange = (index: number, field: string, value: string) => {
     setTextBoxes(
       produce((draft) => {
-        draft.queryparam[index][field] = value;
+        (draft.queryparam[index] as { key: string; value: string })[field as 'key' | 'value'] = value;
       })
     );
     updateURL(field, value, index, "addQuery");
@@ -91,7 +116,7 @@ function UrlCreator() {
   };
 
   // remove queryparam
-  const removeQueryParam = (e, index) => {
+  const removeQueryParam = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number) => {
     e.preventDefault();
     setTextBoxes(
       produce((draft) => {
@@ -110,27 +135,22 @@ function UrlCreator() {
     } else if (action == "addQuery") {
       draft.queryparam[index][name] = value;
     } else if (action == "removeQuery") {
-      draft.queryparam = draft.queryparam.filter((_, i) => i !== index);
+      draft.queryparam = draft.queryparam.filter((_: any, i: number) => i !== index);
     }
     setShowoff(true);
 
   })
-  const updateURL = (name = "", value = "", index = "", action = "") => {
-    // const { baseurl, environment, uri, queryparam } = textBoxes;
-    // if(name !== "" && value !== ""){
-    // }
+  const updateURL = (name = "", value = "", index: string | number = "null", action = "") => {
     let { baseurl, environment, uri, queryparam } = updateurlfun(textBoxes, name, value, index, action)
     console.log(updateurlfun(textBoxes, name, value, index, action));
-    // baseurl = baseurl.split('//') +
 
-    baseurl = baseurl.split("//").join(`//${environment}`)
-    //  console.log(c.join(b))
+    baseurl = baseurl.split("//").join(`//${environment}.`)
     let url = `${baseurl}/${uri}`;
 
 
-    const queryString = queryparam
-      .filter((param) => param.key && param.value)
-      .map((param) => `${param.key}=${param.value}`)
+    const queryString: string = queryparam
+      .filter((param: QueryParam) => param.key && param.value)
+      .map((param: QueryParam) => `${param.key}=${param.value}`)
       .join("&");
 
     if (queryString) {
@@ -138,14 +158,19 @@ function UrlCreator() {
     }
 
     setNewUrl(url);
-    // onUrlChangeHandler(url);
 
   }
 
   const handleSubmit = () => {
-    // updateURL()
     handleClose();
     setRender(true);
+    if (newUrl) {
+
+      navigate(`?url=${newUrl}`);
+    } else {
+      navigate('/')
+    }
+
   };
   useEffect(() => {
     if (showoff) {
@@ -154,40 +179,35 @@ function UrlCreator() {
     if (!showoff) {
       setRender(true)
     }
-
   }, [showoff])
 
-  // chnaging the params..
-  const handleChangeURIParams = (index, e) => {
+
+
+  const handleChangeURIParams = (index: number, e: HandleChangeURIParamsEvent) => {
     e.preventDefault();
     const { value } = e.target;
-
-
-    console.log(index)
-    if (index == 0) {
-      setSelectedURI([value])
+    console.log(index);
+    if (index === 0) {
+      setSelectedURI([value]);
     } else {
       setSelectedURI(
-        produce((draft) => {
+        produce((draft: string[]) => {
           if (index >= draft.length) {
             draft.push(...Array(index - draft.length + 1).fill(""));
           }
           draft[index] = value;
         })
       );
-
     }
 
     let newURI = [...selectedURI];
     newURI[index] = value;
-    if (index == 0) {
+    if (index === 0) {
       newURI = [value];
     }
 
     let { baseurl, environment, uri, queryparam } = textBoxes;
-    baseurl = baseurl.split("//").join(`//${environment}`)
-    //  console.log(c.join(b))
-    // let url = `${baseurl}/${uri}`;
+    baseurl = baseurl.split("//").join(`//${environment}.`);
 
     let finalUrl = `${baseurl}/${newURI.join("/")}`;
 
@@ -201,13 +221,12 @@ function UrlCreator() {
     }
 
     setTextBoxes(
-      produce((draft) => {
+      produce((draft: TextBoxes) => {
         draft.uri = newURI.join("/");
       })
     );
 
     setNewUrl(finalUrl);
-
   };
 
 
@@ -225,46 +244,65 @@ function UrlCreator() {
 
   }, [DataURI]);
 
-  const callback = useCallback(() => {
+  const getOptionsForLevel = (level: number) => {
 
-
-  }, [])
-  // Generate URI options dynamically based on the selected path
-  const getOptionsForLevel = (level) => {
     let currentLevel = DataURI;
     for (let i = 0; i < level; i++) {
       if (currentLevel && selectedURI[i]) {
-        console.log(selectedURI[i])
         currentLevel = currentLevel[selectedURI[i]];
-        console.log(currentLevel)
+        // console.log(currentLevel)
       } else {
         return [];
       }
     }
-    console.log({ currentLevel }, "final")
 
-    if (typeof currentLevel === "string" || !currentLevel) {
+    if (currentLevel?.type == "last") {
+      return Object.entries(currentLevel?.values)
+    }
+    if (currentLevel === undefined || !currentLevel) {
       return [];
     }
-
+    // console.log(Object.entries(currentLevel || {}))
     return Object.keys(currentLevel || {});
   };
 
-  console.log({ selectedURI })
+  const formatString = (input: string) => {
+
+    let words = input.replace(/([A-Z])/g, ' $1').trim();
+    let format = words[0].toUpperCase() + words.slice(1)
+
+    return format;
+  }
+
+  // useEffect(() => {
+  //   if (containerRef.current) {
+  //     containerRef.current.scrollTop = containerRef.current.scrollHeight;
+  //   }
+  // }, [textBoxes.queryparam]); 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight
+    }
+  }, [textBoxes.queryparam])
   // Render the component
   return (
     <div className="container-fluid">
-      <Offcanvas show={showoff} onHide={handleClose} placement="top" bac>
-      <Offcanvas.Body className="py-2" >
-      <div className="offcanvas-header p-2 mb-0">
-          <h4 className="mb-0">SIMnet Lightyear scaffolding tool</h4>
-          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onClick={handleClose} ></button>
-        </div>
+      <Offcanvas show={showoff} onHide={handleClose} placement="top" >
+        <Offcanvas.Body className="py-2" >
+          <div className="row d-flex justify-content-center mb-2">
+            <div className="col-11 text-center">
+              <h4 className="mb-0">SIMnet Lightyear scaffolding tool</h4>
+            </div>
+            <div className="col-1 d-flex justify-content-end align-items-center">
+              <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onClick={handleClose} >
+              </button>
+            </div>
+          </div>
           {/* <div className="container-fluid p-1 mb-4 border border-black bg-body-tertiary text-wrap heading">
-            <h4 className="mb-0">➡️{newUrl}</h4>
+            <h4 className="mb-0">{newUrl}</h4>
           </div> */}
-          <div className="d-flex justify-content-start gap-2 align-items-center mb-4">
-            <div className="col-7">
+          <div className="d-flex row gy-4 gx-2 justify-content-start gap-1 gap-lg-2 align-items-center mb-4">
+            <div className="col-12 col-xxl-5 col-lg-8 col-md-9">
               <div className="input-group">
                 <label className="input-group-text" htmlFor="UriInput">
                   Paste URL
@@ -280,19 +318,19 @@ function UrlCreator() {
                 />
               </div>
             </div>
-            <button type="button" className="Button green" onClick={handleSubmit}>
-              SUBMIT
-            </button>
+            <div className="col-auto">
+              <button type="button" className="Button green col-1" onClick={handleSubmit}>
+                SUBMIT
+              </button>
+            </div>
+            <div className="col-auto">
+              <button type="button" className="Button red col-1" onClick={() => { handleReset() }}>
+                RESET
+              </button>
+            </div>
+
+            {/* 
             <button
-              type="button"
-              className="Button red"
-              onClick={() => {
-                handleReset()
-              }}
-            >
-              RESET
-            </button>
-            {/* <button
               type="button"
               className="Button gray"
               // data-bs-dismiss="offcanvas"
@@ -301,11 +339,13 @@ function UrlCreator() {
               }}
             >
               CLOSE
-            </button> */}
+            </button> */
+            }
           </div>
           <form >
-            <div className="row justify-content-start row-cols-5 gy-4 gx-2 align-items-center mb-3">
-              <div className="col-3">
+            <div className="form-wrapper row d-flex row-cols-sm-2 justify-content-start gy-4 gx-2 align-items-center mb-3">
+              {/* Domain Dropdown */}
+              <div className="col-12 col-xxl-4 col-xl-4 col-lg-4 col-md-6 width">
                 <div className="input-group">
                   <label className="input-group-text" htmlFor="baseUrlSelect">
                     Domain
@@ -316,18 +356,18 @@ function UrlCreator() {
                     id="baseUrlSelect"
                     value={textBoxes.baseurl}
                     onChange={handleChange}
+                    aria-label="Select domain"
                   >
                     <option value="">Select</option>
-                    {
-                      domains.map((ele) => (
-
-                        <option value={ele}>{ele}</option>
-                      ))
-                    }
+                    {domains.map((ele, index) => (
+                      <option key={index} value={ele}>{ele}</option>
+                    ))}
                   </select>
                 </div>
               </div>
-              <div className="col-2">
+
+              {/* Environment Dropdown */}
+              <div className="col-6 col-xxl-auto col-xl-auto col-lg-auto col-md-auto">
                 <div className="input-group">
                   <label className="input-group-text" htmlFor="envSelect">
                     Env
@@ -338,83 +378,68 @@ function UrlCreator() {
                     id="envSelect"
                     value={textBoxes.environment}
                     onChange={handleChange}
+                    aria-label="Select environment"
                   >
                     <option value="">Select</option>
-                    {
-                      env.map((ele) => (
-                        <option value={ele}>{ele}</option>
-                      ))
-                    }
+                    {Object.entries(env).map(([key, val], index) => (
+                      <option key={index} value={key}>{val}</option>
+                    ))}
                   </select>
                 </div>
               </div>
 
               {/* Dynamic Dropdowns */}
-              {selectedURI.map((_, index) => (
-                <div className="col-2" key={index}>
-                  <div className="input-group">
-                    <label className="input-group-text" htmlFor={`param${index + 1}Select`}>
-                      Param {index + 1}
-                    </label>
-                    <select
-                      name={`param${index + 1}`}
-                      className="form-select"
-                      id={`param${index + 1}Select`}
-                      value={selectedURI[index] || ""}
-                      onChange={(e) => handleChangeURIParams(index, e)}
-                    >
-                      <option value="">Select </option>
-                      {getOptionsForLevel(index).map((option, i) => (
-                        <option key={i} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
+              {selectedURI.concat(getOptionsForLevel(selectedURI.length).length > 0 ? [""] : [])
+                .map((_, index) => (
+                  <div className="col-6 col-xxl-auto col-xl-auto col-lg-auto col-md-auto" key={index}>
+                    <div className="input-group">
+                      <label className="input-group-text" htmlFor={`param${index + 1}Select`}>
+                        Param {index + 1}
+                      </label>
+                      <select
+                        name={`param${index + 1}`}
+                        className="form-select"
+                        id={`param${index + 1}Select`}
+                        value={selectedURI[index] || ""}
+                        onChange={(e) => handleChangeURIParams(index, e)}
+                        aria-label={`Select parameter ${index + 1}`}
+                      >
+                        <option value="">Select</option>
+                        {getOptionsForLevel(index).map((option, i) => (
+                          <option key={i} value={Array.isArray(option) ? option[0] : option}>
+                            {Array.isArray(option) ? (option[1] as string) : formatString(option as string)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-              ))}
-
-              {/* Add a new dropdown if the last selected value has children */}
-              {getOptionsForLevel(selectedURI.length).length > 0 && (
-                <div className="col-2">
-                  <div className="input-group">
-                    <label className="input-group-text" htmlFor={`param${selectedURI.length + 1}Select`}>
-                      Param {selectedURI.length + 1}
-                    </label>
-                    <select
-                      name={`param${selectedURI.length + 1}`}
-                      className="form-select"
-                      id={`param${selectedURI.length + 1}Select`}
-                      value=""
-                      onChange={(e) => handleChangeURIParams(selectedURI.length, e)}
-                    >
-                      <option value="">Select</option>
-                      {getOptionsForLevel(selectedURI.length).map((option, i) => (
-                        <option key={i} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              )}
-
+                ))}
             </div>
-            <div className="d-flex justify-content-between gap-2 align-items-start">
-              <div className="col-6 my-2">
+            {/* Accordian query parameter  */}
+            <div className="form-query-wrapper row d-flex justify-content-between gap-2 align-items-start">
+              <div className="col-12 col-xxl-5 col-xl-6 col-lg-7 col-md-8 my-2">
                 <div className="accordion" id="accordionPanelsStayOpenExample2">
                   <div className="accordion-item">
-                    <h2 className="accordion-header">
-                      <button className="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapsetwo" aria-expanded="true" aria-controls="panelsStayOpen-collapsetwo">
+                    <div className="accordion-header d-flex justify-content-between ">
+                      <button className="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapsetwo" aria-expanded={isAccordionOpen} aria-controls="panelsStayOpen-collapsetwo" onClick={() => { setIsAccordionOpen(!isAccordionOpen) }}>
                         <h6 className="my-0">Query Parameters</h6>
                       </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapsetwo" className="accordion-collapse collapse show">
-                      <div className="accordion-body query-wrapper">
+                      {isAccordionOpen && (
+                        <button
+                          type="button"
+                          className="Button ml-1 add-param-button"
+                          onClick={addQueryParam}
+                        >
+                          + Add Param
+                        </button>
+                      )}
+                    </div>
+
+                    <div id="panelsStayOpen-collapsetwo" className="accordion-collapse collapse show" >
+                      <div className="accordion-body query-wrapper" ref={containerRef}>
                         {/* --body for the query parameters */}
                         {textBoxes?.queryparam?.map((param, index) => (
                           <div key={index} className="d-flex gap-2 mb-3">
-
                             <div className="d-flex align-items-center gap-0 me-0">
                               <label className="input-group-text col-1 justify-content-center" htmlFor="UriInput">
                                 {index + 1}
@@ -450,19 +475,19 @@ function UrlCreator() {
                             </div>
                           </div>
                         ))}
-                        <button
+                        {/* <button
                           type="button"
-                          className="Button gray ml-1"
+                          className="Button gray ml-1 "
                           onClick={addQueryParam}
                         >
                           + Add Param
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-6 my-2">
+              {/* <div className="col-12 col-lg-6 col-md-6 my-2">
                 <div className="accordion">
                   <div className="accordion-item">
                     <h2 className="accordion-header">
@@ -472,7 +497,6 @@ function UrlCreator() {
                     </h2>
                     <div id="collapseOne" className="accordion-collapse collapse">
                       <div className="accordion-body px-4 py-2">
-                        {/* --body for the Acces token */}
                         <div className="input-group mb-3">
                           <span className="input-group-text" id="basic-addon1">Key
 
@@ -487,36 +511,28 @@ function UrlCreator() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </form>
-
-      </Offcanvas.Body>
+        </Offcanvas.Body>
       </Offcanvas>
-
-      <div className="d-flex gap-3 justify-content-center align-items-center">
-        {/* <button
-          className="Button gray text-center"
-          // onMouseOver={handleShow}
-          onClick={handleShow}
-        >
-          <span style={{ width: "2rem", height: "1rem" }}> ⏬ </span>
-        </button> */}
-        <button className="Button gray text-center" onClick={handleShow}
-          type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">          <span style={{ width: "2rem", height: "1rem" }}> ⏬ </span>
+      <div className="d-flex gap-3 justify-content-center align-items-center mb-1 header-wrap">
+        <button className="Button violet text-center svg" onClick={handleShow}
+          type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">          <span className="spanimage">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z" />
+            </svg>
+          </span>
         </button>
-
-
         <div className="card p-0 my-1 justify-content-center">
-          <div className="card-body">Generated URL: {newUrl ? newUrl : "NO URL GENERATED"}</div>
+          <div className="card-body">URL:{query ? query : "NO URL GENERATED"}</div>
         </div>
       </div>
-      <div className="wrapper-iframe d-flex flex-column justify-content-center my-4">
+      <div className="wrapper-iframe d-flex flex-column justify-content-center my-1">
         {render &&
-
           <iframe
-            className="container-fluid mx-0 iframe bg-gray shadow my-1 border border-black"
-            src={newUrl}
+            className="container-fluid mx-0 iframe bg-gray shadow my-1 border border-black sticky-iframe"
+            src={query}
             title="iframe Example"
             allow="geolocation"
             allowFullScreen
@@ -524,7 +540,6 @@ function UrlCreator() {
           ></iframe>
         }
       </div>
-
     </div>
   );
 }
