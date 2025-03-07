@@ -1,11 +1,24 @@
-import { json, redirect } from "@remix-run/node";
+import {  redirect } from "react-router";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@radix-ui/themes/styles.css";
 import "./_style.scss";
 import "../src/pages/_Main.scss";
 import "../src/Styles/_Common.scss";
-import { Form, Link, Links, NavLink, Meta, Scripts, Outlet, useLoaderData, ScrollRestoration, useNavigation, ClientLoaderFunctionArgs, useSubmit } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  Links,
+  NavLink,
+  Meta,
+  Scripts,
+  Outlet,
+  useLoaderData,
+  ScrollRestoration,
+  useNavigation,
+  ClientLoaderFunctionArgs,
+  useSubmit,
+} from "react-router";
 import { Theme } from "@radix-ui/themes";
 
 export default function App() {

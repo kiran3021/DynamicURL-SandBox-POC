@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import UrlCreator from 'src/components/UrlCreator';
-import { LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
-import { json } from '@remix-run/node';
+import { LoaderFunctionArgs, useLoaderData } from 'react-router';
+// import type { Route } from "./types/my-route";
+
+// import { json } from 'react-router';
 
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("url");
-  return json({ q });
+  return { q };
 };
 
 

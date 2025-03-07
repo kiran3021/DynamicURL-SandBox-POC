@@ -5,7 +5,7 @@ import { DataURI, } from "./json";
 import { produce } from "immer";
 import { Offcanvas } from "react-bootstrap";
 import { clsx } from 'clsx';
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import { c } from "node_modules/vite/dist/node/types.d-aGj9QkWt";
 // chnaging the params..
 interface QueryParam {
