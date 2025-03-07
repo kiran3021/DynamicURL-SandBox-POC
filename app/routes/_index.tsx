@@ -1,11 +1,11 @@
-import Main from "src/pages/Main";
+import TodoList from 'src/posts/TodoList';
+
 
 export default function Index() {
+
   return (
     <>
-      {/* <Main /> */}
-      
-
+      <TodoList />
     </>
   );
 }

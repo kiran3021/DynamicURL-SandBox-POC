@@ -2,6 +2,7 @@ import { json, redirect } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@radix-ui/themes/styles.css";
@@ -9,6 +10,7 @@ import "@radix-ui/themes/styles.css";
 import "./style.scss";
 import "../src/pages/_Main.scss";
 import "../src/Styles/_Common.scss";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { Form, Link, Links, NavLink, Meta, Scripts, Outlet, useLoaderData, ScrollRestoration, useNavigation, ClientLoaderFunctionArgs, useSubmit } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
@@ -72,25 +74,17 @@ export default function App() {
           <Links />
         </head>
         <body>
-          {/* <Theme> */}
-          <header aria-label="header" className="navbar-main">
-            <a className="visually-hidden-focusable" href="#content">
-              Skip to main content
-            </a>
-            <Navbar id={id} isMobile={isMobile} />
-          </header>
-          <div className="wrapper" aria-label="body">
-            <main className={navigation.state === "loading" ? "loading" : ""}>
-              <Outlet />
-            </main>
-            <footer className="mainfooter" role="contentinfo">
-              <Footer />
-            </footer>
-          </div>
+
+          <main >
+            <Outlet />
+            <ReactQueryDevtools />
+          </main>
+
           <ScrollRestoration />
           <Scripts />
-          {/* </Theme> */}
+
         </body>
+
       </html>
     </QueryClientProvider>
   );
@@ -98,87 +92,3 @@ export default function App() {
 
 
 
-
-
-// import { json } from "@remix-run/node";
-// import type { LoaderFunctionArgs } from "@remix-run/node";
-// import { Theme } from "@radix-ui/themes";
-
-// import {
-//   QueryClient,
-//   QueryClientProvider,
-// } from '@tanstack/react-query';
-// import { NavLink } from "@remix-run/react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "@radix-ui/themes/styles.css";
-// import "./style.scss";
-// import "../src/pages/_Main.scss";
-
-// import {
-//   Links,
-//   Meta,
-//   Scripts,
-//   Outlet,
-//   ScrollRestoration,
-// } from "@remix-run/react";
-// import Navbar from "src/pages/Navbar";
-// import Footer from "src/pages/Footer";
-
-// export const loader = async ({ request }: LoaderFunctionArgs) => {
-//   return json({ message: "I am loader" });
-// };
-
-// export const action = async () => {
-//   return json({ message: "I am action" });
-// };
-
-// // Move QueryClient initialization outside the component
-
-// // Separate Document Component for better structure
-// const Document = ({ children }: { children: React.ReactNode }) => (
-//   <html lang="en">
-//     <head>
-//       <meta charSet="utf-8" />
-//       <meta name="viewport" content="width=device-width, initial-scale=1" />
-//       <Meta />
-//       <Links />
-//     </head>
-//     <body>
-//       {children}
-//       <ScrollRestoration />
-//       <Scripts />
-//     </body>
-//   </html>
-// );
-
-// export default function App() {
-
-//   const queryClient = new QueryClient({
-//     defaultOptions: {
-//       queries: {
-//         refetchOnWindowFocus: false,
-//       },
-//     },
-//   });
-
-//   return (
-//     <Theme>
-//     <QueryClientProvider client={queryClient}>
-//         <Document>
-//           <div className="wrapper">
-//             <nav className="navbar-main">
-//               <Navbar />
-//             </nav>
-//             <main>
-//               <Outlet /> {/* Your page content */}
-//             </main>
-//             <footer className="mainfooter">
-//               <Footer />
-//             </footer>
-//           </div>
-
-//         </Document>
-//     </QueryClientProvider>
-//     </Theme>
-//   );
-// }
