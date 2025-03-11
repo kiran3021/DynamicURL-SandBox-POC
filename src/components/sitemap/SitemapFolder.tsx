@@ -1,8 +1,7 @@
 import Sitefiles from './SitemapFiles';
 import { sitemap } from './sitemapData';
-import { useEffect, useState } from 'react';
-import { CheckboxCards } from '@radix-ui/themes';
-import "./Sitemap.scss";
+import {  useState } from 'react';
+// import "./Sitemap.scss";
 type Node = {
   name: string;
   nodes?: Node[];
@@ -14,7 +13,8 @@ export default function SiteMapFolder() {
   let [show, setShow] = useState(true);
   return (
     <>
-      <div className="container bg-white shadow my-2 p-2 rounded-lg ">
+
+      <div className="container container_sitemap bg-white shadow my-2 p-2 rounded-lg ">
         <div className="text-center">
           <h2>SIM Net SITE MAP</h2>
         </div>
@@ -27,7 +27,7 @@ export default function SiteMapFolder() {
           </div>
         </div>
 
-        <ul className='list-unstyled'>
+        <ul className='list-unstyled main-list-sitemap'>
           {nodes.map((node, index) => (
             <>       
               <Sitefiles key={index}  node={node} show={show} setShow={setShow} specificNode={node.name} />

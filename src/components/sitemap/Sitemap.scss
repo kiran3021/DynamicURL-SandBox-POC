@@ -1,4 +1,4 @@
-.container {
+.container_sitemap {
     height: 100vh;
     width: 100%;
     overflow-y: auto;
@@ -11,79 +11,90 @@
             box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
         }
     }
+     .main-list-sitemap{
 
-    li {
+        li {
 
-        .file {
-            position: relative;
-
-            .vr {
-                position: absolute;
-                display: none;
-                top: 0;
-                bottom: 0;
+            .folder{
+                // cursor: pointer;
 
             }
-
-            &:hover {
+    
+            .file {
+                position: relative;
+    
                 .vr {
-                    display: block;
-                    left: -0.4rem;
-                    // height: auto;
-                    // margin-left: -0.6rem;
+                    position: absolute;
+                    display: none;
+                    top: 0;
+                    bottom: 0;
+    
+                }
+    
+                &:hover {
+                    .vr {
+                        display: block;
+                        left: -0.4rem;
+                        // height: auto;
+                        // margin-left: -0.6rem;
+                    }
                 }
             }
-        }
-
-    }
-}
-
-.button-chever {
-    background-color: unset;
-    border: none;
-}
-
-.vr {
-    height: auto;
-    width: 0.1rem;
-    color: black;
-    opacity: 1;
-
-    li {
-        width: max-content;
-
-        .main-header {
-            padding-inline: 0.02rem;
-            padding-block: 0.01rem;
-
-            &:hover {
-                border-radius: 0.2rem;
-                background-color: rgba(190, 235, 255, 0.6);
+            a {
+                color: black;
+                text-decoration: underline;
+            
+                &:visited {
+                    text-decoration: underline;
+                    text-decoration-color: orange;
+                }
             }
-
+    
         }
+    }
 
-        .sub-name {
-            padding-inline: 0.02rem;
-            padding-block: 0.01rem;
-
-            &:hover {
-                cursor: pointer;
-                border-radius: 0.2rem;
-                background-color: rgba(190, 235, 255, 0.6);
+    .vr {
+        height: auto;
+        width: 0.1rem;
+        color: black;
+        opacity: 1;
+    
+        li {
+            width: max-content;
+    
+            .main-header {
+                padding-inline: 0.02rem;
+                padding-block: 0.01rem;
+    
+                &:hover {
+                    border-radius: 0.2rem;
+                    background-color: rgba(190, 235, 255, 0.6);
+                }
+    
             }
+    
+            .sub-name {
+                padding-inline: 0.02rem;
+                padding-block: 0.01rem;
+    
+                &:hover {
+                    cursor: pointer;
+                    border-radius: 0.2rem;
+                    background-color: rgba(190, 235, 255, 0.6);
+                }
+            }
+    
         }
-
+    
     }
+    .button-chever {
+        background-color: unset;
+        border: none;
+    }
+    
+    
+ 
+
 
 }
 
-a {
-    color: black;
-    text-decoration: underline;
-
-    &:visited {
-        text-decoration: underline;
-        text-decoration-color: orange;
-    }
-}
