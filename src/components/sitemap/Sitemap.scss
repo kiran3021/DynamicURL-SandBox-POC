@@ -1,20 +1,161 @@
-.container{
+.container {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
 
-    
+    .form-check-input {
+        color: green;
+
+        &:focus {
+            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+        }
+    }
+
+    // ul{
+    //     &:nth-child(n){
+    //         font-weight: calc(n*100);
+
+    //     }
+    // }
+
+    li {
+
+        .file {
+            position: relative;
+
+            .vr {
+                position: absolute;
+                display: none;
+                // left: -0.4rem;
+                top: 0;
+                bottom: 0;
+
+            }
+
+            &:hover {
+                .vr {
+                    display: block;
+                    left: -0.4rem;
+                    // height: auto;
+                    // margin-left: -0.6rem;
+                }
+            }
+        }
+
+        //     .nested{
+        //         position: relative;
+
+
+        //             .vr{
+        //                 position: absolute;
+        //                 display: none;
+        //                 left:0;
+        //                 top: 0;
+        //                 bottom: 0;
+        //             }
+
+
+        //         &:hover > .vr{
+
+        //                 display: block;
+        //                 left:-0.4rem;
+
+        //       }
+        //    }
+    }
 }
 
+// Define a function to calculate font-weight
+// Define a function to calculate font-weight
+// @function calculateFontWeight($n) {
+//     @return 1000 -($n*100); // Adjust the formula as needed
+//   }
 
+//   // Loop from 10 to 1
+//   @for $i from 1 to 10 {
+//     ul{
 
-.vr{
+//         li{
+
+//             .main-header :nth-child(#{$i}) {
+
+//               font-weight: calculateFontWeight($i); // Use the function here
+//             }
+//         }
+//     }
+//   }
+.button-chever {
+    background-color: unset;
+    border: none;
+}
+
+.vr {
     height: auto;
-    width: 0.2rem;
+    width: 0.1rem;
     color: black;
     opacity: 1;
 
-    ul{
-        width: 50vw;
-        li{
-            width: 30vw;
+    li {
+        width: max-content;
+
+        .main-header {
+            padding-inline: 0.02rem;
+            padding-block: 0.01rem;
+
+            &:hover {
+                // cursor: pointer;
+                border-radius: 0.2rem;
+                background-color: rgba(190, 235, 255, 0.6);
+            }
+
         }
+
+        .sub-name {
+            padding-inline: 0.02rem;
+            padding-block: 0.01rem;
+
+            &:hover {
+                cursor: pointer;
+                border-radius: 0.2rem;
+                background-color: rgba(190, 235, 255, 0.6);
+            }
+        }
+
+    }
+
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+    &:hover{
+
+    }
+    &:focus{
+
+    }
+    &:focus-visible{
+
+    }
+    &:visited{
+    text-decoration: underline;
+    text-decoration-color:orange;
     }
 }
+
+
+// .horizontal{
+//     align-self: stretch;
+//     /* width: var(--bs-border-width); */
+//     height: 2px;
+//     background-color: black;
+//     min-width: 1rem;
+//     opacity: 1;
+// }
+// li::before{
+//     content: "-";
+//     color: black;
+//     margin-inline-end: 0.5rem;
+//     width: 0.2rem;
+// }

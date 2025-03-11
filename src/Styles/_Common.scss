@@ -1,18 +1,18 @@
-@import "@radix-ui/colors/black-alpha.css";
-@import "@radix-ui/colors/mauve.css";
-@import "@radix-ui/colors/violet.css";
-/* Import only the scales you need */
-@import "@radix-ui/colors/gray.css";
-@import "@radix-ui/colors/blue.css";
-@import "@radix-ui/colors/green.css";
-@import "@radix-ui/colors/red.css";
-@import "@radix-ui/colors/gray-dark.css";
-@import "@radix-ui/colors/blue-dark.css";
-@import "@radix-ui/colors/green-dark.css";
-@import "@radix-ui/colors/red-dark.css";
-@import "@radix-ui/colors/white-alpha.css";
-@import "@radix-ui/colors/tomato.css";
-@import "@radix-ui/colors/white-alpha.css";
+// @import "@radix-ui/colors/black-alpha.css";
+// @import "@radix-ui/colors/mauve.css";
+// @import "@radix-ui/colors/violet.css";
+// /* Import only the scales you need */
+// @import "@radix-ui/colors/gray.css";
+// @import "@radix-ui/colors/blue.css";
+// @import "@radix-ui/colors/green.css";
+// @import "@radix-ui/colors/red.css";
+// @import "@radix-ui/colors/gray-dark.css";
+// @import "@radix-ui/colors/blue-dark.css";
+// @import "@radix-ui/colors/green-dark.css";
+// @import "@radix-ui/colors/red-dark.css";
+// @import "@radix-ui/colors/white-alpha.css";
+// @import "@radix-ui/colors/tomato.css";
+// @import "@radix-ui/colors/white-alpha.css";
 
 .Button {
 	all: unset;
@@ -70,11 +70,11 @@
 
 .mauve {
 	background-color: rgba(229, 229, 229, 0.8) !important;
-	color: var(--black-alpha-11) !important;
+	color: black !important;
 	outline-color: rgba(229, 229, 229, 0.8) !important;
 
 	&:hover {
-		color: var(--black-alpha-11) !important;
+		color: black !important;
 		background-color: rgba(229, 229, 229, 1) !important;
 	}
 }

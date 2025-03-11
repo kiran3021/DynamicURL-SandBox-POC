@@ -1,26 +1,26 @@
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/variables-dark";
+// @import "bootstrap/scss/maps";
+// @import "bootstrap/scss/mixins";
+// @import "bootstrap/scss/utilities";
 
-// $all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+// // $all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
 
-// $utilities: map-merge($utilities,
-//     ("color": map-merge(map-get($utilities, "color"),
-//         (values: map-merge(map-get(map-get($utilities, "color"), "values"),
-//             ($all-colors ),
-//           ),
-//         ),
-//       ),
-//     ));
+// // $utilities: map-merge($utilities,
+// //     ("color": map-merge(map-get($utilities, "color"),
+// //         (values: map-merge(map-get(map-get($utilities, "color"), "values"),
+// //             ($all-colors ),
+// //           ),
+// //         ),
+// //       ),
+// //     ));
 
-@import "bootstrap/scss/utilities/api";
-@import "bootstrap/scss/bootstrap";
+// @import "bootstrap/scss/utilities/api";
+// @import "bootstrap/scss/bootstrap";
 
-$enable-grid-classes: false;
-$enable-cssgrid: true;
+// $enable-grid-classes: false;
+// $enable-cssgrid: true;
 
 html {
   box-sizing: border-box;
@@ -49,6 +49,9 @@ code {
   html {
     font-size: 16px;
   }
+  .radix-themes {
+
+  }
 
 }
 
@@ -56,7 +59,11 @@ code {
 
 @media only screen and (min-width: 1200px) {
   html {
-    font-size: 16px;
+    font-size: 16px !important;
+  }
+  .radix-themes {
+    font-size: 16px !important;
+
   }
 
 }
@@ -64,9 +71,12 @@ code {
 /* for...........768px */
 @media only screen and (max-width: 768px) {
   html {
-    font-size: 14px;
+    font-size: 14px!important;
   }
+  .radix-themes {
+    font-size: 14px !important;
 
+  }
 
 
 }
@@ -74,7 +84,11 @@ code {
 /* For................. 576px */
 @media only screen and (max-width: 576px) {
   html {
-    font-size: 12px;
+    font-size: 12px !important;
+  }
+  .radix-themes {
+    font-size: 12px !important;
+
   }
 
   // .form-wrapper{

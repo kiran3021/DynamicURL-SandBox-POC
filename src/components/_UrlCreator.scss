@@ -70,7 +70,7 @@
 // }
 .offcanvas {
     overflow-y: hidden;
-    height: 80%;
+    height: 27rem!important;
 
     .offcanvas-top {
         border-bottom: 0.2rem solid black;
@@ -81,27 +81,51 @@
         justify-content: space-evenly;
     }
 
-    .accordion-header{
+    .accordion-header {
         position: relative;
-        .add-param-button{
+
+        .add-param-button {
             position: absolute;
             right: 7.5vw;
             z-index: 1200;
-            border :0.1rem solid rgba(207, 226, 255,1);
+            border: 0.1rem solid rgba(207, 226, 255, 1);
             border-radius: 0.2rem;
-            background-color: rgba(207, 226, 255,0.5);
-            &:hover{
-                border :0.1rem solid black;
+            background-color: rgba(207, 226, 255, 0.5);
 
-                background-color: rgba(207, 226, 255,1);
+            &:hover {
+                border: 0.1rem solid black;
+
+                background-color: rgba(207, 226, 255, 1);
 
             }
         }
 
     }
+
     .query-wrapper {
         height: 12rem;
         overflow-y: scroll;
         scrollbar-width: thin;
+    }
+}
+
+.form-control{
+    // box-shadow: ;
+    &:focus{
+        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+    }
+}
+
+.form-select{
+    &:focus{
+        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+
+    }
+}
+
+.accordion-button{
+    &:focus{
+        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+
     }
 }

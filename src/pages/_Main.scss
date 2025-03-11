@@ -1,35 +1,35 @@
 // @use '../Styles/extends';
 // @import "../node_modules/bootstrap/scss/bootstrap";
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/variables-dark";
+// @import "bootstrap/scss/maps";
+// @import "bootstrap/scss/mixins";
+// @import "bootstrap/scss/utilities";
 
 
-$offcanvas-vertical-height: 30rem;
-$input-focus-width :1rem;
-$input-focus-box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
-$accordion-button-focus-box-shadow: none;
-$form-select-focus-box-shadow: 0 1px 3px rgba(212, 27, 27, 0.1);
+// $offcanvas-vertical-height: 30rem;
+// $input-focus-width :1rem;
+// $input-focus-box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
+// $accordion-button-focus-box-shadow: none;
+// $form-select-focus-box-shadow: 0 1px 3px rgba(212, 27, 27, 0.1);
 
 // $body-color: #333;
 // $body-bg: #fff;
 // $border-radius: .4rem;
 // $success: #7952b3;
 // @import 'Styles/extends';
-$all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+// $all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
 
-$utilities: map-merge($utilities,
-    ("color": map-merge(map-get($utilities, "color"),
-        (values: map-merge(map-get(map-get($utilities, "color"), "values"),
-            ($all-colors ),
-          ),
-        ),
-      ),
-    ));
+// $utilities: map-merge($utilities,
+//     ("color": map-merge(map-get($utilities, "color"),
+//         (values: map-merge(map-get(map-get($utilities, "color"), "values"),
+//             ($all-colors ),
+//           ),
+//         ),
+//       ),
+//     ));
 
-@import "bootstrap/scss/utilities/api";
-@import "bootstrap/scss/bootstrap";
+// @import "bootstrap/scss/utilities/api";
+// @import "bootstrap/scss/bootstrap";
 

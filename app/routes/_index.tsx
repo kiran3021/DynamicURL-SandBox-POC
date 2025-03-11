@@ -9,7 +9,18 @@ export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const q = url.searchParams.get("url");
+  console.log(url);
+  let q;
+  if(url.search){
+
+     q = decodeURIComponent(url.search.split("?url=")[1])
+  }else {
+    q = null
+
+  }
+  console.log(q)
+  // const q = url.searchParams.get("url");
+
   return { q };
 };
 
@@ -19,14 +30,12 @@ function HomeIndex() {
   const { q } = useLoaderData();
   const [render, setRender] = useState(false)
   const [query, setQuery] = useState("");
-  // console.log({ q })
+  console.log({ q })
 
   useEffect(() => {
-    if (q) {
+
       setQuery(q);
-    } else (
-      setQuery("")
-    )
+    
   }, [q])
 
   return (

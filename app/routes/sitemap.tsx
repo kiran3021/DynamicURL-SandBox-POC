@@ -1,13 +1,13 @@
 import React from 'react'
-import Sitemap from 'src/components/sitemap/Sitemap'
-import HandleExpansionDemo from 'src/components/sitemap/Treeview';
-function Site() {
+import Sitemap from 'src/components/sitemap/bin/Sitemap'
+import SiteMapPage from 'src/components/sitemap/SitemapFolders';
+
+function SiteMap() {
   return (
     <div>
-        {/* <Sitemap/> */}
-       <HandleExpansionDemo/>
+        <SiteMapPage/>
     </div>
   )
 }
 
-export default Site;
+export default SiteMap;
