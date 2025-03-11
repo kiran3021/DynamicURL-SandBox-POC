@@ -1,30 +1,17 @@
 import { useEffect, useState } from 'react';
 import './Sitemap.scss'
-import { Text, Checkbox, CheckboxCards, Flex } from '@radix-ui/themes';
+import { baseUrl, sandboxURL } from './sitemapData';
 type Node = {
   name: string;
+  fontSize?: number;
+  url?: string;
+  show?:boolean;
   nodes?: Node[];
 };
-import { baseUrl, sandboxURL } from './sitemapData';
 
-export default function Sitefiles({ node, show, setShow, specificNode }: { node: Node, show: boolean, setShow: any }) {
-  let [isOpen, setIsOpen] = useState();
-  const [temp, setTemp] = useState()
-
-  // const handleShow =() =>{
-  //   setShow(!show)
-  // }
-
-
-  console.log(node.name, isOpen);
-  // console.log(specificNode)
-  // useEffect(()=>{
-  //   if(node?.show){
-  //     set
-
-  //   }
-  // })
-  console.log(`${baseUrl}${node?.url}`)
+export default function Sitemapfiles({ node, show, setShow, specificNode }: { node: Node, show: boolean, setShow: any, specificNode: string }) {
+  let [isOpen, setIsOpen] = useState<boolean>();
+  const [temp, setTemp] = useState<boolean>();
 
   useEffect(() => {
     // if(!(node?.show)){
@@ -68,41 +55,20 @@ export default function Sitefiles({ node, show, setShow, specificNode }: { node:
                     <a href={`${sandboxURL}${baseUrl}${node?.url}`} target='_blank' className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">  <span>  {node.name}</span> </a> :
                     <span>  {node.name}</span>
                 }
-
               </div>
-              {/* <span className='main-header'>{node.name}</span> */}
-
-              {/* <button className='bg-none'>
-                <Text as="label" size="2">
-                  <Flex key={node.name} gap="2" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>
-                    <Checkbox defaultChecked={isOpen} />
-                    Agree to Terms and Conditions
-                  </Flex>
-                </Text>
-              </button> */}
-
             </div>
           </>
 
         ) : (
           <>
             <div className="d-flex gap-2 align-items-center mb-1 file">
-
               <div className="vr "></div>
-              {/* <span className="size-6 text-gray-900 ml-[22px] ">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-file ml-[22px] size-6 text-gray-900" viewBox="0 0 16 16">
-                  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1" />
-                </svg>
-              </span> */}
-              {/* file image */}
               <div className='sub-name d-flex gap-2 align-items-center'>
-                <i >
-
+                <i>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-file-earmark" viewBox="0 0 16 16">
                     <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z" />
                   </svg>
                 </i>
-
                 {
                   node?.url ?
                     <a href={`${sandboxURL}${baseUrl}${node.url}`} target='_blank' className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">  <span>  {node.name}</span> </a>
@@ -119,16 +85,12 @@ export default function Sitefiles({ node, show, setShow, specificNode }: { node:
         )}
 
         {isOpen && node.nodes && (
-          // <div className="nested">
 
           <ul className="list-unstyled vr">
-            {/* <div className="vr"></div> */}
-
-            {node.nodes?.map((nod) => (
-              <Sitefiles node={nod} key={nod.name} show={temp} setShow={setShow} specificNode={specificNode} />
+            {node.nodes?.map((nod,index) => (
+              <Sitemapfiles node={nod} key={nod.name} show={temp ?? false} setShow={setShow} specificNode={specificNode} />
             ))}
 
-            {/* </div> */}
 
 
           </ul>

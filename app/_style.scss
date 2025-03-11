@@ -1,27 +1,3 @@
-// @import "bootstrap/scss/functions";
-// @import "bootstrap/scss/variables";
-// @import "bootstrap/scss/variables-dark";
-// @import "bootstrap/scss/maps";
-// @import "bootstrap/scss/mixins";
-// @import "bootstrap/scss/utilities";
-
-// // $all-colors: map-merge-multiple($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
-
-// // $utilities: map-merge($utilities,
-// //     ("color": map-merge(map-get($utilities, "color"),
-// //         (values: map-merge(map-get(map-get($utilities, "color"), "values"),
-// //             ($all-colors ),
-// //           ),
-// //         ),
-// //       ),
-// //     ));
-
-// @import "bootstrap/scss/utilities/api";
-// @import "bootstrap/scss/bootstrap";
-
-// $enable-grid-classes: false;
-// $enable-cssgrid: true;
-
 html {
   box-sizing: border-box;
 }
@@ -45,14 +21,13 @@ code {
     monospace;
 }
 
+
+
+
 @media only screen and (min-width: 1400px) {
   html {
     font-size: 16px;
   }
-  .radix-themes {
-
-  }
-
 }
 
 
@@ -61,23 +36,14 @@ code {
   html {
     font-size: 16px !important;
   }
-  .radix-themes {
-    font-size: 16px !important;
-
-  }
 
 }
 
 /* for...........768px */
 @media only screen and (max-width: 768px) {
   html {
-    font-size: 14px!important;
-  }
-  .radix-themes {
     font-size: 14px !important;
-
   }
-
 
 }
 
@@ -86,69 +52,39 @@ code {
   html {
     font-size: 12px !important;
   }
-  .radix-themes {
-    font-size: 12px !important;
 
-  }
-
-  // .form-wrapper{
-  //   display: flex !important;
-  //   flex: 0 0 auto !important;
-  //   width: 50%;
-
-  // }
-  // .form-wrapper{
-  //   display: flex;
-  //   flex-direction: row;
-  //   width: 100%;
-  // }
-  .container-fluid {
-
-
-    .header-wrap {
-      display: flex;
-      flex-direction: column-reverse;
-      justify-content: center;
-      padding-block: 0.2rem ;
-      gap:1rem !important;
-       .Button{
-        padding: 0.5rem 1rem;
-       }
-
-      .spanimage {
-        width: 2rem !important;
-        height: 2rem !important;
-
-      }
-
-      .card {
-        max-width: 100% !important;
+  .container-fluid__sct {
+      .header-wrap {
+        display: flex;
+        flex-direction: column-reverse;
         justify-content: center;
-        height: auto;
+        padding-block: 0.2rem;
+        gap: 1rem !important;
 
-        .card-body {
-          padding-inline: 0.5rem !important;
+        .Button {
+          padding: 0.5rem 1rem;
         }
+
+        .spanimage {
+          width: 2rem !important;
+          height: 2rem !important;
+
+        }
+
+        .card {
+          max-width: 100% !important;
+          justify-content: center;
+          height: auto;
+
+          .card-body {
+            padding-inline: 0.5rem !important;
+          }
+        }
+
       }
-      // margin :2rem;
+    }
+    .form-query-wrapper {
+      display: flex;
+      flex-direction: column;
     }
   }
-
-  .form-query-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-
-}
-
-// @media only screen and (max-width: 476px) {
-//   html {
-//     font-size: 12px;
-//   }
-
-//   .row-cols-xs-1 >* {
-//     flex: 0 0 auto;
-//     width: 50%;
-
-//   }
-// }

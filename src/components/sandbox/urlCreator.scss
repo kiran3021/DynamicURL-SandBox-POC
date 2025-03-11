@@ -1,6 +1,6 @@
-.container-fluid {
+.container-fluid__sandbox {
+    overflow-y: auto;
     scrollbar-width: thin;
-
     margin-inline: 0rem;
     display: flex;
     flex-direction: column;
@@ -17,8 +17,6 @@
         .spanimage {
             width: 1.5rem;
             height: 1.5rem;
-
-
         }
 
         .card {
@@ -26,7 +24,6 @@
             padding-inline: 0;
             padding-block: 0;
             justify-content: center;
-            // height: 3rem;
             height: auto;
 
             .card-body {
@@ -38,39 +35,34 @@
     }
 
     .wrapper-iframe {
-
         .iframe {
             scrollbar-width: thin;
             height: 99vh;
-
-            // scrollbar-width: thin;
-            // height: 100vh;
-            // margin-inline: 0;
-            // position: sticky;
-            // top: 5rem;
-
         }
     }
 }
-
-
-.container-input-box {
-    margin: 0.8rem;
-    border: 0.1rem solid black;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.8rem;
-    border-radius: 0.2rem;
-}
-
-// .heading {
-//     position: sticky;
-//     top: -1rem;
-//     z-index: 1;
-// }
 .offcanvas {
-    overflow-y: hidden;
-    height: 27rem!important;
+    overflow-y: auto;
+    height: 27rem !important;
+    .form-control {
+        &:focus {
+            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+        }
+    }
+    
+    .form-select {
+        &:focus {
+            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+    
+        }
+    }
+    
+    .accordion-button {
+        &:focus {
+            box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+    
+        }
+    }
 
     .offcanvas-top {
         border-bottom: 0.2rem solid black;
@@ -109,23 +101,4 @@
     }
 }
 
-.form-control{
-    // box-shadow: ;
-    &:focus{
-        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
-    }
-}
 
-.form-select{
-    &:focus{
-        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
-
-    }
-}
-
-.accordion-button{
-    &:focus{
-        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
-
-    }
-}

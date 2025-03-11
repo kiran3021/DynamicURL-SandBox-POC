@@ -1,60 +1,61 @@
 interface NodesType {
-    name : string , 
-    url : string
+    name: string,
+    url: string
 }
 
 type Node = {
     name: string;
-    fontSize? :number;
-    url? :string;
+    fontSize?: number;
+    url?: string;
+    show?:boolean;
     nodes?: Node[];
 };
 
 
 
-export let env  = "staging";
-export let baseUrl =   `https://${env}.simnetonline.com/`;
+export let env = "staging";
+export let baseUrl = `https://${env}.simnetonline.com/`;
 export let sandboxURL = `http://localhost:5173/?url=`
 
 export const sitemap: Node[] = [
     {
         name: 'Dashboard',
-        fontSize : 1,
-        show:true ,
+        fontSize: 1,
+        show: true,
         nodes: [
-            { name: 'Past Due preferences (overlay)', url : `Manager/MyAccount/MyAccount.aspx` },
-            { name: 'Integrity Violations (overlay)' ,url :`Manager/MyAccount/MyAccount.aspx`},
-            { name: 'Upcoming assignments report', url : `Manager/MyAccount/MyAccount.aspx` },
-            { name: 'Credential issuance report' , url : `Manager/MyAccount/MyAccount.aspx`},
+            { name: 'Past Due preferences (overlay)', url: `Manager/MyAccount/MyAccount.aspx` },
+            { name: 'Integrity Violations (overlay)', url: `Manager/MyAccount/MyAccount.aspx` },
+            { name: 'Upcoming assignments report', url: `Manager/MyAccount/MyAccount.aspx` },
+            { name: 'Credential issuance report', url: `Manager/MyAccount/MyAccount.aspx` },
         ],
     },
     {
         name: 'Grades',
-        fontSize : 1,
-        show:true,
+        fontSize: 1,
+        show: true,
         nodes: [
             {
                 name: 'Gradebook',
-                fontSize : 1,
-                url : `cm/gradebook/main/`,
+                fontSize: 1,
+                url: `cm/gradebook/main/`,
                 nodes: [
-                    { name: 'Learner panel (overlay)' , url : ``},
-                    { name: 'Assignment panel (overlay)' , url : ``},
-                    { name: 'Grade panel (overlay)', url : `` },
-                    { name: 'Settings...', url : `` },
+                    { name: 'Learner panel (overlay)', url: `` },
+                    { name: 'Assignment panel (overlay)', url: `` },
+                    { name: 'Grade panel (overlay)', url: `` },
+                    { name: 'Settings...', url: `` },
                 ],
             },
-            { name: 'Resource Submissions', url : `Manager/Resources/Inbox.aspx` },
+            { name: 'Resource Submissions', url: `Manager/Resources/Inbox.aspx` },
             {
                 name: 'Reports',
-                fontSize:2,
-                url:"/Manager/Reports/Reports.aspx",
+                fontSize: 2,
+                url: "/Manager/Reports/Reports.aspx",
                 nodes: [
                     {
                         name: 'Create',
                         nodes: [
-                            { name: 'Course Overview', url : `Manager/Reports/NewReport.aspx` },
-                            { name: '...', url : `` },
+                            { name: 'Course Overview', url: `Manager/Reports/NewReport.aspx` },
+                            { name: '...', url: `` },
                         ],
                     },
                 ],
@@ -63,19 +64,19 @@ export const sitemap: Node[] = [
     },
     {
         name: 'Courses',
-        show:true,
+        show: true,
 
         nodes: [
             {
                 name: 'View all',
-                url:"Manager/Classes/FindClass.aspx",
+                url: "Manager/Classes/FindClass.aspx",
                 nodes: [
                     {
                         name: 'Actions',
                         nodes: [
                             {
                                 name: 'Snapshot',
-                                url:`Manager/Classes/SnapshotClass.aspx`,
+                                url: `Manager/Classes/SnapshotClass.aspx`,
                                 nodes: [
                                     { name: 'Instructors' },
                                     { name: 'Students' },
@@ -116,7 +117,7 @@ export const sitemap: Node[] = [
     },
     {
         name: 'Users',
-        show:true,
+        show: true,
 
         nodes: [
             {
@@ -124,30 +125,30 @@ export const sitemap: Node[] = [
                 nodes: [
                     {
                         name: 'View all',
-                        url:"Manager/Instructors/FindInstructor",
+                        url: "Manager/Instructors/FindInstructor",
                         nodes: [
                             {
                                 name: 'Actions',
                                 nodes: [
-                                    { name: 'Snapshot',url:"Manager/Instructors/SnapshotInstructor.aspx" },
-                                    { name: 'Print snapshot',url:"Manager/Instructors/PrintInstructorSnapshot.aspx" },
+                                    { name: 'Snapshot', url: "Manager/Instructors/SnapshotInstructor.aspx" },
+                                    { name: 'Print snapshot', url: "Manager/Instructors/PrintInstructorSnapshot.aspx" },
                                     {
                                         name: 'Edit/assign',
                                         nodes: [
-                                            { name: 'Details',url:"Manager/Instructors/EditInstructor.aspx" },
-                                            { name: 'Courses',url :"Manager/Instructors/EditInstructor.aspx" },
+                                            { name: 'Details', url: "Manager/Instructors/EditInstructor.aspx" },
+                                            { name: 'Courses', url: "Manager/Instructors/EditInstructor.aspx" },
                                         ],
                                     },
-                                    { name: 'Remove pairing',url :"Manager/Instructors/FindInstructor" },
-                                    { name: 'Send message',url :"Manager/Messaging/Messaging.aspx" },
-                                    { name: 'View history',url :"Manager/Instructors/FindInstructor" },
-                                    { name: 'Delete',url :"Manager/Instructors/FindInstructor" },
+                                    { name: 'Remove pairing', url: "Manager/Instructors/FindInstructor" },
+                                    { name: 'Send message', url: "Manager/Messaging/Messaging.aspx" },
+                                    { name: 'View history', url: "Manager/Instructors/FindInstructor" },
+                                    { name: 'Delete', url: "Manager/Instructors/FindInstructor" },
                                 ],
                             },
                         ],
                     },
-                    { name: 'Create',url :"Manager/Instructors/NewInstructor.aspx" },
-                    { name: 'Import',url :"Manager/Instructors/Import.aspx" },
+                    { name: 'Create', url: "Manager/Instructors/NewInstructor.aspx" },
+                    { name: 'Import', url: "Manager/Instructors/Import.aspx" },
                 ],
             },
             {
@@ -155,43 +156,43 @@ export const sitemap: Node[] = [
                 nodes: [
                     {
                         name: 'View all',
-                        url :"cm/students/main/",
+                        url: "cm/students/main/",
                         nodes: [
                             {
                                 name: 'Actions',
                                 nodes: [
-                                    { name: 'Snapshot',url :"Manager/Students/SnapshotStudent.aspx" },
-                                    { name: 'Print snapshot',url :"Manager/Students/PrintStudentSnapshot.aspx" },
+                                    { name: 'Snapshot', url: "Manager/Students/SnapshotStudent.aspx" },
+                                    { name: 'Print snapshot', url: "Manager/Students/PrintStudentSnapshot.aspx" },
                                     {
                                         name: 'Edit/assign',
-                                        url:"Manager/Students/EditStudent.aspx",
+                                        url: "Manager/Students/EditStudent.aspx",
                                         nodes: [
-                                            { name: 'Details',url:"Manager/Students/EditStudent.aspx" },
-                                            { name: 'Courses',url :"Manager/Students/EditStudent.aspx" },
-                                            { name: 'Licenses',url : "Manager/Students/EditStudent.aspx" },
-                                            { name: 'Time on task' ,url : "Manager/Students/EditStudent.aspx"},
-                                            { name: 'Personal assignments',url : "Manager/Students/EditStudent.aspx" },
-                                            { name: 'Credentials' ,url : "Manager/Students/EditStudent.aspx"},
+                                            { name: 'Details', url: "Manager/Students/EditStudent.aspx" },
+                                            { name: 'Courses', url: "Manager/Students/EditStudent.aspx" },
+                                            { name: 'Licenses', url: "Manager/Students/EditStudent.aspx" },
+                                            { name: 'Time on task', url: "Manager/Students/EditStudent.aspx" },
+                                            { name: 'Personal assignments', url: "Manager/Students/EditStudent.aspx" },
+                                            { name: 'Credentials', url: "Manager/Students/EditStudent.aspx" },
                                         ],
                                     },
-                                    { name: 'Remove pairing' ,url:""},
-                                    { name: 'Send message',url :"Manager/Messaging/Messaging.aspx" },
-                                    { name: 'View history',url : "cm/students/main/" },
-                                    { name: 'Delete',url :"cm/students/main/" },
+                                    { name: 'Remove pairing', url: "" },
+                                    { name: 'Send message', url: "Manager/Messaging/Messaging.aspx" },
+                                    { name: 'View history', url: "cm/students/main/" },
+                                    { name: 'Delete', url: "cm/students/main/" },
                                 ],
                             },
                         ],
                     },
-                    { name: 'Create' ,url : "Manager/Students/NewStudent.aspx"},
-                    { name: 'Import',url : "Manager/Students/CombinedImport.aspx" },
-                    { name: 'Archive',url : "Manager/Students/Enroll_UnEnroll.aspx" },
+                    { name: 'Create', url: "Manager/Students/NewStudent.aspx" },
+                    { name: 'Import', url: "Manager/Students/CombinedImport.aspx" },
+                    { name: 'Archive', url: "Manager/Students/Enroll_UnEnroll.aspx" },
                 ],
             },
         ],
     },
     {
         name: 'Content',
-        show : false,
+        show: false,
         nodes: [
             // {show : false},
             {
@@ -280,8 +281,8 @@ export const sitemap: Node[] = [
             },
             {
                 name: 'Exams',
-                
-  show : true,
+
+                show: true,
                 nodes: [
                     {
                         name: 'View all',
@@ -506,7 +507,7 @@ export const sitemap: Node[] = [
     },
     {
         name: 'Help',
-        show : false,
+        show: false,
         nodes: [
             { name: 'Search' },
             { name: 'All Topics (external)' },
@@ -520,7 +521,7 @@ export const sitemap: Node[] = [
     },
     {
         name: 'SIMstudent',
-        show :true,
+        show: true,
         nodes: [
             { name: 'Library' },
             { name: 'Courses' },

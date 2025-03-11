@@ -1,11 +1,9 @@
-import React from 'react'
-import Sitemap from 'src/components/sitemap/bin/Sitemap'
-import SiteMapPage from 'src/components/sitemap/SitemapFolders';
+import SiteMapFolder from 'src/components/sitemap/SitemapFolder';
 
 function SiteMap() {
   return (
     <div>
-        <SiteMapPage/>
+        <SiteMapFolder/>
     </div>
   )
 }

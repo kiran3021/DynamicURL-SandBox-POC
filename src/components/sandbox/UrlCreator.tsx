@@ -1,12 +1,10 @@
 
 import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
-import "./_UrlCreator.scss";
 import { DataURI, } from "./json";
 import { produce } from "immer";
 import { Offcanvas } from "react-bootstrap";
 import { clsx } from 'clsx';
 import { useNavigate } from "react-router";
-// chnaging the params..
 interface QueryParam {
   key: string;
   value: string;
@@ -33,13 +31,6 @@ const optionsData: TextBoxes = {
   queryparam: [{ key: "", value: "" }],
   token: ""
 };
-// const resuriData = {
-//   "users": ["instructors", "students"],
-//   "students": ["group1", "group2"],
-//   "group1": ["viewall", "dele", "put"],
-//   "group2": ["one group2", "two group2"],
-//   "instructors": ["viewall", "dele", "put"]
-// }
 
 const domains = [
   "https://simnetonline.com",
@@ -58,9 +49,9 @@ interface UrlCreatorProps {
 }
 
 function UrlCreator({ query }: UrlCreatorProps) {
-  const [selectedURI, setSelectedURI] = useState([]);
-  const [currentOptions, setCurrentOptions] = useState([])
-  const [arr, setArr] = useState([])
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedURI, setSelectedURI] = useState<string[]>([]);
   const [textBoxes, setTextBoxes] = useState({
     baseurl: "",
     environment: "",
@@ -69,56 +60,49 @@ function UrlCreator({ query }: UrlCreatorProps) {
     token: ""
   });
   const [newUrl, setNewUrl] = useState(query);
-  const [pastedUrl, setPastedUrl] = useState("")
   const [showoff, setShowoff] = useState(true);
   const [render, setRender] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
-  const containerRef = useRef(null);
 
   const handleClose = () => setShowoff(false);
   const handleShow = () => setShowoff(true);
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  // handle change for the baseURL and environment.
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     updateURL(name, value, "", "addBaseEnv");
     setTextBoxes(
-      produce((draft) => {
+      produce((draft :any) => {
         draft[name] = value;
       })
     );
   };
-console.log(query)
+
+  // destructuring the query from the url to local object with data passing.
   const urlToObject = (query: string) => {
     console.log(query)
     if (query) {
 
-      // Parse the URL
-      // const url = "https://staging.getbootstrap.com/docs/5.3/forms/layout/";
-
-      // Parse the URL
       const parsedUrl = new URL(query);
-      // console.log({ parsedUrl })
 
       // Extract components
-
       let baseurl = parsedUrl.protocol + "//" + parsedUrl.hostname.replace(/^[^.]+\./, ""); //
       let environment = parsedUrl.hostname.split(".")[0]; // Get subdomain
       const keys = Object.keys(env);
+
       // for checking whether environment present in the url or not.
       if (!keys.includes(environment)) {
         baseurl = parsedUrl.origin;
         environment = ""
       }
       if (!parsedUrl.hostname.includes(".")) {
-        // Handle URLs without subdomains
+
       }
       const uri = parsedUrl.pathname.slice(1); // Split path into an array
       const uriArray = parsedUrl.pathname.split("/").slice(1, uri.length - 1); // Remove the first empty element from the split array
-      const queryParams = Array.from(parsedUrl.searchParams.entries()).map(([key, value]) => ({ key, value })); // Get query params
+      const queryParams = Array.from(parsedUrl.searchParams.entries()).map(([key, value]) => ({ key, value }));  // making query params as key and value in array
 
-      // 
       const result = {
         baseurl,
         environment,
@@ -126,48 +110,26 @@ console.log(query)
         queryparam: queryParams,
         token: "",
       };
-
-
-      // if(getOptionsForLevel(uriArray?.length).length > 0){
       setSelectedURI(uriArray as []);
-      // }
-
-
-      // if(getOptionsForLevel())
-      // if()
-      getOptionsForLevel(0);
       setTextBoxes(result);
       setNewUrl(query);
     }
-    // setNewUrl("")
-    
-
   }
-  // console.log({ selectedURI });
 
+  // handle reset to intial.
   const handleIntial = () => {
     urlToObject(query);
   }
+
   console.log(query)
   useEffect(() => {
-    if (query !== "" || query  !== undefined) {
-      urlToObject(query)
-      // if(!(getOptionsForLevel(selectedURI?.length).length > 0)){
-      //   setSelectedURI
-
-      // }
-
-
-    }else{
+    if (query !== "" || query !== undefined) {
+      urlToObject(query);
+    } else {
       setNewUrl("")
     }
   }, [query])
 
-  // console.log({ textBoxes });
-  // useEffect(() => {
-  //   setNewUrl(query)
-  // }, [query])
-  // console.log({ query }, { newUrl })
   // Handle changes in query parameters
   const handleQueryParamChange = (index: number, field: string, value: string) => {
     setTextBoxes(
@@ -196,10 +158,10 @@ console.log(query)
       })
     );
     updateURL("", "", index, "removeQuery");
-    // setShowoff(true);
   };
 
 
+  // common function for updating the url obJect before updating locally in state
   const updateurlfun = produce((draft, name, value, index, action) => {
 
     if (action == "addBaseEnv") {
@@ -215,13 +177,7 @@ console.log(query)
 
   const updateURL = (name = "", value = "", index: string | number = "null", action = "") => {
     let { baseurl, environment, uri, queryparam } = updateurlfun(textBoxes, name, value, index, action)
-    // console.log(updateurlfun(textBoxes, name, value, index, action));
-
-
     baseurl = baseurl.split("//").join(`//${environment}` + (environment != "" ? "." : ""))
-    // baseurl = environment && baseurl + "." 
-    // console.log(baseurl);
-
     let url = `${baseurl}/${uri}`;
 
 
@@ -307,13 +263,10 @@ console.log(query)
 
 
   const handleReset = () => {
-    // if(query){
 
-    // }
     setNewUrl("");
     setTextBoxes(optionsData);
     setSelectedURI([]);
-    setPastedUrl("");
     getOptionsForLevel(0);
 
   }
@@ -325,12 +278,10 @@ console.log(query)
 
   const getOptionsForLevel = (level: number,) => {
 
-    // let selectedURI = 
-    let currentLevel = DataURI;
+    let currentLevel: { [key: string]: any } = DataURI;
     for (let i = 0; i < level; i++) {
       if (currentLevel && selectedURI[i]) {
         currentLevel = currentLevel[selectedURI[i]];
-        // console.log(currentLevel)
       } else {
         return [];
       }
@@ -339,21 +290,11 @@ console.log(query)
     if (currentLevel?.type == "last") {
       return Object.entries(currentLevel?.values)
     }
-    if (currentLevel === undefined || !currentLevel) {
-      if (level == selectedURI.length) {
-        // console.log("level", level)
-        const s = selectedURI.slice(0, level)
-        // setSelectedURI(s);
-      }
-      // setSelectedURI(selectedURI.slice(0,level));
-      return [];
-    }
-    // if(level)
 
-    // console.log(Object.entries(currentLevel || {}))
     return Object.keys(currentLevel || {});
   };
 
+  // for formating the string from the json . based on the key values present in or not.
   const formatString = (input: string) => {
 
     let words = input.replace(/([A-Z])/g, ' $1').trim();
@@ -362,27 +303,20 @@ console.log(query)
     return format;
   }
 
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     containerRef.current.scrollTop = containerRef.current.scrollHeight;
-  //   }
-  // }, [textBoxes.queryparam]); 
+
+  // for autofocus on the scroll bar  in query parameters 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight
     }
   }, [textBoxes.queryparam])
 
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     containerRef.current.scrollTop = containerRef.current.scrollHeight;
-  //   }
-  // }, [textBoxes.queryparam]);
-  // Render the component
   return (
-    <div className="container-fluid">
-      <Offcanvas backdropClassName="offcanvas" show={showoff} onHide={handleClose} placement="top" height={'30rem'}>
+    <div className="container-fluid container-fluid__sandbox">
+
+      <Offcanvas backdropClassName="offcanvas"  show={showoff} onHide={handleClose} placement="top" >
         <Offcanvas.Body className="py-2" >
+
           <div className="row d-flex justify-content-center mb-2">
             <div className="col-11 text-center">
               <h4 className="mb-0">SIMnet Lightyear scaffolding tool</h4>
@@ -392,9 +326,6 @@ console.log(query)
               </button>
             </div>
           </div>
-          {/* <div className="container-fluid p-1 mb-4 border border-black bg-body-tertiary text-wrap heading">
-            <h4 className="mb-0">{newUrl}</h4>
-          </div> */}
           <div className="d-flex row gy-4 gx-2 justify-content-start gap-1 gap-lg-2 align-items-center mb-4">
             <div className="col-12 col-xxl-5 col-lg-8 col-md-9">
               <div className="input-group">
@@ -498,6 +429,7 @@ console.log(query)
                   .map((_, index) => (
                     <div className="col-6 col-xxl-auto col-xl-auto col-lg-auto col-md-auto" key={index}>
                       <div className="input-group">
+                        {/* Checking whethher data present or not for this particular level. */}
                         {
                           getOptionsForLevel(index).length > 0 &&
                           <>
@@ -513,7 +445,7 @@ console.log(query)
                               aria-label={`Select parameter ${index + 1}`}
                             >
                               <option value="">Select</option>
-                              {getOptionsForLevel(index).length > 0 && getOptionsForLevel(index).map((option, i) => (
+                              {getOptionsForLevel(index).map((option, i) => (
                                 <option key={i} value={Array.isArray(option) ? option[0] : option}>
                                   {Array.isArray(option) ? (option[1] as string) : formatString(option as string)}
                                 </option>
@@ -521,7 +453,6 @@ console.log(query)
                             </select>
                           </>
                         }
-
                       </div>
                     </div>
                   ))}
@@ -554,13 +485,13 @@ console.log(query)
                           <div key={index} className="d-flex gap-2 mb-3">
                             <div className="d-flex align-items-center gap-0 me-0">
                               <span className="input-group-text col-1 justify-content-center">
-                              {index + 1}
+                                {index + 1}
 
                               </span>
 
                               <div className="col-5 px-2">
-                              <label className="input-group-text" htmlFor="query-key" hidden>
-                  </label>
+                                <label className="input-group-text" htmlFor="query-key" hidden>
+                                </label>
 
                                 <input type="text"
                                   id="query-key"
@@ -572,8 +503,8 @@ console.log(query)
                                 />
                               </div>
                               <div className="col-5 px-2">
-                              <label className="input-group-text" htmlFor="query-value" hidden>
-                              </label>
+                                <label className="input-group-text" htmlFor="query-value" hidden>
+                                </label>
 
                                 <input
                                   id="query-value"
@@ -607,6 +538,7 @@ console.log(query)
                   </div>
                 </div>
               </div>
+
               {/* Accordian token  */}
               {/* <div className="col-12 col-lg-6 col-md-6 my-2">
                 <div className="accordion">
@@ -635,9 +567,13 @@ console.log(query)
               </div> */}
             </div>
           </form>
+
         </Offcanvas.Body>
       </Offcanvas>
+
+
       <div className="d-flex gap-3 justify-content-center align-items-center mb-1 header-wrap">
+        {/* offCanvas toggle button  */}
         <button className="Button violet text-center svg" onClick={handleShow}
           type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">          <span className="spanimage">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-arrow-down-circle" viewBox="0 0 16 16">
@@ -645,10 +581,12 @@ console.log(query)
             </svg>
           </span>
         </button>
+        {/* url display card */}
         <div className="card p-0 my-1 justify-content-center">
           <div className="card-body">URL:{query ? query : "NO URL GENERATED"}</div>
         </div>
       </div>
+      {/* iframe */}
       <div className="wrapper-iframe d-flex flex-column justify-content-center my-1">
         {render &&
           <iframe

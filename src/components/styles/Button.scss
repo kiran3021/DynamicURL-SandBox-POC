@@ -1,0 +1,83 @@
+.Button {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: 500;
+    height: 1.5rem;
+    user-select: none;
+  
+    &:focus:not(:focus-visible) {
+      outline: 0.2rem;
+    }
+  }
+  
+  .violet {
+    background-color: rgba(0, 134, 240, 0.7) !important;
+    color: whitesmoke !important;
+    outline-color: #0086f0fa !important;
+  
+    &:hover {
+      color: whitesmoke !important;
+      background-color: rgba(0, 134, 240, 0.98) !important;
+    }
+  }
+  
+  .gray {
+    color: #1f2328;
+    border: 0.1rem solid #d1d9e0;
+    box-shadow: 0px 1px 0px 0px #1f23280a;
+  
+    &:focus-visible {
+      padding: 0.3rem 1.2rem;
+      border: 2px solid #2c1ef3;
+    }
+  
+    &:hover {
+      background-color: #eceef0;
+    }
+  }
+  
+  .mauve {
+    background-color: rgba(229, 229, 229, 0.8) !important;
+    color: black !important;
+    outline-color: rgba(229, 229, 229, 0.8) !important;
+  
+    &:hover {
+      color: black !important;
+      background-color: rgba(229, 229, 229, 1) !important;
+    }
+  }
+  
+  .red {
+    background-color: #f6f8fa !important;
+    color: #a40e26 !important;
+    border: 0.1rem solid #d1d9e0;
+    box-shadow: 0px 1px 0px 0px #1f23280a;
+  
+    &:focus-visible {
+      padding: 0.3rem 1.2rem;
+      border: 2px solid #2c1ef3;
+    }
+  
+    &:hover {
+      background-color: #a40e26 !important;
+      color: #f6f8fa !important;
+    }
+  }
+  
+  .green {
+    background-color: #f6f8fa;
+    color: #1e451c;
+    border: 0.1rem solid #d1d9e0;
+    box-shadow: 0px 1px 0px 0px #1f23280a;
+  
+    &:hover {
+      color: #f7f7f7;
+      background-color: #1e451c;
+    }
+  }
