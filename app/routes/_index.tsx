@@ -1,23 +1,9 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
-import UrlCreator from 'src/components/UrlCreator';
 
-function HomeIndex() {
-  const [url, setUrl] = useState("");
-  // const [show ,setShow] = useState(false); 
-  const onUrlChangeHandler = (value) => {
-    console.log(value);
-    setUrl(value);
-  };
-
+function Index() {
   return (
-    <div>
-      <UrlCreator onUrlChangeHandler={onUrlChangeHandler} />
-      {/* <span>URL: {url}</span> */}
-      {/* <Iframe url={url}/> */}
-
-    </div>
+    <div>Index</div>
   )
 }
 
-export default HomeIndex
+export default Index
