@@ -15,7 +15,7 @@ type Node = {
 
 export let env = "staging";
 export let baseUrl = `https://${env}.simnetonline.com/`;
-export let sandboxURL = `http://localhost:5173/?url=`
+export let sandboxURL = `http://localhost:5173/sandbox?url=`
 
 export const sitemap: Node[] = [
     {

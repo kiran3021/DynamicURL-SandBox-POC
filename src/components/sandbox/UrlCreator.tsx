@@ -5,6 +5,8 @@ import { produce } from "immer";
 import { Offcanvas } from "react-bootstrap";
 import { clsx } from 'clsx';
 import { useNavigate } from "react-router";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
+
 interface QueryParam {
   key: string;
   value: string;
@@ -50,7 +52,7 @@ interface UrlCreatorProps {
 
 function UrlCreator({ query }: UrlCreatorProps) {
   const navigate = useNavigate();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>();
   const [selectedURI, setSelectedURI] = useState<string[]>([]);
   const [textBoxes, setTextBoxes] = useState({
     baseurl: "",
@@ -197,9 +199,9 @@ function UrlCreator({ query }: UrlCreatorProps) {
     setRender(true);
     if (newUrl) {
 
-      navigate(`?url=${newUrl}`);
+      navigate(`/sandbox?url=${newUrl}`);
     } else {
-      navigate('/')
+      navigate('/sandbox')
     }
 
   };
@@ -314,7 +316,7 @@ function UrlCreator({ query }: UrlCreatorProps) {
   return (
     <div className="container-fluid container-fluid__sandbox">
 
-      <Offcanvas backdropClassName="offcanvas"  show={showoff} onHide={handleClose} placement="top" >
+      <Offcanvas show={showoff} onHide={handleClose} placement="top" >
         <Offcanvas.Body className="py-2" >
 
           <div className="row d-flex justify-content-center mb-2">
@@ -576,9 +578,10 @@ function UrlCreator({ query }: UrlCreatorProps) {
         {/* offCanvas toggle button  */}
         <button className="Button violet text-center svg" onClick={handleShow}
           type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">          <span className="spanimage">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-arrow-down-circle" viewBox="0 0 16 16">
               <path fillRule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z" />
-            </svg>
+            </svg> */}
+            <BsFillArrowDownCircleFill height={"1rem"} width={"1rem"}/>
           </span>
         </button>
         {/* url display card */}

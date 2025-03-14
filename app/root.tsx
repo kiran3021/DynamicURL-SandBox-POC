@@ -9,7 +9,6 @@ import {
   Scripts,
   Outlet,
 } from "react-router";
-import { Theme } from "@radix-ui/themes";
 
 export default function App() {
   useEffect(() => {

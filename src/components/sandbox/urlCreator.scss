@@ -12,12 +12,14 @@
     .header-wrap {
         .Button {
             padding: 0.3rem 1rem;
+      
+        }
+        svg {
+            vertical-align: middle;
+            height: 1.5rem;
+            width: 1.5rem;
         }
 
-        .spanimage {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
 
         .card {
             max-width: 60rem;
@@ -32,6 +34,7 @@
             }
 
         }
+        
     }
 
     .wrapper-iframe {
@@ -40,7 +43,17 @@
             height: 99vh;
         }
     }
+
+    svg {
+        vertical-align: middle;
+        height: 2rem;
+        width: 2rem;
+    }
 }
+.offcanvas-backdrop{
+    background-color: #fff !important;
+}
+
 .offcanvas {
     overflow-y: auto;
     height: 27rem !important;

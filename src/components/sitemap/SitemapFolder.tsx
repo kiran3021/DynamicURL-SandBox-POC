@@ -16,7 +16,7 @@ export default function SiteMapFolder() {
 
       <div className="container container_sitemap bg-white shadow my-2 p-2 rounded-lg ">
         <div className="text-center">
-          <h2>SIM Net SITE MAP</h2>
+          <h2>Lightyear Sitemap</h2>
         </div>
         <div className="col-auto ms-5">
           <div className="form-check form-switch"  >
