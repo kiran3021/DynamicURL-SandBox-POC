@@ -13,4 +13,9 @@ export default defineConfig({
     tsconfigPaths(),
 
   ],
+  test:{
+    coverage: {
+      reporter: ['text', "html"]
+    }
+  }
 });
