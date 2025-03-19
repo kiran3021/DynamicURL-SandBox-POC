@@ -8,7 +8,7 @@ describe("#demo", () => {
   });
 
   it.skip("skippin test", () => {
-    expect(demo(2, 34).toBe(36));
+    expect(demo(2, 34)).toBe(36);
   });
 
   it.skipIf(t)("skip only t is true", () => {
